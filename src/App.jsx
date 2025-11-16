@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./index.css";
-import { Github, Linkedin, Mail, Globe } from "lucide-react";
+import { Github, Linkedin, Mail, Globe, Instagram } from "lucide-react";
 
 /* ===========================
    Fondo de triangulitos
@@ -312,6 +312,17 @@ function App() {
                             >
                                 <Linkedin />
                             </a>
+
+                            <a
+                                className="icon-button"
+                                href="https://www.instagram.com/juanploxz"
+                                target="_blank"
+                                rel="noreferrer"
+                                title="Instagram"
+                            >
+                                <Instagram />
+                            </a>
+
                             <a
                                 className="icon-button"
                                 href="mailto:juanploxz@gmail.com"
@@ -436,6 +447,16 @@ function App() {
                             >
                                 <Github />
                                 <span>{data.contactGithub}</span>
+                            </a>
+
+                            <a
+                                href="https://www.instagram.com/TU_USUARIO_AQUI"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="contact-button"
+                            >
+                                <Instagram />
+                                <span>Instagram</span>
                             </a>
 
                             <a
