@@ -450,7 +450,7 @@ function App() {
                             </a>
 
                             <a
-                                href="https://www.instagram.com/TU_USUARIO_AQUI"
+                                href="https://www.instagram.com/juanploxz"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="contact-button"
