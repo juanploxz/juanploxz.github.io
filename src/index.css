@@ -1,0 +1,574 @@
+:root {
+  --bg: #050814;
+  --bg-alt: #0b1020;
+  --card: #121827;
+  --border: rgba(255, 255, 255, 0.06);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent: #2563eb;
+  --accent-soft: #1d4ed8;
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at top, #111827 0, #020617 55%),
+  radial-gradient(circle at bottom, #020617 0, #020617 55%);
+  color: var(--text-main);
+}
+
+/* App wrapper */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(5, 8, 20, 0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  font-weight: 600;
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.navbar-center {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.navbar-center a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.navbar-center a:hover {
+  color: #ffffff;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-button {
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease,
+  color 0.15s ease;
+}
+
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.icon-button:hover {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: var(--border);
+}
+
+/* HERO */
+
+.hero {
+  padding: 5rem 1.5rem 3.5rem;
+}
+
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 6vw, 3.8rem);
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0;
+}
+
+.hero-subtitle {
+  margin: 1.2rem auto 0;
+  max-width: 720px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* SECTIONS GENERALES */
+
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-intro {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 720px;
+  margin-bottom: 1.5rem;
+}
+
+/* CARDS PRINCIPALES */
+
+.section-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.75rem;
+}
+
+.card {
+  background: linear-gradient(145deg, #0b1020, #040714);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75);
+
+  /* ⬇⬇ nuevo para animación suave ⬇⬇ */
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
+  border-color 0.12s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, border-color;
+}
+
+/* Tarjetas con efecto de “hundimiento” siguiendo el mouse */
+.card-tilt {
+  cursor: pointer;
+}
+
+.card-tilt:hover {
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+
+
+.card-title {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem;
+  color: var(--text-main);
+}
+
+.card-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.card-meta {
+  margin-top: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Cuadros de la sección superior (Sobre mí / Cómo resuelvo problemas) */
+.card-info {
+  cursor: default;
+}
+
+.card-info:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+
+/* PILLS (skills) */
+
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-main);
+  font-size: 0.8rem;
+  cursor: default;
+  overflow: hidden;
+
+  /* animación suave */
+  transition:
+          transform 0.18s ease-out,
+          box-shadow 0.18s ease-out,
+          border-color 0.18s ease-out,
+          background 0.18s ease-out,
+          color 0.18s ease-out;
+}
+
+/* Brillito que cruza la pill */
+.pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+          circle at 0 0,
+          rgba(56, 189, 248, 0.18),
+          transparent 55%
+  );
+  opacity: 0;
+  transform: translateX(-30%);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+/* Efecto al pasar el mouse */
+.pill:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(30, 64, 175, 0.9);
+  border-color: rgba(129, 140, 248, 0.9);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.9);
+}
+
+/* Activar el brillito en hover */
+.pill:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* LISTAS DETALLE */
+
+.detail-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* TIMELINE */
+
+/* Fondo del timeline: franja que envuelve todos los periodos */
+.timeline-wrapper {
+  margin-top: 0.75rem;
+  padding: 1.2rem 1.5rem 1rem;
+  border-radius: 18px;
+  background: linear-gradient(to right, #050816, #020617);
+  /* si no quieres borde, quita la línea de abajo */
+  border: 1px solid var(--border);
+}
+
+/* Lista vertical del timeline */
+.timeline-list {
+  position: relative;
+  padding-left: 1.5rem;  /* espacio para la línea */
+}
+
+/* ÚNICA línea vertical gris (una sola, sin puntos) */
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;            /* se extiende hasta el último item */
+  left: 0;              /* pegado al borde izquierdo de la franja */
+  width: 1px;
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* Cada entrada del timeline */
+.timeline-item {
+  margin-bottom: 1.2rem;
+}
+
+.timeline-period {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.timeline-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* IMPORTANTE: no debe existir timeline-item::before ni border-left en ningún lado */
+
+
+
+/* CONTACTO */
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-main);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease,
+  transform 0.15s ease;
+}
+
+.contact-button svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.contact-button:hover {
+  border-color: var(--accent-soft);
+  background: rgba(30, 64, 175, 0.9);
+  transform: translateY(-1px);
+}
+
+.contact-button-primary {
+  background: var(--accent);
+  border-color: var(--accent-soft);
+  color: #0b1120;
+}
+
+.contact-button-primary:hover {
+  background: #3b82f6;
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.5rem 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+
+/* ===========================
+   Fondo de triangulitos
+   =========================== */
+
+.triangles-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none; /* no bloquea clicks ni scroll */
+  z-index: 0;
+}
+
+/* Aseguramos que el contenido esté encima del layer */
+.app {
+  position: relative;
+  z-index: 1;
+}
+
+.triangle-shape {
+  position: absolute;
+  top: -10vh;
+  left: var(--x, 50vw);
+
+  /* Triángulo con bordes (sin ancho/alto) */
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 12px solid rgba(148, 163, 184, 0.22);
+
+  opacity: 0;
+  transform-origin: 50% 50%;
+  animation: triangleFall var(--duration, 14s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes triangleFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg)
+    scale(var(--scale, 1));
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.35;
+  }
+  40% {
+    opacity: 0.25;
+  }
+  80% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: translate3d(0, 115vh, 0) rotate(260deg)
+    scale(var(--scale, 1));
+    opacity: 0;
+  }
+}
+
+
+/* ===========================
+   Animaciones de entrada
+   =========================== */
+
+@keyframes fadeInDownSoft {
+  0% {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUpSoft {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Navbar entrando desde arriba */
+.fade-in-down {
+  opacity: 0;
+  animation: fadeInDownSoft 0.4s ease-out forwards;
+}
+
+/* Secciones entrando desde abajo */
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUpSoft 0.5s ease-out forwards;
+}
+
+/* Pequeños delays para efecto de “construcción” */
+.delay-1 {
+  animation-delay: 0.05s;
+}
+.delay-2 {
+  animation-delay: 0.12s;
+}
+.delay-3 {
+  animation-delay: 0.18s;
+}
+.delay-4 {
+  animation-delay: 0.24s;
+}
+.delay-5 {
+  animation-delay: 0.30s;
+}
+.delay-6 {
+  animation-delay: 0.36s;
+}
+
+
+@media (max-width: 768px) {
+  .navbar-inner {
+    padding-inline: 1rem;
+  }
+
+  .navbar-center {
+    display: none; /* en móvil solo dejas marca e iconos */
+  }
+
+  .hero {
+    padding-top: 3.5rem;
+  }
+}
+
+/* Bloque con fondo para Skills (tech + soft) */
+.skills-wrapper {
+  margin-top: 0.75rem;
+  padding: 1.2rem 1.5rem 2rem; /* ⬅ más padding abajo para “extenderlo” */
+  border-radius: 18px;
+  background: linear-gradient(to right, #050816, #020617);
+  border: 1px solid var(--border);
+}
+
+/* Ajuste de títulos dentro del bloque */
+.skills-wrapper .section-title {
+  margin-top: 0;
+}
+
+.skills-wrapper .section-subtitle {
+  margin-top: 1.4rem;
+}
+
+/* Título de “Stack principal y enfoque” debajo del bloque */
+.stack-title {
+  margin-top: 2rem;
+}
+
