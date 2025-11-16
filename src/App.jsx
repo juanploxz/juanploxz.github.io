@@ -125,7 +125,7 @@ function App() {
                 ],
                 projectsTitle: "Highlighted projects",
                 projectsIntro:
-                    "Some projects I’m building or have built recently. Later we can replace these with your real apps and APIs.",
+                    "Some projects I’m building or have built recently. I will update this section everytime I create something new.",
                 projects: [
                     {
                         title: "Android – Notes App",
@@ -215,7 +215,7 @@ function App() {
                 ],
                 projectsTitle: "Proyectos destacados",
                 projectsIntro:
-                    "Algunos proyectos que estoy construyendo o he construido. Luego podemos reemplazar estas tarjetas por tus proyectos reales.",
+                    "Algunos proyectos que estoy construyendo o he construido. Actualizare esto conforme a mas proyectos.",
                 projects: [
                     {
                         title: "Android – App de notas",
