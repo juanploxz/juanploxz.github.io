@@ -1,71 +1,15 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { motion as Motion } from "framer-motion";
 import { ArrowDownRight, Github, Mail } from "lucide-react";
 import { profile } from "../lib/constants";
 import { revealContainer, revealItem } from "../lib/animations";
-import HeroFallbackScene from "../scenes/hero/HeroFallbackScene";
-import { shouldUseCompactVisuals, supportsWebGL } from "../lib/browserCapabilities";
-import { useReducedMotionSafe } from "../hooks/useReducedMotionSafe";
 
-const HeroCanvas = lazy(() => import("../scenes/hero/HeroCanvas.jsx"));
-
-function HeroSection({ journey }) {
-  const reducedMotion = useReducedMotionSafe();
-  const [immersiveReady, setImmersiveReady] = useState(false);
-  const canUse3D = useMemo(
-    () => !reducedMotion && supportsWebGL() && !shouldUseCompactVisuals(),
-    [reducedMotion]
-  );
-  const shouldLoad3D = canUse3D && immersiveReady;
-
-  useEffect(() => {
-    if (!canUse3D) {
-      return undefined;
-    }
-
-    let activated = false;
-    const activate = () => {
-      if (activated) {
-        return;
-      }
-
-      activated = true;
-      setImmersiveReady(true);
-      window.removeEventListener("pointermove", activate);
-      window.removeEventListener("wheel", activate);
-      window.removeEventListener("keydown", activate);
-    };
-
-    const timer = window.setTimeout(activate, 7000);
-
-    window.addEventListener("pointermove", activate, { passive: true });
-    window.addEventListener("wheel", activate, { passive: true });
-    window.addEventListener("keydown", activate);
-
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("pointermove", activate);
-      window.removeEventListener("wheel", activate);
-      window.removeEventListener("keydown", activate);
-    };
-  }, [canUse3D]);
-
+function HeroSection() {
   return (
     <section
       className="hero-section"
       id="top"
       aria-labelledby="hero-title"
     >
-      <div className="hero-visual" aria-hidden="true">
-        {shouldLoad3D ? (
-          <Suspense fallback={<HeroFallbackScene loading />}>
-            <HeroCanvas journey={journey} />
-          </Suspense>
-        ) : (
-          <HeroFallbackScene />
-        )}
-      </div>
-
       <Motion.div
         className="hero-copy"
         variants={revealContainer}
@@ -84,8 +28,8 @@ function HeroSection({ journey }) {
           clarity, usability, and product logic.
         </Motion.p>
         <Motion.div className="hero-actions" variants={revealItem}>
-          <a className="button button--primary" href="#projects" data-magnetic>
-            <span>Explore projects</span>
+          <a className="button button--primary" href="#journey" data-magnetic>
+            <span>Enter product space</span>
             <ArrowDownRight aria-hidden="true" />
           </a>
           <a className="button button--ghost" href={profile.github} target="_blank" rel="noreferrer" data-magnetic>
@@ -99,7 +43,7 @@ function HeroSection({ journey }) {
         </Motion.div>
       </Motion.div>
 
-      <Motion.div className="hero-status" variants={revealItem} initial="hidden" animate="visible" data-parallax="0.04">
+      <Motion.div className="hero-status" variants={revealItem} initial="hidden" animate="visible">
         <span>Current focus</span>
         <strong>Backend logic, AI product workflows, mobile UX, BI dashboards</strong>
       </Motion.div>

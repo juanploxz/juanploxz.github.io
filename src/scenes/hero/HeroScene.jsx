@@ -4,53 +4,96 @@ import * as THREE from "three";
 
 const layers = [
   {
-    id: "hero",
+    id: "threshold",
     z: 1.8,
     width: 3.2,
     height: 2.05,
     color: "#72f2c9",
     opacity: 0.34,
+    start: 0.04,
+    end: 0.22,
   },
   {
-    id: "gateway",
+    id: "portal",
     z: -1.6,
     width: 4.15,
     height: 2.55,
     color: "#9ef01a",
     opacity: 0.42,
+    start: 0.18,
+    end: 0.42,
   },
   {
-    id: "projects",
-    z: -5.0,
+    id: "corridor",
+    z: -4.6,
     width: 5.05,
     height: 3.05,
     color: "#ffcc66",
     opacity: 0.38,
+    start: 0.36,
+    end: 0.68,
   },
   {
-    id: "skills",
-    z: -8.4,
+    id: "gallery",
+    z: -7.3,
     width: 4.55,
     height: 2.8,
     color: "#7bdff2",
     opacity: 0.34,
+    start: 0.62,
+    end: 0.88,
   },
   {
-    id: "contact",
-    z: -11.6,
+    id: "landing",
+    z: -10.2,
     width: 3.65,
     height: 2.25,
     color: "#ff7aa2",
     opacity: 0.36,
+    start: 0.78,
+    end: 1,
   },
 ];
 
 const projectPanels = [
-  { id: "flowgate", z: -4.25, x: -2.55, y: 0.65, color: "#72f2c9" },
-  { id: "workout", z: -4.95, x: 2.55, y: 0.45, color: "#ffcc66" },
-  { id: "finder", z: -5.85, x: -2.2, y: -0.52, color: "#9ef01a" },
-  { id: "reviews", z: -6.4, x: 2.15, y: -0.62, color: "#ff7aa2" },
-  { id: "bi", z: -7.0, x: 0, y: 0.05, color: "#7bdff2" },
+  { id: "flowgate", z: -8.35, x: -2.45, y: 0.62, color: "#72f2c9" },
+  { id: "workout", z: -8.8, x: 2.45, y: 0.45, color: "#ffcc66" },
+  { id: "finder", z: -9.25, x: -2.05, y: -0.5, color: "#9ef01a" },
+  { id: "reviews", z: -9.65, x: 2.05, y: -0.6, color: "#ff7aa2" },
+  { id: "bi", z: -10.05, x: 0, y: 0.03, color: "#7bdff2" },
+];
+
+const cameraKeyframes = [
+  {
+    progress: 0,
+    position: [0, 0.56, 8.4],
+    lookAt: [0, 0.08, 0.6],
+    fov: 41,
+  },
+  {
+    progress: 0.2,
+    position: [0, 0.54, 5.35],
+    lookAt: [0, 0.06, -1.25],
+    fov: 39,
+  },
+  {
+    progress: 0.45,
+    position: [0.03, 0.62, 1.25],
+    lookAt: [0, 0, -3.35],
+    fov: 37,
+  },
+  {
+    progress: 0.75,
+    position: [0.18, 0.72, -3.8],
+    lookAt: [0.05, -0.02, -7.4],
+    fov: 36,
+  },
+  {
+    progress: 1,
+    position: [0, 0.66, -6.35],
+    lookAt: [0, 0, -9.8],
+    fov: 38,
+  },
 ];
 
 function createRectGeometry(width, height) {
@@ -98,6 +141,53 @@ function createRailGeometry(x, y) {
 function seededNoise(index, channel) {
   const raw = Math.sin(index * 83.9 + channel * 41.1) * 10000;
   return raw - Math.floor(raw);
+}
+
+function clamp(value, min = 0, max = 1) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function smooth(value) {
+  const t = clamp(value);
+  return t * t * (3 - 2 * t);
+}
+
+function phaseFromProgress(progress, start, end) {
+  return smooth((progress - start) / (end - start));
+}
+
+function interpolateArray(from, to, amount) {
+  return from.map((value, index) =>
+    THREE.MathUtils.lerp(value, to[index], amount)
+  );
+}
+
+function getJourneyCamera(progress) {
+  const clamped = clamp(progress);
+
+  for (let index = 1; index < cameraKeyframes.length; index += 1) {
+    const current = cameraKeyframes[index];
+    const previous = cameraKeyframes[index - 1];
+
+    if (clamped <= current.progress) {
+      const localProgress = smooth(
+        (clamped - previous.progress) /
+          (current.progress - previous.progress || 1)
+      );
+
+      return {
+        position: interpolateArray(
+          previous.position,
+          current.position,
+          localProgress
+        ),
+        lookAt: interpolateArray(previous.lookAt, current.lookAt, localProgress),
+        fov: THREE.MathUtils.lerp(previous.fov, current.fov, localProgress),
+      };
+    }
+  }
+
+  return cameraKeyframes[cameraKeyframes.length - 1];
 }
 
 function PortalFrame({ layer, compact, phase = 0 }) {
@@ -195,6 +285,45 @@ function TunnelRails({ compact, intensity = 0 }) {
   ));
 }
 
+function RoomShell({ compact, intensity = 0 }) {
+  const opacity = compact ? 0.035 : 0.038 + intensity * 0.045;
+
+  return (
+    <>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.52, -4.7]}>
+        <planeGeometry args={[7.4, 16, compact ? 8 : 12, compact ? 12 : 24]} />
+        <meshBasicMaterial
+          color="#72f2c9"
+          wireframe
+          transparent
+          opacity={opacity}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh rotation={[0, Math.PI / 2, 0]} position={[-3.34, 0, -5.2]}>
+        <planeGeometry args={[16, 4.1, compact ? 10 : 18, compact ? 4 : 8]} />
+        <meshBasicMaterial
+          color="#7bdff2"
+          wireframe
+          transparent
+          opacity={opacity * 0.58}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh rotation={[0, -Math.PI / 2, 0]} position={[3.34, 0, -5.2]}>
+        <planeGeometry args={[16, 4.1, compact ? 10 : 18, compact ? 4 : 8]} />
+        <meshBasicMaterial
+          color="#9ef01a"
+          wireframe
+          transparent
+          opacity={opacity * 0.58}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+    </>
+  );
+}
+
 function ProjectPanel({ panel, compact, index, intensity = 0 }) {
   const groupRef = useRef(null);
   const panelOpacity = compact ? 0.24 : 0.22 + intensity * 0.54;
@@ -253,14 +382,15 @@ function ProjectPanel({ panel, compact, index, intensity = 0 }) {
   );
 }
 
-function SkillsMatrix({ compact, intensity = 0 }) {
+function ProductWall({ compact, intensity = 0 }) {
   const nodes = useMemo(
     () =>
-      Array.from({ length: compact ? 10 : 18 }, (_, index) => ({
-        x: -1.35 + (index % 6) * 0.54,
-        y: -0.55 + Math.floor(index / 6) * 0.46,
-        z: -8.4 + seededNoise(index, 1) * 0.32,
-        scale: 0.035 + seededNoise(index, 2) * 0.025,
+      Array.from({ length: compact ? 8 : 15 }, (_, index) => ({
+        x: -1.55 + (index % 5) * 0.78,
+        y: -0.58 + Math.floor(index / 5) * 0.5,
+        z: -10.55,
+        width: 0.2 + seededNoise(index, 1) * 0.24,
+        height: 0.04 + seededNoise(index, 2) * 0.08,
       })),
     [compact]
   );
@@ -269,11 +399,11 @@ function SkillsMatrix({ compact, intensity = 0 }) {
     <group position={[0, 0, 0]}>
       {nodes.map((node, index) => (
         <mesh key={index} position={[node.x, node.y, node.z]}>
-          <boxGeometry args={[node.scale, node.scale, node.scale]} />
+          <boxGeometry args={[node.width, node.height, 0.025]} />
           <meshBasicMaterial
             color="#7bdff2"
             transparent
-            opacity={compact ? 0.18 : 0.18 + intensity * 0.38}
+            opacity={compact ? 0.12 : 0.12 + intensity * 0.28}
           />
         </mesh>
       ))}
@@ -283,7 +413,7 @@ function SkillsMatrix({ compact, intensity = 0 }) {
 
 function DustField({ compact, intensity = 0 }) {
   const pointsRef = useRef(null);
-  const count = compact ? 0 : 32;
+  const count = compact ? 0 : 18;
   const geometry = useMemo(() => {
     const positions = new Float32Array(count * 3);
 
@@ -328,12 +458,10 @@ function DustField({ compact, intensity = 0 }) {
 const defaultJourney = {
   progress: 0,
   phases: {
-    hero: 0,
-    gateway: 0,
-    projects: 0,
-    skills: 0,
-    timeline: 0,
-    contact: 0,
+    outside: 0,
+    approach: 0,
+    passage: 0,
+    arrival: 0,
   },
 };
 
@@ -343,29 +471,24 @@ function HeroScene({ journey = defaultJourney, compact = false }) {
   const lookTarget = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
   useFrame(({ camera, pointer }) => {
-    const { phases = defaultJourney.phases } = journey;
+    const progress = clamp(journey.progress ?? 0);
+    const cameraState = getJourneyCamera(progress);
     const pointerScale = compact ? 0.06 : 0.18;
-    const gateway = phases.gateway ?? 0;
-    const projects = phases.projects ?? 0;
-    const skills = phases.skills ?? 0;
-    const contact = phases.contact ?? 0;
-    const z =
-      7.35 -
-      gateway * 4.75 -
-      projects * 6.25 -
-      skills * 3.05 -
-      contact * 2.0;
-    const y = 0.58 + gateway * 0.14 + projects * 0.18 - skills * 0.08;
-    const x = projects * 0.1 - skills * 0.08 + contact * 0.03;
 
     cameraTarget.set(
-      x + pointer.x * pointerScale,
-      y + pointer.y * 0.055,
-      z
+      cameraState.position[0] + pointer.x * pointerScale,
+      cameraState.position[1] + pointer.y * 0.05,
+      cameraState.position[2]
     );
     camera.position.lerp(cameraTarget, compact ? 0.07 : 0.052);
-    lookTarget.set(pointer.x * 0.05, 0.02 - skills * 0.08, z - 4.2);
+    lookTarget.set(
+      cameraState.lookAt[0] + pointer.x * 0.045,
+      cameraState.lookAt[1],
+      cameraState.lookAt[2]
+    );
     camera.lookAt(lookTarget);
+    camera.fov += (cameraState.fov - camera.fov) * 0.045;
+    camera.updateProjectionMatrix();
 
     if (worldRef.current) {
       worldRef.current.rotation.y +=
@@ -376,20 +499,21 @@ function HeroScene({ journey = defaultJourney, compact = false }) {
   });
 
   const { phases = defaultJourney.phases } = journey;
+  const progress = clamp(journey.progress ?? 0);
   const sceneIntensity =
-    0.32 +
-    (phases.gateway ?? 0) * 0.38 +
-    (phases.projects ?? 0) * 0.22 +
-    (phases.skills ?? 0) * 0.18;
+    0.22 +
+    (phases.approach ?? 0) * 0.24 +
+    (phases.passage ?? 0) * 0.22 +
+    (phases.arrival ?? 0) * 0.14;
 
   return (
     <>
       <fog attach="fog" args={["#050505", 6.8, compact ? 16 : 19]} />
       <ambientLight intensity={0.62} />
       <directionalLight position={[2.8, 3.8, 5.2]} intensity={0.9} />
-      <pointLight position={[0, 0.2, 2.2]} color="#72f2c9" intensity={1.05 + sceneIntensity} />
-      <pointLight position={[1.8, 0.6, -6]} color="#ffcc66" intensity={0.55 + (phases.projects ?? 0) * 0.75} />
-      <pointLight position={[-1.4, -0.5, -9]} color="#7bdff2" intensity={0.55 + (phases.skills ?? 0) * 0.75} />
+      <pointLight position={[0, 0.2, 2.2]} color="#72f2c9" intensity={0.95 + sceneIntensity} />
+      <pointLight position={[1.8, 0.6, -6]} color="#ffcc66" intensity={0.45 + (phases.passage ?? 0) * 0.72} />
+      <pointLight position={[-1.4, -0.5, -9]} color="#7bdff2" intensity={0.45 + (phases.arrival ?? 0) * 0.72} />
 
       <group ref={worldRef}>
         <TunnelRails compact={compact} intensity={sceneIntensity} />
@@ -398,20 +522,11 @@ function HeroScene({ journey = defaultJourney, compact = false }) {
             key={layer.id}
             layer={layer}
             compact={compact}
-            phase={phases[layer.id] ?? 0}
+            phase={phaseFromProgress(progress, layer.start, layer.end)}
           />
         ))}
 
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.52, -5.4]}>
-          <planeGeometry args={[7.4, 16, compact ? 8 : 14, compact ? 14 : 28]} />
-          <meshBasicMaterial
-            color="#72f2c9"
-            wireframe
-            transparent
-            opacity={compact ? 0.035 : 0.045 + sceneIntensity * 0.045}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
+        <RoomShell compact={compact} intensity={sceneIntensity} />
 
         {projectPanels.map((panel, index) => (
           <ProjectPanel
@@ -419,11 +534,11 @@ function HeroScene({ journey = defaultJourney, compact = false }) {
             panel={panel}
             index={index}
             compact={compact}
-            intensity={phases.projects ?? 0}
+            intensity={phases.arrival ?? 0}
           />
         ))}
 
-        <SkillsMatrix compact={compact} intensity={phases.skills ?? 0} />
+        <ProductWall compact={compact} intensity={phases.arrival ?? 0} />
         <DustField compact={compact} intensity={sceneIntensity} />
       </group>
     </>

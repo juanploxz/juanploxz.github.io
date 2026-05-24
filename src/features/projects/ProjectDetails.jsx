@@ -18,26 +18,20 @@ function ProjectDetails({ project, onSkillSelect }) {
       layout
       initial={{
         opacity: 0,
-        y: 34,
-        scale: 0.975,
-        clipPath: "inset(14% 9% 14% 9% round 8px)",
-        filter: "blur(16px)",
+        y: 24,
+        scale: 0.985,
       }}
       animate={{
         opacity: 1,
         y: 0,
         scale: 1,
-        clipPath: "inset(0% 0% 0% 0% round 8px)",
-        filter: "blur(0px)",
       }}
       exit={{
         opacity: 0,
-        y: -18,
-        scale: 0.985,
-        clipPath: "inset(8% 6% 8% 6% round 8px)",
-        filter: "blur(10px)",
+        y: -12,
+        scale: 0.99,
       }}
-      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
     >
       <Motion.div
         className="project-details__visual"

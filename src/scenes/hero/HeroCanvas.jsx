@@ -6,7 +6,17 @@ import HeroScene from "./HeroScene";
 import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
 import { shouldUseCompactVisuals, supportsWebGL } from "../../lib/browserCapabilities";
 
-function HeroCanvas({ journey }) {
+const defaultJourney = {
+  progress: 0,
+  phases: {
+    outside: 0,
+    approach: 0,
+    passage: 0,
+    arrival: 0,
+  },
+};
+
+function HeroCanvas({ journey = defaultJourney }) {
   const reducedMotion = useReducedMotionSafe();
   const webGLAvailable = useMemo(() => supportsWebGL(), []);
   const compact = useMemo(() => shouldUseCompactVisuals(), []);

@@ -21,32 +21,10 @@
   --radius-card: 8px;
   --radius-button: 999px;
   --journey-progress: 0;
-  --phase-hero: 0;
-  --phase-gateway: 0;
-  --phase-projects: 0;
-  --phase-skills: 0;
-  --phase-timeline: 0;
-  --phase-contact: 0;
-  --hero-exit-opacity: 1;
-  --hero-exit-y: 0px;
-  --hero-exit-scale: 1;
-  --hero-exit-blur: 0px;
-  --visual-opacity: 0.94;
-  --visual-saturate: 1.12;
-  --visual-brightness: 1;
-  --reading-mask-opacity: 0;
-  --projects-enter-opacity: 0;
-  --projects-enter-y: 80px;
-  --projects-enter-scale: 0.94;
-  --projects-enter-rotate: 3deg;
-  --skills-enter-opacity: 0;
-  --skills-enter-y: 68px;
-  --skills-enter-scale: 0.95;
-  --timeline-enter-opacity: 0.68;
-  --timeline-enter-y: 30px;
-  --contact-enter-opacity: 0;
-  --contact-enter-y: 48px;
-  --contact-enter-scale: 0.96;
+  --phase-outside: 0;
+  --phase-approach: 0;
+  --phase-passage: 0;
+  --phase-arrival: 0;
   --fallback-tunnel-y: 0px;
   --fallback-tunnel-scale: 1;
   --fallback-panel-opacity: 0.22;
@@ -149,20 +127,6 @@ svg {
   isolation: isolate;
   min-height: 100vh;
   overflow-x: clip;
-}
-
-.site-shell::before {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(90deg, rgba(5, 5, 5, 0.72), transparent 22%, transparent 78%, rgba(5, 5, 5, 0.72)),
-    radial-gradient(circle at 50% 34%, transparent 0 22%, rgba(5, 5, 5, 0.52) 58%, rgba(5, 5, 5, 0.78) 100%),
-    linear-gradient(180deg, transparent 0 18%, rgba(5, 5, 5, 0.58) 40%, rgba(5, 5, 5, 0.7) 100%);
-  opacity: var(--reading-mask-opacity);
-  transition: opacity 120ms linear;
 }
 
 .site-header {
@@ -302,44 +266,6 @@ main {
   margin: 0 auto;
   padding: 6rem 0;
   scroll-margin-top: 112px;
-  transform-style: preserve-3d;
-}
-
-.section--projects {
-  opacity: var(--projects-enter-opacity);
-  transform:
-    perspective(1000px)
-    translate3d(0, var(--projects-enter-y), 0)
-    scale(var(--projects-enter-scale))
-    rotateX(var(--projects-enter-rotate));
-  transform-origin: 50% 0%;
-  will-change: transform, opacity;
-}
-
-.section--skills {
-  opacity: var(--skills-enter-opacity);
-  transform:
-    perspective(1000px)
-    translate3d(0, var(--skills-enter-y), 0)
-    scale(var(--skills-enter-scale));
-  transform-origin: 50% 0%;
-  will-change: transform, opacity;
-}
-
-.section--timeline,
-.section--about {
-  opacity: var(--timeline-enter-opacity);
-  transform: translate3d(0, var(--timeline-enter-y), 0);
-  will-change: transform, opacity;
-}
-
-.section--contact {
-  opacity: var(--contact-enter-opacity);
-  transform:
-    translate3d(0, var(--contact-enter-y), 0)
-    scale(var(--contact-enter-scale));
-  transform-origin: 50% 60%;
-  will-change: transform, opacity;
 }
 
 .section-header {
@@ -448,23 +374,48 @@ main {
   position: relative;
   z-index: auto;
   display: grid;
-  min-height: 92vh;
+  min-height: calc(100vh - 72px);
   align-items: center;
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 4rem 0 3rem;
+  padding: 5rem 0 4rem;
+}
+
+.hero-section::before,
+.hero-section::after {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+
+.hero-section::before {
+  inset: 8% auto auto -10%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(114, 242, 201, 0.11), transparent 66%);
+}
+
+.hero-section::after {
+  right: 0;
+  bottom: 8%;
+  width: min(420px, 42vw);
+  height: 220px;
+  border: 1px solid rgba(114, 242, 201, 0.08);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(rgba(114, 242, 201, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(114, 242, 201, 0.045) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(135deg, transparent, black 28%, transparent 82%);
+  transform: perspective(900px) rotateX(62deg) rotateZ(-4deg);
 }
 
 .hero-copy {
   position: relative;
   z-index: 2;
   max-width: 900px;
-  opacity: var(--hero-exit-opacity);
-  filter: blur(var(--hero-exit-blur));
   text-shadow: 0 18px 52px rgba(0, 0, 0, 0.52);
-  transform: translate3d(0, var(--hero-exit-y), 0) scale(var(--hero-exit-scale));
-  transform-origin: 0 48%;
-  will-change: transform, opacity, filter;
 }
 
 .hero-copy::before {
@@ -528,11 +479,7 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: rgba(5, 5, 5, 0.48);
-  opacity: var(--hero-exit-opacity);
   backdrop-filter: blur(14px);
-  transform: translate3d(0, var(--hero-exit-y), 0) scale(var(--hero-exit-scale));
-  transform-origin: 0 50%;
-  will-change: transform, opacity;
 }
 
 .hero-status span {
@@ -546,6 +493,157 @@ main {
   color: var(--text);
   font-size: 0.98rem;
   line-height: 1.45;
+}
+
+.journey-section {
+  position: relative;
+  z-index: 2;
+  height: 300vh;
+  min-height: 1800px;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(114, 242, 201, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0), #050505 12%, #050505 88%, rgba(5, 5, 5, 0));
+  scroll-margin-top: 0;
+}
+
+.journey-section.is-static {
+  height: auto;
+  min-height: 100vh;
+}
+
+.journey-section.is-static .journey-sticky {
+  position: relative;
+  min-height: 760px;
+}
+
+.journey-sticky {
+  position: sticky;
+  top: 0;
+  display: grid;
+  min-height: 100vh;
+  overflow: hidden;
+  place-items: center;
+}
+
+.journey-canvas-layer,
+.journey-shade,
+.journey-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.journey-canvas-layer {
+  z-index: 0;
+  opacity: 0.92;
+}
+
+.journey-shade {
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.72), transparent 24%, transparent 76%, rgba(5, 5, 5, 0.72)),
+    radial-gradient(circle at 50% 46%, transparent 0 24%, rgba(5, 5, 5, 0.24) 58%, rgba(5, 5, 5, 0.72) 100%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.82), transparent 18%, transparent 76%, rgba(5, 5, 5, 0.88));
+}
+
+.journey-overlay {
+  z-index: 2;
+  display: grid;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.journey-panel {
+  position: absolute;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 520px;
+  pointer-events: auto;
+  transition:
+    opacity 120ms linear,
+    transform 120ms linear;
+}
+
+.journey-panel span {
+  color: var(--lime);
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.journey-panel h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(2rem, 5vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.journey-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.journey-panel--intro {
+  top: 26%;
+  left: 0;
+}
+
+.journey-panel--approach {
+  top: 34%;
+  left: 6%;
+}
+
+.journey-panel--passage {
+  top: 36%;
+  right: 0;
+  max-width: 560px;
+  text-align: right;
+}
+
+.journey-panel--arrival {
+  right: 0;
+  bottom: 20%;
+  max-width: 520px;
+  text-align: right;
+}
+
+.journey-next {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.45rem;
+  min-height: 42px;
+  padding: 0.62rem 0.85rem;
+  border: 1px solid rgba(158, 240, 26, 0.42);
+  border-radius: var(--radius-button);
+  background: rgba(158, 240, 26, 0.12);
+  color: var(--text);
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.journey-progress {
+  position: absolute;
+  right: max(1rem, calc((100vw - 1180px) / 2));
+  bottom: 2.2rem;
+  left: max(1rem, calc((100vw - 1180px) / 2));
+  z-index: 3;
+  height: 1px;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.journey-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--lime), var(--amber));
+  transform: scaleX(var(--journey-progress));
+  transform-origin: left;
 }
 
 .hero-visual {
@@ -567,6 +665,14 @@ main {
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+.journey-canvas-layer .hero-canvas-shell,
+.journey-canvas-layer .hero-fallback-scene {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
 }
 
 .hero-canvas {
@@ -710,26 +816,20 @@ main {
 }
 
 .section--projects {
-  transform-style: preserve-3d;
+  transform-style: flat;
 }
 
 .section--projects::before {
   position: absolute;
   inset: 2rem -2rem auto;
   z-index: -2;
-  height: 46%;
+  height: 42%;
   pointer-events: none;
   content: "";
-  border: 1px solid rgba(114, 242, 201, 0.08);
-  border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(114, 242, 201, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(114, 242, 201, 0.06) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(114, 242, 201, 0.08), transparent 68%);
-  background-size: 44px 44px, 44px 44px, 100% 100%;
+    radial-gradient(circle at 16% 18%, rgba(114, 242, 201, 0.1), transparent 32%),
+    radial-gradient(circle at 82% 28%, rgba(255, 122, 162, 0.08), transparent 30%);
   mask-image: linear-gradient(to bottom, black, transparent);
-  transform: perspective(900px) rotateX(58deg) translateY(-18%);
-  transform-origin: top center;
 }
 
 .section--projects::after,
@@ -2088,6 +2188,11 @@ main {
     font-size: 4rem;
   }
 
+  .journey-panel--passage,
+  .journey-panel--arrival {
+    right: 1rem;
+  }
+
   .hero-canvas-shell,
   .hero-fallback-scene {
     right: -11rem;
@@ -2170,6 +2275,45 @@ main {
 
   .hero-status {
     margin-top: 2rem;
+  }
+
+  .journey-section {
+    min-height: 1500px;
+  }
+
+  .journey-section.is-static {
+    min-height: 760px;
+  }
+
+  .journey-overlay {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .journey-panel {
+    max-width: 92%;
+  }
+
+  .journey-panel--intro {
+    top: 18%;
+  }
+
+  .journey-panel--approach,
+  .journey-panel--passage {
+    top: 28%;
+    right: auto;
+    left: 0;
+    text-align: left;
+  }
+
+  .journey-panel--arrival {
+    right: auto;
+    bottom: 18%;
+    left: 0;
+    text-align: left;
+  }
+
+  .journey-next {
+    justify-self: start;
   }
 
   .hero-canvas-shell,
@@ -2303,22 +2447,41 @@ main {
 
   .hero-copy,
   .hero-status,
-  .section--projects,
-  .section--skills,
-  .section--timeline,
-  .section--about,
-  .section--contact {
+  .journey-panel {
     opacity: 1 !important;
     filter: none !important;
     transform: none !important;
   }
 
-  .hero-visual {
-    opacity: 0.34 !important;
-    filter: saturate(0.85) brightness(0.8) !important;
+  .journey-section {
+    height: auto !important;
+    min-height: 760px !important;
   }
 
-  .site-shell::before {
-    opacity: 0.55 !important;
+  .journey-sticky {
+    position: relative !important;
+  }
+
+  .journey-overlay {
+    position: relative !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 1rem !important;
+  }
+
+  .journey-panel {
+    position: relative !important;
+    inset: auto !important;
+    max-width: 640px !important;
+    text-align: left !important;
+  }
+
+  .journey-panel--approach,
+  .journey-panel--passage {
+    display: none !important;
+  }
+
+  .journey-next {
+    justify-self: start !important;
   }
 }

@@ -17,14 +17,14 @@ Premium interactive portfolio for Juan Pablo Parra El-Masri. The site presents p
 
 ## Experience
 
-- Cinematic dark hero with semantic HTML content over a scroll-driven digital tunnel/cube atmosphere.
-- WebGL scene is lazy-loaded only on capable desktop browsers after user intent or idle time.
+- Premium 2D hero followed by a dedicated pinned immersive journey section.
+- WebGL scene is lazy-loaded only inside the immersive section on capable desktop browsers.
 - Mobile, WebGL-unavailable, and reduced-motion users receive a lightweight DOM fallback.
 - Data-driven project model in `src/data/projects.js`.
 - Interactive project cards with project-specific visual previews, tilt, pointer glow, skill previews, tap-friendly mobile states, and shared-layout case-study transitions.
 - Case studies follow `Problem -> System -> Technical decisions -> Skills used -> Outcome`.
 - Skills Explorer maps skills directly to the projects where they appear.
-- GSAP-powered section reveals, subtle parallax, and magnetic CTA interactions.
+- GSAP-powered section reveals and magnetic CTA interactions.
 - Technical timeline, about section, contact CTA, robots.txt, sitemap, and SEO metadata.
 
 ## Architecture Summary
@@ -33,7 +33,9 @@ The application keeps critical content in semantic React components and uses Web
 
 Project and skill content live in `src/data/`, which keeps the UI scalable and avoids hardcoded case-study copy inside components. The project feature layer in `src/features/projects/` renders cards, shared transitions, case-study details, stages, decisions, and skill links. The skills feature layer in `src/features/skills/` renders the project-skill explorer and handles the selection affordances.
 
-The immersive layer is split across `src/scenes/hero/` and `src/hooks/useCinematicEffects.js`. `HeroCanvas` dynamically imports the R3F scene only when the browser can support it and the user has signaled intent, while `HeroFallbackScene` keeps the first render readable and performant. The R3F scene is a purposeful product-space journey: portal frames, tunnel rails, project panels, skills matrix, and a scroll-driven camera that moves forward through the portfolio instead of orbiting a decorative object. GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
+The immersive layer is isolated in `src/sections/ImmersiveJourneySection.jsx`, `src/scenes/hero/`, and `src/hooks/useScrollJourneyProgress.js`. The page flow is intentionally structured as 2D hero -> pinned 3D transition -> 2D editorial projects, instead of using WebGL as a permanent background. `HeroCanvas` stays lazy-loaded, while `HeroFallbackScene` keeps mobile, reduced-motion, and WebGL-unavailable paths readable and performant. The R3F scene uses a local scroll progress value and keyframed camera path to move through a corridor/portal environment toward project panels.
+
+GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
 
 Reduced motion is handled globally through Framer Motion's `MotionConfig`, and additional effects are skipped in hooks/components when `prefers-reduced-motion` is active.
 
@@ -66,10 +68,10 @@ Production preview audited at `http://127.0.0.1:4173/`.
 - `npm audit --audit-level=moderate`: 0 vulnerabilities
 - `npm exec eslint .`: passing
 - `npm run build`: passing
-- Internal hash links checked: `#content`, `#top`, `#projects`, `#skills`, `#contact`
+- Internal hash links checked: `#content`, `#top`, `#journey`, `#projects`, `#skills`, `#contact`
 - Visual smoke tests confirm desktop WebGL canvas and mobile fallback render nonblank
 
-The 3D hero remains a separate lazy chunk. Vite still reports that chunk as large because it contains Three/R3F, but it is not part of the mobile or initial semantic content path.
+The 3D journey remains a separate lazy chunk. Vite still reports that chunk as large because it contains Three/R3F, but it is not part of the mobile or initial semantic content path.
 
 ## Run Locally
 
