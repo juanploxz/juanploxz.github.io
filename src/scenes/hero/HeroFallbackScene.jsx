@@ -1,21 +1,25 @@
-const rails = Array.from({ length: 7 }, (_, index) => index);
-const nodes = Array.from({ length: 18 }, (_, index) => index);
+const frames = Array.from({ length: 5 }, (_, index) => index);
+const panels = Array.from({ length: 5 }, (_, index) => index);
 
 function HeroFallbackScene({ loading = false }) {
   return (
     <div className={`hero-fallback-scene ${loading ? "is-loading" : ""}`}>
-      <div className="hero-fallback-scene__plane hero-fallback-scene__plane--back" />
-      <div className="hero-fallback-scene__plane hero-fallback-scene__plane--front" />
-
-      <div className="hero-fallback-scene__rails" aria-hidden="true">
-        {rails.map((rail) => (
-          <span key={rail} style={{ "--rail-index": rail }} />
+      <div className="hero-fallback-scene__tunnel" aria-hidden="true">
+        {frames.map((frame) => (
+          <span key={frame} style={{ "--frame-index": frame }} />
         ))}
       </div>
 
-      <div className="hero-fallback-scene__nodes" aria-hidden="true">
-        {nodes.map((node) => (
-          <span key={node} style={{ "--node-index": node }} />
+      <div className="hero-fallback-scene__rails" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+
+      <div className="hero-fallback-scene__panels" aria-hidden="true">
+        {panels.map((panel) => (
+          <span key={panel} style={{ "--panel-index": panel }} />
         ))}
       </div>
     </div>

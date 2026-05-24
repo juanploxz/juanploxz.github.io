@@ -41,13 +41,19 @@ export function useCinematicEffects() {
           gsap.fromTo(
             section,
             {
-              opacity: 0.76,
-              y: 58,
-              filter: "blur(14px)",
+              opacity: 0.72,
+              y: 86,
+              scale: 0.965,
+              rotateX: 5,
+              transformPerspective: 900,
+              transformOrigin: "50% 0%",
+              filter: "blur(10px)",
             },
             {
               opacity: 1,
               y: 0,
+              scale: 1,
+              rotateX: 0,
               filter: "blur(0px)",
               ease: "none",
               scrollTrigger: {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SiteHeader from "./components/layout/SiteHeader";
 import HeroSection from "./sections/HeroSection";
 import ProjectsSection from "./sections/ProjectsSection";
@@ -16,6 +16,20 @@ function App() {
   const [selectedProjectId, setSelectedProjectId] = useState(projects[0].id);
   const [activeSkill, setActiveSkill] = useState("all");
   useCinematicEffects();
+
+  useEffect(() => {
+    if (!window.location.hash) {
+      return;
+    }
+
+    const target = document.querySelector(window.location.hash);
+
+    if (target) {
+      window.requestAnimationFrame(() => {
+        target.scrollIntoView({ block: "start" });
+      });
+    }
+  }, []);
 
   const selectedProject = useMemo(
     () =>

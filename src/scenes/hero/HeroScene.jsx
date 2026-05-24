@@ -2,106 +2,269 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-const projectNodes = [
-  { position: [-1.9, 0.1, -0.1], color: "#72f2c9", scale: 0.54 },
-  { position: [-0.95, 0.76, -0.65], color: "#ffcc66", scale: 0.44 },
-  { position: [0.55, 0.92, -0.35], color: "#9ef01a", scale: 0.48 },
-  { position: [1.72, 0.2, -0.72], color: "#ff7aa2", scale: 0.45 },
-  { position: [1.15, -0.62, 0.18], color: "#7bdff2", scale: 0.52 },
-  { position: [-0.48, -0.86, 0.24], color: "#f3f4ee", scale: 0.38 },
-  { position: [-1.55, -0.48, 0.42], color: "#72f2c9", scale: 0.34 },
+const layers = [
+  {
+    id: "hero",
+    z: 1.8,
+    width: 3.2,
+    height: 2.05,
+    color: "#72f2c9",
+    opacity: 0.5,
+  },
+  {
+    id: "gateway",
+    z: -1.6,
+    width: 4.15,
+    height: 2.55,
+    color: "#9ef01a",
+    opacity: 0.54,
+  },
+  {
+    id: "projects",
+    z: -5.0,
+    width: 5.05,
+    height: 3.05,
+    color: "#ffcc66",
+    opacity: 0.48,
+  },
+  {
+    id: "skills",
+    z: -8.4,
+    width: 4.55,
+    height: 2.8,
+    color: "#7bdff2",
+    opacity: 0.43,
+  },
+  {
+    id: "contact",
+    z: -11.6,
+    width: 3.65,
+    height: 2.25,
+    color: "#ff7aa2",
+    opacity: 0.45,
+  },
 ];
 
+const projectPanels = [
+  { id: "flowgate", z: -4.25, x: -2.55, y: 0.65, color: "#72f2c9" },
+  { id: "workout", z: -4.95, x: 2.55, y: 0.45, color: "#ffcc66" },
+  { id: "finder", z: -5.85, x: -2.2, y: -0.52, color: "#9ef01a" },
+  { id: "reviews", z: -6.4, x: 2.15, y: -0.62, color: "#ff7aa2" },
+  { id: "bi", z: -7.0, x: 0, y: 0.05, color: "#7bdff2" },
+];
+
+function createRectGeometry(width, height) {
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+  const points = new Float32Array([
+    -halfWidth,
+    -halfHeight,
+    0,
+    halfWidth,
+    -halfHeight,
+    0,
+    halfWidth,
+    -halfHeight,
+    0,
+    halfWidth,
+    halfHeight,
+    0,
+    halfWidth,
+    halfHeight,
+    0,
+    -halfWidth,
+    halfHeight,
+    0,
+    -halfWidth,
+    halfHeight,
+    0,
+    -halfWidth,
+    -halfHeight,
+    0,
+  ]);
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(points, 3));
+  return geometry;
+}
+
+function createRailGeometry(x, y) {
+  const points = new Float32Array([x, y, 2.4, x * 1.28, y * 1.28, -13.4]);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(points, 3));
+  return geometry;
+}
+
 function seededNoise(index, channel) {
-  const raw = Math.sin(index * 91.7 + channel * 37.3) * 10000;
+  const raw = Math.sin(index * 83.9 + channel * 41.1) * 10000;
   return raw - Math.floor(raw);
 }
 
-function ProductNode({ node, index, compact }) {
+function PortalFrame({ layer, compact }) {
   const groupRef = useRef(null);
-  const basePosition = useMemo(() => new THREE.Vector3(...node.position), [node]);
+  const geometry = useMemo(
+    () => createRectGeometry(layer.width, layer.height),
+    [layer.width, layer.height]
+  );
 
   useFrame(({ clock }) => {
-    if (!groupRef.current) {
+    if (!groupRef.current || compact) {
       return;
     }
 
     const elapsed = clock.getElapsedTime();
-    const speed = compact ? 0.45 : 0.7;
-    groupRef.current.position.y =
-      basePosition.y + Math.sin(elapsed * speed + index * 0.85) * 0.055;
-    groupRef.current.rotation.z =
-      (index % 2 === 0 ? 0.08 : -0.08) +
-      Math.sin(elapsed * 0.24 + index) * 0.025;
+    groupRef.current.position.z =
+      layer.z + Math.sin(elapsed * 0.35 + layer.z) * 0.025;
   });
 
   return (
-    <group
-      ref={groupRef}
-      position={basePosition}
-      scale={node.scale}
-      rotation={[0.1, index % 2 === 0 ? 0.18 : -0.16, 0]}
-    >
-      <mesh>
-        <boxGeometry args={[1.4, 0.08, 0.84]} />
-        <meshStandardMaterial
-          color={node.color}
-          emissive={node.color}
-          emissiveIntensity={0.22}
-          metalness={0.42}
-          roughness={0.35}
+    <group ref={groupRef} position={[0, 0, layer.z]}>
+      <lineSegments geometry={geometry}>
+        <lineBasicMaterial
+          color={layer.color}
+          transparent
+          opacity={compact ? layer.opacity * 0.68 : layer.opacity}
+        />
+      </lineSegments>
+      <mesh position={[0, 0, -0.012]}>
+        <planeGeometry args={[layer.width, layer.height]} />
+        <meshBasicMaterial
+          color={layer.color}
+          transparent
+          opacity={compact ? 0.025 : 0.045}
+          depthWrite={false}
+          side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh position={[0, 0.085, 0]}>
-        <boxGeometry args={[0.54, 0.035, 0.3]} />
-        <meshBasicMaterial color="#050505" transparent opacity={0.78} />
+      <mesh position={[0, 0, 0.012]}>
+        <boxGeometry args={[layer.width + 0.08, 0.018, 0.018]} />
+        <meshBasicMaterial color={layer.color} transparent opacity={0.42} />
       </mesh>
-      <mesh position={[0.46, 0.12, -0.22]}>
-        <boxGeometry args={[0.18, 0.04, 0.18]} />
-        <meshBasicMaterial color="#f3f4ee" transparent opacity={0.86} />
+      <mesh position={[0, 0, 0.012]}>
+        <boxGeometry args={[0.018, layer.height + 0.08, 0.018]} />
+        <meshBasicMaterial color={layer.color} transparent opacity={0.28} />
       </mesh>
     </group>
   );
 }
 
-function ConnectionLine({ points, color, compact }) {
-  const geometry = useMemo(() => {
-    const lineGeometry = new THREE.BufferGeometry();
-    lineGeometry.setFromPoints(points);
-    return lineGeometry;
-  }, [points]);
+function TunnelRails({ compact }) {
+  const railData = useMemo(
+    () => [
+      { x: -2.25, y: -1.42, color: "#72f2c9" },
+      { x: 2.25, y: -1.42, color: "#72f2c9" },
+      { x: -2.25, y: 1.42, color: "#9ef01a" },
+      { x: 2.25, y: 1.42, color: "#9ef01a" },
+      { x: -3.05, y: 0, color: "#7bdff2" },
+      { x: 3.05, y: 0, color: "#ff7aa2" },
+    ],
+    []
+  );
 
-  return (
-    <line geometry={geometry}>
+  return railData.map((rail) => (
+    <line key={`${rail.x}-${rail.y}`} geometry={createRailGeometry(rail.x, rail.y)}>
       <lineBasicMaterial
-        color={color}
+        color={rail.color}
         transparent
-        opacity={compact ? 0.24 : 0.36}
+        opacity={compact ? 0.12 : 0.2}
       />
     </line>
+  ));
+}
+
+function ProjectPanel({ panel, compact, index }) {
+  const groupRef = useRef(null);
+
+  useFrame(({ clock }) => {
+    if (!groupRef.current || compact) {
+      return;
+    }
+
+    groupRef.current.position.y =
+      panel.y + Math.sin(clock.getElapsedTime() * 0.45 + index) * 0.035;
+  });
+
+  return (
+    <group
+      ref={groupRef}
+      position={[panel.x, panel.y, panel.z]}
+      rotation={[0, panel.x > 0 ? -0.18 : 0.18, 0]}
+    >
+      <mesh>
+        <boxGeometry args={[1.24, 0.78, 0.025]} />
+        <meshBasicMaterial color="#050505" transparent opacity={0.76} />
+      </mesh>
+      <mesh position={[0, 0.42, 0.024]}>
+        <boxGeometry args={[1.24, 0.035, 0.025]} />
+        <meshBasicMaterial color={panel.color} transparent opacity={0.7} />
+      </mesh>
+      {[0, 1, 2].map((item) => (
+        <mesh
+          key={item}
+          position={[-0.36 + item * 0.36, 0.16 - item * 0.16, 0.035]}
+        >
+          <boxGeometry
+            args={[0.22 + item * 0.08, 0.035 + item * 0.015, 0.02]}
+          />
+          <meshBasicMaterial color={panel.color} transparent opacity={0.48} />
+        </mesh>
+      ))}
+      <mesh position={[0.18, -0.27, 0.035]}>
+        <boxGeometry args={[0.68, 0.035, 0.02]} />
+        <meshBasicMaterial color="#f3f4ee" transparent opacity={0.32} />
+      </mesh>
+    </group>
   );
 }
 
-function SparkField({ compact }) {
+function SkillsMatrix({ compact }) {
+  const nodes = useMemo(
+    () =>
+      Array.from({ length: compact ? 10 : 18 }, (_, index) => ({
+        x: -1.35 + (index % 6) * 0.54,
+        y: -0.55 + Math.floor(index / 6) * 0.46,
+        z: -8.4 + seededNoise(index, 1) * 0.32,
+        scale: 0.035 + seededNoise(index, 2) * 0.025,
+      })),
+    [compact]
+  );
+
+  return (
+    <group position={[0, 0, 0]}>
+      {nodes.map((node, index) => (
+        <mesh key={index} position={[node.x, node.y, node.z]}>
+          <boxGeometry args={[node.scale, node.scale, node.scale]} />
+          <meshBasicMaterial color="#7bdff2" transparent opacity={0.56} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function DustField({ compact }) {
   const pointsRef = useRef(null);
-  const count = compact ? 0 : 40;
+  const count = compact ? 0 : 32;
   const geometry = useMemo(() => {
     const positions = new Float32Array(count * 3);
 
     for (let index = 0; index < count; index += 1) {
-      positions[index * 3] = (seededNoise(index, 1) - 0.5) * 5.4;
-      positions[index * 3 + 1] = (seededNoise(index, 2) - 0.5) * 2.3;
-      positions[index * 3 + 2] = (seededNoise(index, 3) - 0.5) * 2.6;
+      positions[index * 3] = (seededNoise(index, 1) - 0.5) * 4.6;
+      positions[index * 3 + 1] = (seededNoise(index, 2) - 0.5) * 2.5;
+      positions[index * 3 + 2] = 1.5 - seededNoise(index, 3) * 12.5;
     }
 
-    const pointsGeometry = new THREE.BufferGeometry();
-    pointsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    return pointsGeometry;
+    const geometryInstance = new THREE.BufferGeometry();
+    geometryInstance.setAttribute(
+      "position",
+      new THREE.BufferAttribute(positions, 3)
+    );
+    return geometryInstance;
   }, [count]);
 
   useFrame(({ clock }) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = clock.getElapsedTime() * 0.025;
+      pointsRef.current.position.z =
+        (Math.sin(clock.getElapsedTime() * 0.18) + 1) * 0.05;
     }
   });
 
@@ -113,9 +276,9 @@ function SparkField({ compact }) {
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         color="#f3f4ee"
-        size={0.018}
+        size={0.014}
         transparent
-        opacity={0.52}
+        opacity={0.28}
         depthWrite={false}
       />
     </points>
@@ -123,115 +286,66 @@ function SparkField({ compact }) {
 }
 
 function HeroScene({ progress = 0, compact = false }) {
-  const rigRef = useRef(null);
-  const coreRef = useRef(null);
-  const ringRef = useRef(null);
-  const cameraTarget = useMemo(() => new THREE.Vector3(0, 0.62, 5.25), []);
-  const lookTarget = useMemo(() => new THREE.Vector3(0, 0.02, -0.2), []);
-  const visibleNodes = compact ? projectNodes.slice(0, 5) : projectNodes;
-  const connectionLines = useMemo(() => {
-    const center = new THREE.Vector3(0, 0.05, 0);
+  const worldRef = useRef(null);
+  const cameraTarget = useMemo(() => new THREE.Vector3(0, 0.6, 7.2), []);
+  const lookTarget = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
-    return visibleNodes.map((node) => [
-      center,
-      new THREE.Vector3(...node.position),
-    ]);
-  }, [visibleNodes]);
+  useFrame(({ camera, pointer }) => {
+    const t = THREE.MathUtils.clamp(progress, 0, 1);
+    const eased = THREE.MathUtils.smoothstep(t, 0, 1);
+    const pointerScale = compact ? 0.06 : 0.18;
+    const z = THREE.MathUtils.lerp(7.4, -9.4, eased);
+    const y = THREE.MathUtils.lerp(0.58, 0.94, eased);
 
-  useFrame(({ camera, clock, pointer }) => {
-    const scroll = THREE.MathUtils.clamp(progress, 0, 1);
-    const elapsed = clock.getElapsedTime();
-    const pointerStrength = compact ? 0.16 : 0.32;
-
-    cameraTarget.set(
-      pointer.x * pointerStrength + scroll * 0.12,
-      0.58 + pointer.y * 0.14 + scroll * 0.28,
-      5.24 - scroll * 0.78
-    );
-    camera.position.lerp(cameraTarget, compact ? 0.055 : 0.04);
+    cameraTarget.set(pointer.x * pointerScale, y + pointer.y * 0.07, z);
+    camera.position.lerp(cameraTarget, 0.045);
+    lookTarget.set(pointer.x * 0.08, 0.02, z - 4.1);
     camera.lookAt(lookTarget);
 
-    if (rigRef.current) {
-      rigRef.current.rotation.y +=
-        (pointer.x * 0.12 + scroll * 0.32 - rigRef.current.rotation.y) * 0.045;
-      rigRef.current.rotation.x +=
-        (-pointer.y * 0.08 - scroll * 0.08 - rigRef.current.rotation.x) * 0.045;
-    }
-
-    if (coreRef.current) {
-      coreRef.current.rotation.x = elapsed * 0.12 + scroll * 0.7;
-      coreRef.current.rotation.y = elapsed * 0.18;
-      coreRef.current.scale.setScalar(1 + Math.sin(elapsed * 0.75) * 0.018);
-    }
-
-    if (ringRef.current) {
-      ringRef.current.rotation.z = -elapsed * 0.08 - scroll * 0.8;
+    if (worldRef.current) {
+      worldRef.current.rotation.y +=
+        (pointer.x * 0.035 - worldRef.current.rotation.y) * 0.035;
+      worldRef.current.rotation.x +=
+        (-pointer.y * 0.022 - worldRef.current.rotation.x) * 0.035;
     }
   });
 
   return (
     <>
-      <ambientLight intensity={0.72} />
-      <directionalLight position={[3.5, 4, 4.5]} intensity={1.15} />
-      <pointLight position={[-2.6, 1.5, 2.4]} color="#72f2c9" intensity={2.2} />
-      <pointLight position={[2.8, -0.8, 1.8]} color="#ff7aa2" intensity={1.5} />
+      <ambientLight intensity={0.62} />
+      <directionalLight position={[2.8, 3.8, 5.2]} intensity={0.9} />
+      <pointLight position={[0, 0.2, 2.2]} color="#72f2c9" intensity={1.75} />
+      <pointLight position={[1.8, 0.6, -6]} color="#ffcc66" intensity={1.2} />
+      <pointLight position={[-1.4, -0.5, -9]} color="#7bdff2" intensity={1.25} />
 
-      <group ref={rigRef} position={[0.18, -0.02, 0]}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.18, 0]}>
-          <planeGeometry args={[7.8, 4.8, compact ? 8 : 13, compact ? 5 : 8]} />
+      <group ref={worldRef}>
+        <TunnelRails compact={compact} />
+        {layers.map((layer) => (
+          <PortalFrame key={layer.id} layer={layer} compact={compact} />
+        ))}
+
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.52, -5.4]}>
+          <planeGeometry args={[7.4, 16, compact ? 8 : 14, compact ? 14 : 28]} />
           <meshBasicMaterial
             color="#72f2c9"
             wireframe
             transparent
-            opacity={compact ? 0.1 : 0.15}
+            opacity={compact ? 0.06 : 0.1}
             side={THREE.DoubleSide}
           />
         </mesh>
 
-        <group>
-          <mesh ref={coreRef}>
-            <icosahedronGeometry args={[0.76, 2]} />
-            <meshStandardMaterial
-              color="#f3f4ee"
-              emissive="#72f2c9"
-              emissiveIntensity={0.13}
-              metalness={0.34}
-              roughness={0.28}
-            />
-          </mesh>
-          <mesh ref={ringRef} rotation={[Math.PI / 2.35, 0.1, 0]}>
-            <torusGeometry args={[1.13, 0.01, 16, 96]} />
-            <meshBasicMaterial
-              color="#9ef01a"
-              transparent
-              opacity={compact ? 0.28 : 0.38}
-            />
-          </mesh>
-          <mesh rotation={[Math.PI / 2.05, 0.2, 0.55]}>
-            <torusGeometry args={[1.54, 0.008, 12, 96]} />
-            <meshBasicMaterial color="#72f2c9" transparent opacity={0.24} />
-          </mesh>
-        </group>
-
-        {connectionLines.map((points, index) => (
-          <ConnectionLine
-            key={projectNodes[index].color + index}
-            points={points}
-            color={projectNodes[index].color}
-            compact={compact}
-          />
-        ))}
-
-        {visibleNodes.map((node, index) => (
-          <ProductNode
-            key={node.color + node.position.join("-")}
-            node={node}
+        {projectPanels.map((panel, index) => (
+          <ProjectPanel
+            key={panel.id}
+            panel={panel}
             index={index}
             compact={compact}
           />
         ))}
 
-        <SparkField compact={compact} />
+        <SkillsMatrix compact={compact} />
+        <DustField compact={compact} />
       </group>
     </>
   );

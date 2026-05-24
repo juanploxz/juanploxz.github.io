@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+import { AdaptiveDpr } from "@react-three/drei/core/AdaptiveDpr";
 import { useMemo } from "react";
 import HeroFallbackScene from "./HeroFallbackScene";
 import HeroScene from "./HeroScene";
@@ -37,6 +38,7 @@ function HeroCanvas({ progress = 0 }) {
           gl.setClearColor(0x000000, 0);
         }}
       >
+        <AdaptiveDpr pixelated />
         <HeroScene progress={progress} compact={compact} />
       </Canvas>
     </div>

@@ -2,6 +2,7 @@ import { motion as Motion } from "framer-motion";
 import { ArrowUpRight, CheckCircle2, Layers3 } from "lucide-react";
 import { skillLookup } from "../../data/skills";
 import ProjectStage from "./ProjectStage";
+import ProjectVisual from "./ProjectVisual";
 
 function ProjectDetails({ project, onSkillSelect }) {
   const skillLabels = project.skills
@@ -43,7 +44,7 @@ function ProjectDetails({ project, onSkillSelect }) {
         layoutId={`project-visual-${project.id}`}
         aria-hidden="true"
       >
-        <span>{project.orbit}</span>
+        <ProjectVisual project={project} size="detail" />
       </Motion.div>
 
       <div className="project-details__heading">
@@ -75,12 +76,8 @@ function ProjectDetails({ project, onSkillSelect }) {
             <p>{project.problem}</p>
           </div>
           <div>
-            <span>Product response</span>
+            <span>System</span>
             <p>{project.approach}</p>
-          </div>
-          <div>
-            <span>Outcome</span>
-            <p>{project.outcome}</p>
           </div>
         </div>
 
@@ -104,6 +101,7 @@ function ProjectDetails({ project, onSkillSelect }) {
       </ol>
 
       <div className="project-details__skills">
+        <span className="project-details__skills-title">Skills used</span>
         {skillLabels.map((skill) => (
           <button
             type="button"
@@ -113,6 +111,11 @@ function ProjectDetails({ project, onSkillSelect }) {
             {skill.label}
           </button>
         ))}
+      </div>
+
+      <div className="project-details__outcome">
+        <span>Outcome</span>
+        <p>{project.outcome}</p>
       </div>
 
       <a className="project-details__jump" href="#contact" data-magnetic>

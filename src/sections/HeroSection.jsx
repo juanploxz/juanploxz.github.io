@@ -3,7 +3,7 @@ import { motion as Motion } from "framer-motion";
 import { ArrowDownRight, Github, Mail } from "lucide-react";
 import { profile } from "../lib/constants";
 import { revealContainer, revealItem } from "../lib/animations";
-import { useSectionProgress } from "../hooks/useSectionProgress";
+import { useScrollJourneyProgress } from "../hooks/useScrollJourneyProgress";
 import HeroFallbackScene from "../scenes/hero/HeroFallbackScene";
 import { shouldUseCompactVisuals, supportsWebGL } from "../lib/browserCapabilities";
 import { useReducedMotionSafe } from "../hooks/useReducedMotionSafe";
@@ -11,7 +11,7 @@ import { useReducedMotionSafe } from "../hooks/useReducedMotionSafe";
 const HeroCanvas = lazy(() => import("../scenes/hero/HeroCanvas.jsx"));
 
 function HeroSection() {
-  const progress = useSectionProgress("top");
+  const progress = useScrollJourneyProgress();
   const reducedMotion = useReducedMotionSafe();
   const [immersiveReady, setImmersiveReady] = useState(false);
   const canUse3D = useMemo(

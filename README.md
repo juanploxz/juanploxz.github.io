@@ -11,17 +11,18 @@ Premium interactive portfolio for Juan Pablo Parra El-Masri. The site presents p
 - GSAP + ScrollTrigger
 - React Three Fiber
 - Three.js
-- drei, installed for future scene utilities while the current hero keeps runtime imports lean
+- drei, used for adaptive DPR inside the WebGL canvas
 - Lucide React
 - GitHub Pages via `gh-pages`
 
 ## Experience
 
-- Cinematic dark hero with a semantic HTML content layer and an optional abstract 3D atmosphere.
+- Cinematic dark hero with semantic HTML content over a scroll-driven digital tunnel/cube atmosphere.
 - WebGL scene is lazy-loaded only on capable desktop browsers after user intent or idle time.
 - Mobile, WebGL-unavailable, and reduced-motion users receive a lightweight DOM fallback.
 - Data-driven project model in `src/data/projects.js`.
-- Interactive project cards with tilt, pointer glow, skill previews, tap-friendly mobile states, and shared-layout case-study transitions.
+- Interactive project cards with project-specific visual previews, tilt, pointer glow, skill previews, tap-friendly mobile states, and shared-layout case-study transitions.
+- Case studies follow `Problem -> System -> Technical decisions -> Skills used -> Outcome`.
 - Skills Explorer maps skills directly to the projects where they appear.
 - GSAP-powered section reveals, subtle parallax, and magnetic CTA interactions.
 - Technical timeline, about section, contact CTA, robots.txt, sitemap, and SEO metadata.
@@ -32,7 +33,7 @@ The application keeps critical content in semantic React components and uses Web
 
 Project and skill content live in `src/data/`, which keeps the UI scalable and avoids hardcoded case-study copy inside components. The project feature layer in `src/features/projects/` renders cards, shared transitions, case-study details, stages, decisions, and skill links. The skills feature layer in `src/features/skills/` renders the project-skill explorer and handles the selection affordances.
 
-The immersive layer is split across `src/scenes/hero/` and `src/hooks/useCinematicEffects.js`. `HeroCanvas` dynamically imports the R3F scene only when the browser can support it and the user has signaled intent, while `HeroFallbackScene` keeps the first render readable and performant. GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
+The immersive layer is split across `src/scenes/hero/` and `src/hooks/useCinematicEffects.js`. `HeroCanvas` dynamically imports the R3F scene only when the browser can support it and the user has signaled intent, while `HeroFallbackScene` keeps the first render readable and performant. The R3F scene is a purposeful product-space journey: portal frames, tunnel rails, project panels, skills matrix, and a scroll-driven camera that moves forward through the portfolio instead of orbiting a decorative object. GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
 
 Reduced motion is handled globally through Framer Motion's `MotionConfig`, and additional effects are skipped in hooks/components when `prefers-reduced-motion` is active.
 

@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { skillLookup } from "../../data/skills";
 import { softScale, viewportOnce } from "../../lib/animations";
 import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
+import ProjectVisual from "./ProjectVisual";
 
 function ProjectCard({ project, isActive, isDimmed, activeSkill, onSelect }) {
   const reducedMotion = useReducedMotionSafe();
@@ -75,9 +76,7 @@ function ProjectCard({ project, isActive, isDimmed, activeSkill, onSelect }) {
         layoutId={`project-visual-${project.id}`}
         aria-hidden="true"
       >
-        <span className="project-card__orbit">{project.orbit}</span>
-        <span className="project-card__signal" />
-        <span className="project-card__signal project-card__signal--secondary" />
+        <ProjectVisual project={project} />
       </Motion.div>
 
       <div className="project-card__content">
