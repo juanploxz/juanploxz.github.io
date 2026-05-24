@@ -73,7 +73,6 @@ function ProjectCard({ project, isActive, isDimmed, activeSkill, onSelect }) {
     >
       <Motion.div
         className="project-card__visual"
-        layoutId={`project-visual-${project.id}`}
         aria-hidden="true"
       >
         <ProjectVisual project={project} />

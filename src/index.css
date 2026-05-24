@@ -20,6 +20,36 @@
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
   --radius-card: 8px;
   --radius-button: 999px;
+  --journey-progress: 0;
+  --phase-hero: 0;
+  --phase-gateway: 0;
+  --phase-projects: 0;
+  --phase-skills: 0;
+  --phase-timeline: 0;
+  --phase-contact: 0;
+  --hero-exit-opacity: 1;
+  --hero-exit-y: 0px;
+  --hero-exit-scale: 1;
+  --hero-exit-blur: 0px;
+  --visual-opacity: 0.94;
+  --visual-saturate: 1.12;
+  --visual-brightness: 1;
+  --reading-mask-opacity: 0;
+  --projects-enter-opacity: 0;
+  --projects-enter-y: 80px;
+  --projects-enter-scale: 0.94;
+  --projects-enter-rotate: 3deg;
+  --skills-enter-opacity: 0;
+  --skills-enter-y: 68px;
+  --skills-enter-scale: 0.95;
+  --timeline-enter-opacity: 0.68;
+  --timeline-enter-y: 30px;
+  --contact-enter-opacity: 0;
+  --contact-enter-y: 48px;
+  --contact-enter-scale: 0.96;
+  --fallback-tunnel-y: 0px;
+  --fallback-tunnel-scale: 1;
+  --fallback-panel-opacity: 0.22;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -115,8 +145,24 @@ svg {
 }
 
 .site-shell {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   overflow-x: clip;
+}
+
+.site-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.72), transparent 22%, transparent 78%, rgba(5, 5, 5, 0.72)),
+    radial-gradient(circle at 50% 34%, transparent 0 22%, rgba(5, 5, 5, 0.52) 58%, rgba(5, 5, 5, 0.78) 100%),
+    linear-gradient(180deg, transparent 0 18%, rgba(5, 5, 5, 0.58) 40%, rgba(5, 5, 5, 0.7) 100%);
+  opacity: var(--reading-mask-opacity);
+  transition: opacity 120ms linear;
 }
 
 .site-header {
@@ -250,11 +296,50 @@ main {
 
 .section {
   position: relative;
+  isolation: isolate;
   z-index: 2;
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
   padding: 6rem 0;
   scroll-margin-top: 112px;
+  transform-style: preserve-3d;
+}
+
+.section--projects {
+  opacity: var(--projects-enter-opacity);
+  transform:
+    perspective(1000px)
+    translate3d(0, var(--projects-enter-y), 0)
+    scale(var(--projects-enter-scale))
+    rotateX(var(--projects-enter-rotate));
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+.section--skills {
+  opacity: var(--skills-enter-opacity);
+  transform:
+    perspective(1000px)
+    translate3d(0, var(--skills-enter-y), 0)
+    scale(var(--skills-enter-scale));
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+.section--timeline,
+.section--about {
+  opacity: var(--timeline-enter-opacity);
+  transform: translate3d(0, var(--timeline-enter-y), 0);
+  will-change: transform, opacity;
+}
+
+.section--contact {
+  opacity: var(--contact-enter-opacity);
+  transform:
+    translate3d(0, var(--contact-enter-y), 0)
+    scale(var(--contact-enter-scale));
+  transform-origin: 50% 60%;
+  will-change: transform, opacity;
 }
 
 .section-header {
@@ -361,7 +446,7 @@ main {
 
 .hero-section {
   position: relative;
-  z-index: 2;
+  z-index: auto;
   display: grid;
   min-height: 92vh;
   align-items: center;
@@ -374,6 +459,24 @@ main {
   position: relative;
   z-index: 2;
   max-width: 900px;
+  opacity: var(--hero-exit-opacity);
+  filter: blur(var(--hero-exit-blur));
+  text-shadow: 0 18px 52px rgba(0, 0, 0, 0.52);
+  transform: translate3d(0, var(--hero-exit-y), 0) scale(var(--hero-exit-scale));
+  transform-origin: 0 48%;
+  will-change: transform, opacity, filter;
+}
+
+.hero-copy::before {
+  position: absolute;
+  inset: -2.4rem -2.2rem -1.8rem;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 20% 32%, rgba(5, 5, 5, 0.86), transparent 64%),
+    linear-gradient(90deg, rgba(5, 5, 5, 0.84), rgba(5, 5, 5, 0.2) 72%, transparent);
+  opacity: 0.92;
 }
 
 .hero-kicker {
@@ -424,7 +527,12 @@ main {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(5, 5, 5, 0.48);
+  opacity: var(--hero-exit-opacity);
+  backdrop-filter: blur(14px);
+  transform: translate3d(0, var(--hero-exit-y), 0) scale(var(--hero-exit-scale));
+  transform-origin: 0 50%;
+  will-change: transform, opacity;
 }
 
 .hero-status span {
@@ -445,8 +553,12 @@ main {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.92;
+  opacity: var(--visual-opacity);
+  filter: saturate(var(--visual-saturate)) brightness(var(--visual-brightness));
   transform: translateZ(0);
+  transition:
+    opacity 120ms linear,
+    filter 120ms linear;
 }
 
 .hero-canvas-shell,
@@ -455,10 +567,6 @@ main {
   inset: 0;
   width: 100%;
   height: 100%;
-}
-
-.hero-canvas-shell {
-  filter: saturate(1.1);
 }
 
 .hero-canvas {
@@ -490,8 +598,12 @@ main {
 .hero-fallback-scene__tunnel {
   position: absolute;
   inset: 12% 14%;
-  transform: rotateX(58deg) translateY(10%);
+  transform:
+    rotateX(58deg)
+    translateY(var(--fallback-tunnel-y))
+    scale(var(--fallback-tunnel-scale));
   transform-style: preserve-3d;
+  transform-origin: 50% 54%;
 }
 
 .hero-fallback-scene__tunnel span {
@@ -554,6 +666,7 @@ main {
     linear-gradient(90deg, rgba(114, 242, 201, 0.22), transparent 56%),
     rgba(255, 255, 255, 0.035);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  opacity: var(--fallback-panel-opacity);
 }
 
 .hero-fallback-scene__panels span:nth-child(1) {
@@ -603,7 +716,7 @@ main {
 .section--projects::before {
   position: absolute;
   inset: 2rem -2rem auto;
-  z-index: -1;
+  z-index: -2;
   height: 46%;
   pointer-events: none;
   content: "";
@@ -617,6 +730,43 @@ main {
   mask-image: linear-gradient(to bottom, black, transparent);
   transform: perspective(900px) rotateX(58deg) translateY(-18%);
   transform-origin: top center;
+}
+
+.section--projects::after,
+.section--skills::before,
+.section--timeline::before,
+.section--about::before,
+.section--contact::before {
+  position: absolute;
+  inset: 1rem -2rem;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(114, 242, 201, 0.07), transparent 32%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.84), rgba(5, 5, 5, 0.56) 44%, rgba(5, 5, 5, 0.78));
+  box-shadow: 0 38px 90px rgba(0, 0, 0, 0.26);
+}
+
+.section--skills::before {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(123, 223, 242, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.62));
+}
+
+.section--timeline::before,
+.section--about::before {
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.84), rgba(5, 5, 5, 0.54) 58%, transparent),
+    rgba(5, 5, 5, 0.32);
+}
+
+.section--contact::before {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(158, 240, 26, 0.11), transparent 34%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.72), rgba(5, 5, 5, 0.86));
 }
 
 .projects-grid {
@@ -635,9 +785,12 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
-    var(--surface);
-  box-shadow: var(--shadow);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.022)),
+    rgba(8, 9, 11, 0.88);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
   transform:
     perspective(1000px)
     rotateX(var(--tilt-x, 0deg))
@@ -670,6 +823,7 @@ main {
 .project-card::before {
   position: absolute;
   inset: 0;
+  z-index: 0;
   content: "";
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--project-accent) 24%, transparent), transparent 48%),
@@ -681,6 +835,7 @@ main {
 .project-card::after {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   content: "";
   background: radial-gradient(
@@ -706,26 +861,25 @@ main {
 
 .project-card__visual {
   position: relative;
+  z-index: 1;
   min-height: 155px;
   margin: 0.8rem;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-    rgba(0, 0, 0, 0.3);
+    linear-gradient(rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+    rgba(0, 0, 0, 0.48);
   background-size: 30px 30px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 20px 54px rgba(0, 0, 0, 0.18);
   transform: translateZ(28px);
 }
 
 .project-card__visual::after {
-  position: absolute;
-  inset: 20% 10%;
-  content: "";
-  border: 1px solid color-mix(in srgb, var(--project-accent) 58%, transparent);
-  border-radius: var(--radius-card);
-  transform: skewX(-16deg);
+  display: none;
 }
 
 .project-card__orbit {
@@ -770,8 +924,8 @@ main {
   padding: 0.85rem;
   overflow: hidden;
   background:
-    radial-gradient(circle at 28% 12%, color-mix(in srgb, var(--project-accent) 22%, transparent), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018));
+    radial-gradient(circle at 28% 12%, color-mix(in srgb, var(--project-accent) 20%, transparent), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.16));
 }
 
 .project-visual::before {
@@ -779,8 +933,8 @@ main {
   inset: 0;
   content: "";
   background:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
   background-size: 28px 28px;
   mask-image: linear-gradient(135deg, black, transparent 70%);
 }
@@ -818,6 +972,61 @@ main {
   padding: 1.1rem;
 }
 
+.project-visual--detail .visual-phone {
+  width: min(156px, 48%);
+  min-height: 176px;
+}
+
+.project-visual--detail .visual-pipeline {
+  width: min(620px, 92%);
+}
+
+.project-visual--detail .visual-pipeline span {
+  min-height: 58px;
+  font-size: 0.72rem;
+}
+
+.project-visual--detail .visual-browser,
+.project-visual--detail .visual-dashboard {
+  width: min(420px, 86%);
+}
+
+.project-visual--detail .visual-parking-grid {
+  width: min(290px, 74%);
+}
+
+.project-visual--flowgate {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(114, 242, 201, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(7, 22, 19, 0.84), rgba(0, 0, 0, 0.22));
+}
+
+.project-visual--flowgate .project-visual__body {
+  align-content: center;
+  justify-items: center;
+  gap: 0.48rem;
+}
+
+.project-visual--flowgate .visual-kpi-row {
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.project-visual--flowgate .visual-parking-grid {
+  padding: 0.42rem;
+  border: 1px solid rgba(114, 242, 201, 0.2);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.project-visual--flowgate .visual-bars {
+  width: min(210px, 74%);
+  padding: 0.35rem;
+  border: 1px solid rgba(114, 242, 201, 0.14);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
 .visual-kpi-row {
   display: flex;
   gap: 0.45rem;
@@ -829,9 +1038,9 @@ main {
 .visual-kpi-row span,
 .visual-pipeline span,
 .visual-dashboard__kpis span {
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 28%, rgba(255, 255, 255, 0.12));
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.34);
+  background: rgba(0, 0, 0, 0.46);
   color: var(--text);
   font-size: 0.62rem;
   font-weight: 780;
@@ -941,7 +1150,11 @@ main {
   min-height: 42px;
   place-items: center;
   padding: 0.3rem;
+  overflow-wrap: anywhere;
+  font-size: 0.54rem;
+  line-height: 1.08;
   text-align: center;
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--project-accent) 8%, transparent);
 }
 
 .visual-pipeline span:not(:last-child)::after {
@@ -956,9 +1169,9 @@ main {
 .visual-browser,
 .visual-dashboard {
   width: min(270px, 88%);
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, rgba(255, 255, 255, 0.13));
   border-radius: var(--radius-card);
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.48);
 }
 
 .visual-browser__chrome {
@@ -1128,9 +1341,12 @@ main {
   border: 1px solid color-mix(in srgb, var(--project-accent) 40%, var(--line));
   border-radius: var(--radius-card);
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 40%),
-    rgba(255, 255, 255, 0.045);
-  box-shadow: var(--shadow);
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--project-accent) 13%, transparent), transparent 28%),
+    linear-gradient(180deg, rgba(15, 16, 18, 0.9), rgba(7, 8, 9, 0.86));
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
 }
 
 .project-details__visual {
@@ -1141,10 +1357,10 @@ main {
   border: 1px solid color-mix(in srgb, var(--project-accent) 35%, var(--line));
   border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
     radial-gradient(circle at 30% 35%, color-mix(in srgb, var(--project-accent) 28%, transparent), transparent 36%),
-    rgba(0, 0, 0, 0.25);
+    rgba(0, 0, 0, 0.5);
   background-size: 38px 38px, 38px 38px, 100% 100%, 100% 100%;
 }
 
@@ -1450,8 +1666,13 @@ main {
 .skills-explorer {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: var(--shadow);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(123, 223, 242, 0.08), transparent 30%),
+    rgba(8, 9, 11, 0.84);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(18px);
 }
 
 .skills-explorer__toolbar {
@@ -1507,7 +1728,7 @@ main {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.28);
 }
 
 .skill-group__heading h3 {
@@ -1585,7 +1806,7 @@ main {
   border-radius: var(--radius-card);
   background:
     linear-gradient(140deg, rgba(114, 242, 201, 0.08), transparent 42%),
-    rgba(0, 0, 0, 0.22);
+    rgba(0, 0, 0, 0.34);
 }
 
 .skills-explorer__sticky h3 {
@@ -1779,9 +2000,13 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
+    radial-gradient(circle at 50% 0%, rgba(158, 240, 26, 0.14), transparent 34%),
     linear-gradient(120deg, rgba(158, 240, 26, 0.09), transparent 45%),
-    rgba(255, 255, 255, 0.04);
-  box-shadow: var(--shadow);
+    rgba(8, 9, 11, 0.86);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
 }
 
 .contact-primary {
@@ -2074,5 +2299,26 @@ main {
   .hero-canvas-shell,
   .hero-fallback-scene {
     transform: none !important;
+  }
+
+  .hero-copy,
+  .hero-status,
+  .section--projects,
+  .section--skills,
+  .section--timeline,
+  .section--about,
+  .section--contact {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .hero-visual {
+    opacity: 0.34 !important;
+    filter: saturate(0.85) brightness(0.8) !important;
+  }
+
+  .site-shell::before {
+    opacity: 0.55 !important;
   }
 }

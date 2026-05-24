@@ -38,29 +38,32 @@ export function useCinematicEffects() {
 
       context = gsap.context(() => {
         gsap.utils.toArray("[data-cinematic]").forEach((section) => {
+          const revealTargets = section.querySelectorAll(
+            ".section-header, .project-filter-note"
+          );
+
+          if (!revealTargets.length) {
+            return;
+          }
+
           gsap.fromTo(
-            section,
+            revealTargets,
             {
-              opacity: 0.72,
-              y: 86,
-              scale: 0.965,
-              rotateX: 5,
-              transformPerspective: 900,
-              transformOrigin: "50% 0%",
-              filter: "blur(10px)",
+              opacity: 0.9,
+              y: 14,
+              filter: "blur(2px)",
             },
             {
               opacity: 1,
               y: 0,
-              scale: 1,
-              rotateX: 0,
               filter: "blur(0px)",
               ease: "none",
+              stagger: 0.08,
               scrollTrigger: {
                 trigger: section,
                 start: "top 88%",
-                end: "top 48%",
-                scrub: 0.7,
+                end: "top 56%",
+                scrub: 0.6,
               },
             }
           );

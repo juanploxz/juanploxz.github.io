@@ -41,7 +41,6 @@ function ProjectDetails({ project, onSkillSelect }) {
     >
       <Motion.div
         className="project-details__visual"
-        layoutId={`project-visual-${project.id}`}
         aria-hidden="true"
       >
         <ProjectVisual project={project} size="detail" />

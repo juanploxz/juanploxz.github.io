@@ -3,15 +3,13 @@ import { motion as Motion } from "framer-motion";
 import { ArrowDownRight, Github, Mail } from "lucide-react";
 import { profile } from "../lib/constants";
 import { revealContainer, revealItem } from "../lib/animations";
-import { useScrollJourneyProgress } from "../hooks/useScrollJourneyProgress";
 import HeroFallbackScene from "../scenes/hero/HeroFallbackScene";
 import { shouldUseCompactVisuals, supportsWebGL } from "../lib/browserCapabilities";
 import { useReducedMotionSafe } from "../hooks/useReducedMotionSafe";
 
 const HeroCanvas = lazy(() => import("../scenes/hero/HeroCanvas.jsx"));
 
-function HeroSection() {
-  const progress = useScrollJourneyProgress();
+function HeroSection({ journey }) {
   const reducedMotion = useReducedMotionSafe();
   const [immersiveReady, setImmersiveReady] = useState(false);
   const canUse3D = useMemo(
@@ -57,12 +55,11 @@ function HeroSection() {
       className="hero-section"
       id="top"
       aria-labelledby="hero-title"
-      style={{ "--hero-progress": progress }}
     >
-      <div className="hero-visual" aria-hidden="true" data-parallax="0.08">
+      <div className="hero-visual" aria-hidden="true">
         {shouldLoad3D ? (
           <Suspense fallback={<HeroFallbackScene loading />}>
-            <HeroCanvas progress={progress} />
+            <HeroCanvas journey={journey} />
           </Suspense>
         ) : (
           <HeroFallbackScene />

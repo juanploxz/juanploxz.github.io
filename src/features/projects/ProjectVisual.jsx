@@ -47,7 +47,7 @@ const visualContent = {
     metric: "0.92 fit",
     body: (
       <div className="visual-pipeline">
-        {["CV", "Parse", "Vector", "Score", "Rank"].map((item) => (
+        {["CV", "Parse", "Vector", "Score", "Recommend"].map((item) => (
           <span key={item}>{item}</span>
         ))}
       </div>

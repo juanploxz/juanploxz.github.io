@@ -6,7 +6,7 @@ import HeroScene from "./HeroScene";
 import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
 import { shouldUseCompactVisuals, supportsWebGL } from "../../lib/browserCapabilities";
 
-function HeroCanvas({ progress = 0 }) {
+function HeroCanvas({ journey }) {
   const reducedMotion = useReducedMotionSafe();
   const webGLAvailable = useMemo(() => supportsWebGL(), []);
   const compact = useMemo(() => shouldUseCompactVisuals(), []);
@@ -39,7 +39,7 @@ function HeroCanvas({ progress = 0 }) {
         }}
       >
         <AdaptiveDpr pixelated />
-        <HeroScene progress={progress} compact={compact} />
+        <HeroScene journey={journey} compact={compact} />
       </Canvas>
     </div>
   );
