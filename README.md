@@ -1,16 +1,92 @@
-# React + Vite
+# Juan Parra Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Premium interactive portfolio for Juan Pablo Parra El-Masri. The site presents projects as product case studies, connecting technical skills with concrete software decisions across web apps, mobile UX, AI workflows, Django systems, and business intelligence dashboards.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React
+- Vite
+- Tailwind CSS
+- Framer Motion
+- GSAP + ScrollTrigger
+- React Three Fiber
+- Three.js
+- drei, installed for future scene utilities while the current hero keeps runtime imports lean
+- Lucide React
+- GitHub Pages via `gh-pages`
 
-## React Compiler
+## Experience
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Cinematic dark hero with a semantic HTML content layer and an optional abstract 3D atmosphere.
+- WebGL scene is lazy-loaded only on capable desktop browsers after user intent or idle time.
+- Mobile, WebGL-unavailable, and reduced-motion users receive a lightweight DOM fallback.
+- Data-driven project model in `src/data/projects.js`.
+- Interactive project cards with tilt, pointer glow, skill previews, tap-friendly mobile states, and shared-layout case-study transitions.
+- Skills Explorer maps skills directly to the projects where they appear.
+- GSAP-powered section reveals, subtle parallax, and magnetic CTA interactions.
+- Technical timeline, about section, contact CTA, robots.txt, sitemap, and SEO metadata.
 
-## Expanding the ESLint configuration
+## Architecture Summary
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The application keeps critical content in semantic React components and uses WebGL only as an atmospheric enhancement. `src/App.jsx` owns the selected project and selected skill state, then passes that state into data-driven sections.
+
+Project and skill content live in `src/data/`, which keeps the UI scalable and avoids hardcoded case-study copy inside components. The project feature layer in `src/features/projects/` renders cards, shared transitions, case-study details, stages, decisions, and skill links. The skills feature layer in `src/features/skills/` renders the project-skill explorer and handles the selection affordances.
+
+The immersive layer is split across `src/scenes/hero/` and `src/hooks/useCinematicEffects.js`. `HeroCanvas` dynamically imports the R3F scene only when the browser can support it and the user has signaled intent, while `HeroFallbackScene` keeps the first render readable and performant. GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
+
+Reduced motion is handled globally through Framer Motion's `MotionConfig`, and additional effects are skipped in hooks/components when `prefers-reduced-motion` is active.
+
+## Project Structure
+
+```txt
+src/
+  components/
+    layout/
+    ui/
+  data/
+  features/
+    projects/
+    skills/
+  hooks/
+  lib/
+  scenes/
+    hero/
+  sections/
+```
+
+## Audit Snapshot
+
+Production preview audited at `http://127.0.0.1:4173/`.
+
+- Lighthouse Performance: 91
+- Lighthouse Accessibility: 100
+- Lighthouse Best Practices: 100
+- Lighthouse SEO: 100
+- `npm audit --audit-level=moderate`: 0 vulnerabilities
+- `npm exec eslint .`: passing
+- `npm run build`: passing
+- Internal hash links checked: `#content`, `#top`, `#projects`, `#skills`, `#contact`
+- Visual smoke tests confirm desktop WebGL canvas and mobile fallback render nonblank
+
+The 3D hero remains a separate lazy chunk. Vite still reports that chunk as large because it contains Three/R3F, but it is not part of the mobile or initial semantic content path.
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Deploy
+
+The repository is configured for `juanploxz.github.io`, so Vite keeps `base: "/"` in `vite.config.js`.
+
+```bash
+npm run deploy
+```
