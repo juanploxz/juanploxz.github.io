@@ -3,31 +3,27 @@
 :root {
   color-scheme: dark;
   --bg: #050505;
-  --bg-raised: #0b0c0e;
-  --surface: rgba(18, 19, 22, 0.82);
-  --surface-strong: #15161a;
-  --surface-soft: rgba(255, 255, 255, 0.055);
+  --bg-soft: #090908;
+  --bg-raised: #0d0d0b;
+  --surface: rgba(18, 18, 16, 0.86);
+  --surface-strong: #151511;
+  --surface-soft: rgba(255, 255, 255, 0.035);
   --line: rgba(255, 255, 255, 0.1);
-  --line-strong: rgba(255, 255, 255, 0.2);
-  --text: #f3f4ee;
-  --muted: #a7aca4;
-  --quiet: #747a73;
-  --lime: #9ef01a;
-  --cyan: #72f2c9;
-  --amber: #ffcc66;
-  --rose: #ff7aa2;
-  --sky: #7bdff2;
-  --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #f4f1e8;
+  --muted: #a8a49a;
+  --quiet: #706f68;
+  --lime: #d7ff64;
+  --accent: #d7ff64;
+  --accent-soft: rgba(215, 255, 100, 0.12);
+  --accent-line: rgba(215, 255, 100, 0.28);
+  --cyan: #8ee8dc;
+  --cyan-soft: rgba(142, 232, 220, 0.14);
+  --amber: #d8b86a;
+  --rose: #d98aa8;
+  --shadow: 0 28px 90px rgba(0, 0, 0, 0.38);
   --radius-card: 8px;
   --radius-button: 999px;
-  --journey-progress: 0;
-  --phase-outside: 0;
-  --phase-approach: 0;
-  --phase-passage: 0;
-  --phase-arrival: 0;
-  --fallback-tunnel-y: 0px;
-  --fallback-tunnel-scale: 1;
-  --fallback-panel-opacity: 0.22;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -52,9 +48,9 @@ body {
   min-width: 320px;
   margin: 0;
   background:
-    linear-gradient(120deg, rgba(158, 240, 26, 0.05), transparent 28%),
-    linear-gradient(240deg, rgba(255, 122, 162, 0.055), transparent 32%),
-    #050505;
+    radial-gradient(circle at 18% 8%, rgba(215, 255, 100, 0.045), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(142, 232, 220, 0.035), transparent 34%),
+    linear-gradient(180deg, var(--bg-soft), var(--bg) 38%, var(--bg));
   color: var(--text);
   line-height: 1.5;
 }
@@ -66,8 +62,8 @@ body::before {
   pointer-events: none;
   content: "";
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
   background-size: 58px 58px;
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
@@ -79,11 +75,11 @@ body::after {
   pointer-events: none;
   content: "";
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.024), transparent 36%),
     repeating-linear-gradient(
       0deg,
-      rgba(255, 255, 255, 0.018),
-      rgba(255, 255, 255, 0.018) 1px,
+      rgba(255, 255, 255, 0.012),
+      rgba(255, 255, 255, 0.012) 1px,
       transparent 1px,
       transparent 6px
     );
@@ -107,7 +103,7 @@ button {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 
@@ -118,7 +114,7 @@ svg {
 }
 
 ::selection {
-  background: rgba(158, 240, 26, 0.28);
+  background: rgba(215, 255, 100, 0.24);
   color: var(--text);
 }
 
@@ -149,8 +145,8 @@ svg {
   inset: 0 -16px;
   z-index: -1;
   content: "";
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.68));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.74));
 }
 
 .brand-mark {
@@ -167,7 +163,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
-  background: linear-gradient(145deg, rgba(158, 240, 26, 0.18), rgba(114, 242, 201, 0.08));
+  background: linear-gradient(145deg, rgba(215, 255, 100, 0.14), rgba(142, 232, 220, 0.045));
   color: var(--text);
   font-size: 0.8rem;
   font-weight: 800;
@@ -185,7 +181,7 @@ svg {
   padding: 0.25rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.026);
 }
 
 .site-nav a {
@@ -201,7 +197,7 @@ svg {
 }
 
 .site-nav a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.055);
   color: var(--text);
 }
 
@@ -218,7 +214,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line);
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.028);
   color: var(--muted);
   transition:
     transform 180ms ease,
@@ -229,8 +225,8 @@ svg {
 
 .icon-link:hover {
   transform: translateY(-2px);
-  border-color: rgba(114, 242, 201, 0.55);
-  background: rgba(114, 242, 201, 0.08);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
   color: var(--text);
 }
 
@@ -244,9 +240,9 @@ main {
   left: 0.75rem;
   z-index: 100;
   padding: 0.7rem 0.95rem;
-  border: 1px solid rgba(158, 240, 26, 0.45);
+  border: 1px solid var(--accent-line);
   border-radius: var(--radius-button);
-  background: #0a0b0a;
+  background: var(--bg-raised);
   color: var(--text);
   font-size: 0.86rem;
   font-weight: 850;
@@ -285,9 +281,9 @@ main {
   min-height: 28px;
   margin: 0 0 0.85rem;
   padding: 0.28rem 0.65rem;
-  border: 1px solid rgba(158, 240, 26, 0.24);
+  border: 1px solid var(--accent-line);
   border-radius: var(--radius-button);
-  background: rgba(158, 240, 26, 0.07);
+  background: rgba(215, 255, 100, 0.075);
   color: var(--lime);
   font-size: 0.74rem;
   font-weight: 750;
@@ -346,26 +342,26 @@ main {
 }
 
 .button--primary {
-  border-color: rgba(158, 240, 26, 0.44);
-  background: var(--lime);
-  color: #0a0b0a;
+  border-color: rgba(215, 255, 100, 0.42);
+  background: linear-gradient(180deg, #e2ff82, var(--accent));
+  color: #151511;
 }
 
 .button--ghost {
   border-color: var(--line);
-  background: rgba(255, 255, 255, 0.055);
+  background: rgba(255, 255, 255, 0.038);
   color: var(--text);
 }
 
 .button--ghost:hover {
-  border-color: rgba(114, 242, 201, 0.5);
-  background: rgba(114, 242, 201, 0.08);
+  border-color: rgba(215, 255, 100, 0.24);
+  background: rgba(215, 255, 100, 0.07);
 }
 
 .button--compact {
   min-height: 40px;
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   font-size: 0.82rem;
 }
@@ -393,7 +389,7 @@ main {
   inset: 8% auto auto -10%;
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle, rgba(114, 242, 201, 0.11), transparent 66%);
+  background: radial-gradient(circle, rgba(142, 232, 220, 0.07), transparent 66%);
 }
 
 .hero-section::after {
@@ -401,11 +397,11 @@ main {
   bottom: 8%;
   width: min(420px, 42vw);
   height: 220px;
-  border: 1px solid rgba(114, 242, 201, 0.08);
+  border: 1px solid rgba(142, 232, 220, 0.06);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(114, 242, 201, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(114, 242, 201, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(142, 232, 220, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 232, 220, 0.032) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: linear-gradient(135deg, transparent, black 28%, transparent 82%);
   transform: perspective(900px) rotateX(62deg) rotateZ(-4deg);
@@ -434,10 +430,10 @@ main {
   display: inline-flex;
   margin: 0 0 1rem;
   padding: 0.4rem 0.7rem;
-  border: 1px solid rgba(114, 242, 201, 0.3);
+  border: 1px solid rgba(215, 255, 100, 0.26);
   border-radius: var(--radius-button);
-  background: rgba(114, 242, 201, 0.08);
-  color: var(--cyan);
+  background: rgba(215, 255, 100, 0.07);
+  color: var(--accent);
   font-size: 0.78rem;
   font-weight: 780;
   text-transform: uppercase;
@@ -495,58 +491,127 @@ main {
   line-height: 1.45;
 }
 
-.journey-section {
+.scroll-anchor {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.selected-works-section {
   position: relative;
   z-index: 2;
-  height: 300vh;
-  min-height: 1800px;
+  overflow: clip;
   background:
-    radial-gradient(circle at 50% 22%, rgba(114, 242, 201, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(5, 5, 5, 0), #050505 12%, #050505 88%, rgba(5, 5, 5, 0));
-  scroll-margin-top: 0;
+    radial-gradient(circle at 50% 16%, rgba(142, 232, 220, 0.04), transparent 30%),
+    linear-gradient(180deg, var(--bg) 0%, #080807 42%, var(--bg) 100%);
 }
 
-.journey-section.is-static {
-  height: auto;
-  min-height: 100vh;
+.selected-works-section::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  z-index: 3;
+  height: 24vh;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(180deg, transparent, rgba(5, 5, 5, 0.74) 52%, var(--bg));
 }
 
-.journey-section.is-static .journey-sticky {
+.selected-works-intro {
   position: relative;
-  min-height: 760px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: end;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: clamp(5rem, 10vw, 8.8rem) 0 clamp(2.2rem, 5vw, 4rem);
 }
 
-.journey-sticky {
+.selected-works-intro p {
+  margin: 0 0 0.5rem;
+  color: var(--lime);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.selected-works-intro h2 {
+  max-width: 880px;
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(4.8rem, 14vw, 12rem);
+  font-weight: 900;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.selected-works-intro span {
+  display: block;
+  max-width: 520px;
+  margin-top: 1.35rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.7;
+}
+
+.selected-gallery-track {
+  position: relative;
+  z-index: 2;
+  height: 330vh;
+  min-height: 1980px;
+  --gallery-progress: 0;
+  --active-accent: var(--cyan);
+}
+
+.selected-gallery-track.is-static {
+  height: auto;
+  min-height: 820px;
+}
+
+.selected-gallery-sticky {
   position: sticky;
   top: 0;
   display: grid;
   min-height: 100vh;
   overflow: hidden;
   place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--active-accent) 5%, transparent), transparent 34%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.97), rgba(8, 8, 7, 0.88));
 }
 
-.journey-canvas-layer,
-.journey-shade,
-.journey-overlay {
+.selected-gallery-track.is-static .selected-gallery-sticky {
+  position: relative;
+  min-height: 820px;
+}
+
+.selected-gallery-canvas-layer,
+.selected-gallery-shade,
+.selected-gallery-overlay {
   position: absolute;
   inset: 0;
 }
 
-.journey-canvas-layer {
+.selected-gallery-canvas-layer {
   z-index: 0;
-  opacity: 0.92;
+  opacity: 0.9;
 }
 
-.journey-shade {
+.selected-gallery-shade {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(5, 5, 5, 0.72), transparent 24%, transparent 76%, rgba(5, 5, 5, 0.72)),
-    radial-gradient(circle at 50% 46%, transparent 0 24%, rgba(5, 5, 5, 0.24) 58%, rgba(5, 5, 5, 0.72) 100%),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.82), transparent 18%, transparent 76%, rgba(5, 5, 5, 0.88));
+    linear-gradient(90deg, rgba(5, 5, 5, 0.88), transparent 26%, transparent 72%, rgba(5, 5, 5, 0.88)),
+    radial-gradient(circle at 50% 50%, transparent 0 30%, rgba(5, 5, 5, 0.38) 64%, rgba(5, 5, 5, 0.88) 100%),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.88), transparent 20%, transparent 68%, rgba(5, 5, 5, 0.94));
 }
 
-.journey-overlay {
+.selected-gallery-overlay {
   z-index: 2;
   display: grid;
   width: min(1180px, calc(100% - 32px));
@@ -554,82 +619,93 @@ main {
   pointer-events: none;
 }
 
-.journey-panel {
+.selected-gallery-panel {
   position: absolute;
   display: grid;
-  gap: 0.75rem;
-  max-width: 520px;
+  gap: 0.7rem;
+  max-width: 500px;
   pointer-events: auto;
   transition:
     opacity 120ms linear,
     transform 120ms linear;
 }
 
-.journey-panel span {
+.selected-gallery-panel span {
   color: var(--lime);
   font-size: 0.76rem;
   font-weight: 850;
   text-transform: uppercase;
 }
 
-.journey-panel h2 {
+.selected-gallery-panel h3 {
   margin: 0;
   color: var(--text);
-  font-size: clamp(2rem, 5vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: 0;
+  font-size: clamp(2.2rem, 5vw, 5.1rem);
+  line-height: 0.94;
 }
 
-.journey-panel p {
+.selected-gallery-panel p {
   margin: 0;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.7;
+  color: color-mix(in srgb, var(--active-accent) 52%, var(--text) 36%);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.journey-panel--intro {
-  top: 26%;
+.selected-gallery-panel--intro {
+  top: 20%;
   left: 0;
 }
 
-.journey-panel--approach {
-  top: 34%;
-  left: 6%;
-}
-
-.journey-panel--passage {
-  top: 36%;
-  right: 0;
-  max-width: 560px;
+.selected-gallery-panel--entry {
+  top: 30%;
+  right: 3%;
+  max-width: 610px;
   text-align: right;
 }
 
-.journey-panel--arrival {
+.selected-gallery-panel--focus {
+  bottom: 16%;
+  left: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--active-accent) 5%, transparent), transparent),
+    rgba(9, 9, 8, 0.7);
+  backdrop-filter: blur(16px);
+}
+
+.selected-gallery-panel--focus h3 {
+  font-size: clamp(1.8rem, 4vw, 3.8rem);
+}
+
+.selected-gallery-panel--landing {
   right: 0;
-  bottom: 20%;
+  bottom: 17%;
   max-width: 520px;
   text-align: right;
 }
 
-.journey-next {
+.selected-gallery-next {
   display: inline-flex;
   align-items: center;
   justify-self: end;
   gap: 0.45rem;
   min-height: 42px;
   padding: 0.62rem 0.85rem;
-  border: 1px solid rgba(158, 240, 26, 0.42);
+  border: 1px solid color-mix(in srgb, var(--active-accent) 28%, white 6%);
   border-radius: var(--radius-button);
-  background: rgba(158, 240, 26, 0.12);
+  background: color-mix(in srgb, var(--active-accent) 7%, transparent);
   color: var(--text);
   font-size: 0.86rem;
   font-weight: 850;
 }
 
-.journey-progress {
+.selected-gallery-progress {
   position: absolute;
   right: max(1rem, calc((100vw - 1180px) / 2));
-  bottom: 2.2rem;
+  bottom: 2rem;
   left: max(1rem, calc((100vw - 1180px) / 2));
   z-index: 3;
   height: 1px;
@@ -637,172 +713,180 @@ main {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.journey-progress span {
+.selected-gallery-progress span {
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, var(--cyan), var(--lime), var(--amber));
-  transform: scaleX(var(--journey-progress));
+  background: linear-gradient(90deg, var(--cyan), var(--accent));
+  transform: scaleX(var(--gallery-progress));
   transform-origin: left;
 }
 
-.hero-visual {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: var(--visual-opacity);
-  filter: saturate(var(--visual-saturate)) brightness(var(--visual-brightness));
-  transform: translateZ(0);
-  transition:
-    opacity 120ms linear,
-    filter 120ms linear;
-}
-
-.hero-canvas-shell,
-.hero-fallback-scene {
+.selected-works-canvas-shell,
+.selected-works-fallback {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.journey-canvas-layer .hero-canvas-shell,
-.journey-canvas-layer .hero-fallback-scene {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-}
-
-.hero-canvas {
+.selected-works-canvas {
   width: 100% !important;
   height: 100% !important;
 }
 
-.hero-canvas-shell::after {
+.selected-works-canvas-shell::after,
+.selected-works-fallback::after {
   position: absolute;
   inset: 0;
   z-index: -1;
   content: "";
   background:
-    radial-gradient(circle at 50% 42%, rgba(114, 242, 201, 0.18), transparent 34%),
-    radial-gradient(circle at 68% 58%, rgba(255, 122, 162, 0.1), transparent 36%);
+    radial-gradient(circle at 50% 44%, color-mix(in srgb, var(--active-accent) 6%, transparent), transparent 34%),
+    radial-gradient(circle at 72% 58%, rgba(142, 232, 220, 0.032), transparent 34%);
   filter: blur(42px);
-  opacity: 0.72;
+  opacity: 0.68;
 }
 
-.hero-fallback-scene {
+.selected-works-fallback {
   overflow: hidden;
-  perspective: 980px;
+  perspective: 1100px;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--active-accent) 7%, transparent), transparent 32%),
+    rgba(5, 5, 5, 0.52);
 }
 
-.hero-fallback-scene.is-loading {
-  opacity: 0.42;
+.selected-works-fallback.is-loading {
+  opacity: 0.38;
 }
 
-.hero-fallback-scene__tunnel {
+.selected-works-fallback__room {
   position: absolute;
-  inset: 12% 14%;
+  inset: 14% 16%;
   transform:
     rotateX(58deg)
-    translateY(var(--fallback-tunnel-y))
-    scale(var(--fallback-tunnel-scale));
+    rotateY(-18deg)
+    translateY(4%)
+    scale(1.05);
   transform-style: preserve-3d;
-  transform-origin: 50% 54%;
 }
 
-.hero-fallback-scene__tunnel span {
+.selected-works-fallback__room span {
   position: absolute;
-  inset: calc(var(--frame-index) * 7%);
-  border: 1px solid rgba(114, 242, 201, 0.18);
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--active-accent) 22%, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-card);
-  box-shadow: 0 0 34px rgba(114, 242, 201, 0.06);
-  transform: translateZ(calc(var(--frame-index) * -90px));
+  box-shadow: 0 0 34px color-mix(in srgb, var(--active-accent) 6%, transparent);
 }
 
-.hero-fallback-scene__tunnel span:nth-child(2n) {
-  border-color: rgba(158, 240, 26, 0.18);
+.selected-works-fallback__room span:nth-child(2) {
+  transform: translateZ(-140px) scale(0.82);
 }
 
-.hero-fallback-scene__rails {
+.selected-works-fallback__room span:nth-child(3) {
+  transform: translateZ(-270px) scale(0.64);
+  opacity: 0.56;
+}
+
+.selected-works-fallback__screen {
   position: absolute;
-  inset: 18% 12%;
-}
-
-.hero-fallback-scene__rails span {
-  position: absolute;
-  width: 1px;
-  height: 78%;
-  background: linear-gradient(180deg, transparent, rgba(114, 242, 201, 0.28), transparent);
-  transform-origin: 50% 100%;
-}
-
-.hero-fallback-scene__rails span:nth-child(1) {
-  left: 20%;
-  bottom: 5%;
-  transform: rotate(-38deg);
-}
-
-.hero-fallback-scene__rails span:nth-child(2) {
-  right: 20%;
-  bottom: 5%;
-  transform: rotate(38deg);
-}
-
-.hero-fallback-scene__rails span:nth-child(3) {
-  left: 7%;
-  top: 4%;
-  transform: rotate(-62deg);
-}
-
-.hero-fallback-scene__rails span:nth-child(4) {
-  right: 7%;
-  top: 4%;
-  transform: rotate(62deg);
-}
-
-.hero-fallback-scene__panels span {
-  position: absolute;
-  width: 150px;
-  height: 86px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  top: 43%;
+  left: 50%;
+  display: grid;
+  width: min(430px, 54vw);
+  min-height: 230px;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--active-accent) 26%, rgba(255, 255, 255, 0.1));
   border-radius: var(--radius-card);
   background:
-    linear-gradient(90deg, rgba(114, 242, 201, 0.22), transparent 56%),
-    rgba(255, 255, 255, 0.035);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
-  opacity: var(--fallback-panel-opacity);
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--active-accent) 12%, transparent), transparent 44%),
+    rgba(10, 10, 9, 0.82);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+  transform: translate(-50%, -50%) rotateY(-4deg);
 }
 
-.hero-fallback-scene__panels span:nth-child(1) {
-  left: 14%;
-  top: 42%;
-  transform: rotateY(18deg) rotateZ(-4deg);
+.selected-works-fallback__screen div {
+  display: grid;
+  align-content: start;
+  gap: 0.28rem;
 }
 
-.hero-fallback-scene__panels span:nth-child(2) {
+.selected-works-fallback__screen span {
+  color: var(--quiet);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.selected-works-fallback__screen strong {
+  color: var(--text);
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  line-height: 0.98;
+}
+
+.selected-works-fallback__screen i {
+  display: block;
+  width: 70%;
+  height: 8px;
+  margin-top: 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--active-accent) 46%, var(--text) 6%);
+  opacity: 0.28;
+}
+
+.selected-works-fallback__screen i:nth-of-type(2) {
+  width: 54%;
+}
+
+.selected-works-fallback__screen i:nth-of-type(3) {
+  width: 82%;
+}
+
+.selected-works-fallback__panels span {
+  position: absolute;
+  width: 150px;
+  height: 92px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 20%, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent),
+    rgba(255, 255, 255, 0.026);
+  opacity: 0.3;
+}
+
+.selected-works-fallback__panels span.is-active {
+  opacity: 0.62;
+  box-shadow: 0 0 34px color-mix(in srgb, var(--project-accent) 10%, transparent);
+}
+
+.selected-works-fallback__panels span:nth-child(1) {
+  left: 15%;
+  top: 34%;
+  transform: rotateY(22deg) rotateZ(-3deg);
+}
+
+.selected-works-fallback__panels span:nth-child(2) {
   right: 15%;
-  top: 36%;
-  transform: rotateY(-18deg) rotateZ(3deg);
+  top: 31%;
+  transform: rotateY(-22deg) rotateZ(3deg);
 }
 
-.hero-fallback-scene__panels span:nth-child(3) {
-  left: 24%;
-  bottom: 14%;
-  transform: scale(0.82) rotateY(15deg);
+.selected-works-fallback__panels span:nth-child(3) {
+  left: 17%;
+  bottom: 19%;
+  transform: scale(0.86) rotateY(18deg);
 }
 
-.hero-fallback-scene__panels span:nth-child(4) {
-  right: 25%;
-  bottom: 18%;
-  transform: scale(0.82) rotateY(-15deg);
+.selected-works-fallback__panels span:nth-child(4) {
+  right: 17%;
+  bottom: 20%;
+  transform: scale(0.86) rotateY(-18deg);
 }
 
-.hero-fallback-scene__panels span:nth-child(5) {
+.selected-works-fallback__panels span:nth-child(5) {
   left: calc(50% - 75px);
-  top: 52%;
-  transform: scale(0.9);
+  bottom: 12%;
+  transform: scale(0.88);
 }
 
 .project-filter-note {
@@ -827,8 +911,8 @@ main {
   pointer-events: none;
   content: "";
   background:
-    radial-gradient(circle at 16% 18%, rgba(114, 242, 201, 0.1), transparent 32%),
-    radial-gradient(circle at 82% 28%, rgba(255, 122, 162, 0.08), transparent 30%);
+    radial-gradient(circle at 16% 18%, rgba(142, 232, 220, 0.055), transparent 32%),
+    radial-gradient(circle at 82% 28%, rgba(215, 255, 100, 0.04), transparent 30%);
   mask-image: linear-gradient(to bottom, black, transparent);
 }
 
@@ -845,15 +929,15 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.055);
   border-radius: var(--radius-card);
   background:
-    radial-gradient(circle at 50% 0%, rgba(114, 242, 201, 0.07), transparent 32%),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.84), rgba(5, 5, 5, 0.56) 44%, rgba(5, 5, 5, 0.78));
+    radial-gradient(circle at 50% 0%, rgba(142, 232, 220, 0.045), transparent 32%),
+    linear-gradient(180deg, rgba(8, 8, 7, 0.9), rgba(8, 8, 7, 0.64) 44%, rgba(5, 5, 5, 0.82));
   box-shadow: 0 38px 90px rgba(0, 0, 0, 0.26);
 }
 
 .section--skills::before {
   background:
-    radial-gradient(circle at 18% 18%, rgba(123, 223, 242, 0.08), transparent 28%),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.62));
+    radial-gradient(circle at 18% 18%, rgba(142, 232, 220, 0.045), transparent 28%),
+    linear-gradient(180deg, rgba(8, 8, 7, 0.88), rgba(5, 5, 5, 0.7));
 }
 
 .section--timeline::before,
@@ -865,7 +949,7 @@ main {
 
 .section--contact::before {
   background:
-    radial-gradient(circle at 50% 38%, rgba(158, 240, 26, 0.11), transparent 34%),
+    radial-gradient(circle at 50% 38%, rgba(215, 255, 100, 0.07), transparent 34%),
     linear-gradient(180deg, rgba(5, 5, 5, 0.72), rgba(5, 5, 5, 0.86));
 }
 
@@ -885,11 +969,11 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.022)),
-    rgba(8, 9, 11, 0.88);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.058), rgba(255, 255, 255, 0.018)),
+    rgba(12, 12, 10, 0.91);
   box-shadow:
     var(--shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px);
   transform:
     perspective(1000px)
@@ -906,9 +990,9 @@ main {
 .project-card:hover,
 .project-card:focus-visible,
 .project-card.is-active {
-  border-color: color-mix(in srgb, var(--project-accent) 70%, white 10%);
+  border-color: color-mix(in srgb, var(--project-accent) 42%, var(--line-strong));
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.064), rgba(255, 255, 255, 0.024)),
     var(--surface-strong);
 }
 
@@ -926,9 +1010,9 @@ main {
   z-index: 0;
   content: "";
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--project-accent) 24%, transparent), transparent 48%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.3), transparent 40%);
-  opacity: 0.58;
+    linear-gradient(145deg, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 48%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.36), transparent 40%);
+  opacity: 0.52;
   transition: opacity 180ms ease;
 }
 
@@ -940,7 +1024,7 @@ main {
   content: "";
   background: radial-gradient(
     circle at var(--glow-x, 50%) var(--glow-y, 30%),
-    color-mix(in srgb, var(--project-accent) 38%, transparent),
+    color-mix(in srgb, var(--project-accent) 18%, transparent),
     transparent 34%
   );
   opacity: 0;
@@ -950,13 +1034,13 @@ main {
 .project-card:hover::before,
 .project-card:focus-visible::before,
 .project-card.is-active::before {
-  opacity: 0.9;
+  opacity: 0.74;
 }
 
 .project-card:hover::after,
 .project-card:focus-visible::after,
 .project-card.is-active::after {
-  opacity: 0.78;
+  opacity: 0.5;
 }
 
 .project-card__visual {
@@ -965,12 +1049,12 @@ main {
   min-height: 155px;
   margin: 0.8rem;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.105);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(255, 255, 255, 0.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
-    rgba(0, 0, 0, 0.48);
+    linear-gradient(rgba(255, 255, 255, 0.048) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.048) 1px, transparent 1px),
+    rgba(0, 0, 0, 0.5);
   background-size: 30px 30px;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.035),
@@ -987,7 +1071,7 @@ main {
   left: 0.8rem;
   bottom: 0.8rem;
   padding: 0.3rem 0.55rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-button);
   background: rgba(0, 0, 0, 0.48);
   color: var(--text);
@@ -1001,8 +1085,8 @@ main {
   top: 30%;
   width: 46%;
   height: 2px;
-  background: color-mix(in srgb, var(--project-accent) 82%, white 6%);
-  box-shadow: 0 0 22px color-mix(in srgb, var(--project-accent) 48%, transparent);
+  background: color-mix(in srgb, var(--project-accent) 52%, var(--text) 8%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--project-accent) 22%, transparent);
   transform: rotate(-18deg);
 }
 
@@ -1024,8 +1108,8 @@ main {
   padding: 0.85rem;
   overflow: hidden;
   background:
-    radial-gradient(circle at 28% 12%, color-mix(in srgb, var(--project-accent) 20%, transparent), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.16));
+    radial-gradient(circle at 28% 12%, color-mix(in srgb, var(--project-accent) 11%, transparent), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(0, 0, 0, 0.2));
 }
 
 .project-visual::before {
@@ -1033,8 +1117,8 @@ main {
   inset: 0;
   content: "";
   background:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.038) 1px, transparent 1px);
   background-size: 28px 28px;
   mask-image: linear-gradient(135deg, black, transparent 70%);
 }
@@ -1057,7 +1141,7 @@ main {
 }
 
 .project-visual__header strong {
-  color: color-mix(in srgb, var(--project-accent) 82%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 62%, var(--text) 18%);
   font-size: 0.68rem;
 }
 
@@ -1097,8 +1181,8 @@ main {
 
 .project-visual--flowgate {
   background:
-    radial-gradient(circle at 50% 18%, rgba(114, 242, 201, 0.16), transparent 34%),
-    linear-gradient(180deg, rgba(7, 22, 19, 0.84), rgba(0, 0, 0, 0.22));
+    radial-gradient(circle at 50% 18%, rgba(142, 232, 220, 0.09), transparent 34%),
+    linear-gradient(180deg, rgba(8, 19, 17, 0.82), rgba(0, 0, 0, 0.26));
 }
 
 .project-visual--flowgate .project-visual__body {
@@ -1114,7 +1198,7 @@ main {
 
 .project-visual--flowgate .visual-parking-grid {
   padding: 0.42rem;
-  border: 1px solid rgba(114, 242, 201, 0.2);
+  border: 1px solid rgba(142, 232, 220, 0.16);
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.32);
 }
@@ -1122,7 +1206,7 @@ main {
 .project-visual--flowgate .visual-bars {
   width: min(210px, 74%);
   padding: 0.35rem;
-  border: 1px solid rgba(114, 242, 201, 0.14);
+  border: 1px solid rgba(142, 232, 220, 0.12);
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.28);
 }
@@ -1138,9 +1222,9 @@ main {
 .visual-kpi-row span,
 .visual-pipeline span,
 .visual-dashboard__kpis span {
-  border: 1px solid color-mix(in srgb, var(--project-accent) 28%, rgba(255, 255, 255, 0.12));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 18%, rgba(255, 255, 255, 0.12));
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.46);
+  background: rgba(0, 0, 0, 0.5);
   color: var(--text);
   font-size: 0.62rem;
   font-weight: 780;
@@ -1161,14 +1245,14 @@ main {
 
 .visual-parking-grid span {
   aspect-ratio: 1;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent);
   border-radius: 3px;
-  background: color-mix(in srgb, var(--project-accent) 18%, transparent);
+  background: color-mix(in srgb, var(--project-accent) 12%, transparent);
 }
 
 .visual-parking-grid span.is-busy {
-  border-color: rgba(255, 122, 162, 0.45);
-  background: rgba(255, 122, 162, 0.22);
+  border-color: rgba(217, 138, 168, 0.34);
+  background: rgba(217, 138, 168, 0.14);
 }
 
 .visual-bars {
@@ -1182,7 +1266,7 @@ main {
   width: var(--bar);
   height: 5px;
   border-radius: 99px;
-  background: color-mix(in srgb, var(--project-accent) 70%, white 8%);
+  background: color-mix(in srgb, var(--project-accent) 50%, var(--text) 8%);
 }
 
 .visual-phone {
@@ -1190,9 +1274,9 @@ main {
   width: min(128px, 52%);
   min-height: 142px;
   padding: 0.7rem;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 34%, transparent);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.52));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.074), rgba(0, 0, 0, 0.56));
   box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.32);
 }
 
@@ -1204,7 +1288,7 @@ main {
 }
 
 .visual-phone__header strong {
-  color: color-mix(in srgb, var(--project-accent) 78%, white 10%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 16%);
 }
 
 .visual-phone__ring {
@@ -1212,8 +1296,8 @@ main {
   height: 52px;
   margin: 0.72rem auto;
   border: 7px solid rgba(255, 255, 255, 0.08);
-  border-top-color: var(--project-accent);
-  border-right-color: var(--project-accent);
+  border-top-color: color-mix(in srgb, var(--project-accent) 68%, var(--text) 6%);
+  border-right-color: color-mix(in srgb, var(--project-accent) 68%, var(--text) 6%);
   border-radius: 999px;
 }
 
@@ -1254,7 +1338,7 @@ main {
   font-size: 0.54rem;
   line-height: 1.08;
   text-align: center;
-  box-shadow: inset 0 0 18px color-mix(in srgb, var(--project-accent) 8%, transparent);
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--project-accent) 5%, transparent);
 }
 
 .visual-pipeline span:not(:last-child)::after {
@@ -1263,13 +1347,13 @@ main {
   width: 0.32rem;
   height: 1px;
   content: "";
-  background: color-mix(in srgb, var(--project-accent) 72%, transparent);
+  background: color-mix(in srgb, var(--project-accent) 46%, transparent);
 }
 
 .visual-browser,
 .visual-dashboard {
   width: min(270px, 88%);
-  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, rgba(255, 255, 255, 0.13));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 18%, rgba(255, 255, 255, 0.13));
   border-radius: var(--radius-card);
   background: rgba(0, 0, 0, 0.48);
 }
@@ -1278,9 +1362,9 @@ main {
   height: 22px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background:
-    radial-gradient(circle at 14px 50%, #ff7aa2 0 3px, transparent 4px),
-    radial-gradient(circle at 28px 50%, #ffcc66 0 3px, transparent 4px),
-    radial-gradient(circle at 42px 50%, #72f2c9 0 3px, transparent 4px);
+    radial-gradient(circle at 14px 50%, var(--rose) 0 3px, transparent 4px),
+    radial-gradient(circle at 28px 50%, var(--amber) 0 3px, transparent 4px),
+    radial-gradient(circle at 42px 50%, var(--cyan) 0 3px, transparent 4px);
 }
 
 .visual-browser__content {
@@ -1308,7 +1392,7 @@ main {
   width: 100%;
   height: var(--bar);
   border-radius: 4px 4px 0 0;
-  background: color-mix(in srgb, var(--project-accent) 70%, white 8%);
+  background: color-mix(in srgb, var(--project-accent) 50%, var(--text) 8%);
 }
 
 .visual-dashboard {
@@ -1412,9 +1496,9 @@ main {
 
 .project-card__skills span,
 .project-details__skills button {
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.045);
   color: var(--text);
   font-size: 0.72rem;
   font-weight: 740;
@@ -1429,7 +1513,7 @@ main {
   align-items: center;
   gap: 0.4rem;
   margin-top: 1rem;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 14%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
   font-size: 0.84rem;
   font-weight: 850;
 }
@@ -1438,11 +1522,11 @@ main {
   scroll-margin-top: 108px;
   margin-top: 1.2rem;
   padding: 1rem;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, var(--line));
   border-radius: var(--radius-card);
   background:
-    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--project-accent) 13%, transparent), transparent 28%),
-    linear-gradient(180deg, rgba(15, 16, 18, 0.9), rgba(7, 8, 9, 0.86));
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--project-accent) 7%, transparent), transparent 28%),
+    linear-gradient(180deg, rgba(18, 18, 16, 0.92), rgba(8, 8, 7, 0.9));
   box-shadow:
     var(--shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -1454,13 +1538,13 @@ main {
   min-height: 170px;
   margin: 0 0 1rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 35%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 24%, var(--line));
   border-radius: var(--radius-card);
   background:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at 30% 35%, color-mix(in srgb, var(--project-accent) 28%, transparent), transparent 36%),
-    rgba(0, 0, 0, 0.5);
+    linear-gradient(rgba(255, 255, 255, 0.044) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.044) 1px, transparent 1px),
+    radial-gradient(circle at 30% 35%, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 36%),
+    rgba(0, 0, 0, 0.56);
   background-size: 38px 38px, 38px 38px, 100% 100%, 100% 100%;
 }
 
@@ -1490,7 +1574,7 @@ main {
   bottom: 1rem;
   z-index: 1;
   padding: 0.35rem 0.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-button);
   background: rgba(0, 0, 0, 0.48);
   color: var(--text);
@@ -1515,7 +1599,7 @@ main {
 .project-details__visual .visual-dashboard__kpis span {
   padding: 0.42rem;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.34);
+  background: rgba(0, 0, 0, 0.42);
 }
 
 .project-details__visual .project-visual {
@@ -1525,14 +1609,14 @@ main {
 .project-details__visual .visual-parking-grid span {
   display: block;
   aspect-ratio: 1;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent);
   border-radius: 3px;
-  background: color-mix(in srgb, var(--project-accent) 18%, transparent);
+  background: color-mix(in srgb, var(--project-accent) 12%, transparent);
 }
 
 .project-details__visual .visual-parking-grid span.is-busy {
-  border-color: rgba(255, 122, 162, 0.45);
-  background: rgba(255, 122, 162, 0.22);
+  border-color: rgba(217, 138, 168, 0.34);
+  background: rgba(217, 138, 168, 0.14);
 }
 
 .project-details__visual .visual-bars span,
@@ -1585,7 +1669,7 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--project-accent) 12%, transparent), transparent 58%),
+    linear-gradient(160deg, color-mix(in srgb, var(--project-accent) 7%, transparent), transparent 58%),
     rgba(255, 255, 255, 0.035);
   color: var(--muted);
   font-size: 0.86rem;
@@ -1616,7 +1700,7 @@ main {
 .project-details__decisions h4 {
   display: block;
   margin: 0 0 0.55rem;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
   font-size: 0.76rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -1647,7 +1731,7 @@ main {
 
 .project-details__decisions svg {
   margin-top: 0.2rem;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
 }
 
 .project-stages {
@@ -1666,7 +1750,7 @@ main {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .project-stage__index {
@@ -1674,7 +1758,7 @@ main {
   width: 36px;
   height: 36px;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 52%, transparent);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 34%, rgba(255, 255, 255, 0.08));
   border-radius: 8px;
   color: var(--text);
   font-size: 0.76rem;
@@ -1683,7 +1767,7 @@ main {
 
 .project-stage p {
   margin: 0;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 10%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 16%);
   font-size: 0.72rem;
   font-weight: 820;
   text-transform: uppercase;
@@ -1705,7 +1789,7 @@ main {
 .project-details__skills-title {
   flex-basis: 100%;
   margin-bottom: 0.1rem;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
   font-size: 0.76rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -1723,8 +1807,8 @@ main {
 
 .project-details__skills button:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--project-accent) 62%, transparent);
-  background: color-mix(in srgb, var(--project-accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--project-accent) 36%, transparent);
+  background: color-mix(in srgb, var(--project-accent) 8%, transparent);
 }
 
 .project-details__jump {
@@ -1732,7 +1816,7 @@ main {
   align-items: center;
   gap: 0.45rem;
   margin: 0 1rem 1rem;
-  color: color-mix(in srgb, var(--project-accent) 78%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
   font-size: 0.86rem;
   font-weight: 850;
 }
@@ -1740,17 +1824,17 @@ main {
 .project-details__outcome {
   margin: 0 1rem 1rem;
   padding: 1rem;
-  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 22%, var(--line));
   border-radius: var(--radius-card);
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--project-accent) 14%, transparent), transparent 62%),
+    linear-gradient(135deg, color-mix(in srgb, var(--project-accent) 8%, transparent), transparent 62%),
     rgba(0, 0, 0, 0.2);
 }
 
 .project-details__outcome span {
   display: block;
   margin-bottom: 0.55rem;
-  color: color-mix(in srgb, var(--project-accent) 80%, white 12%);
+  color: color-mix(in srgb, var(--project-accent) 58%, var(--text) 18%);
   font-size: 0.76rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -1767,8 +1851,8 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    radial-gradient(circle at 18% 0%, rgba(123, 223, 242, 0.08), transparent 30%),
-    rgba(8, 9, 11, 0.84);
+    radial-gradient(circle at 18% 0%, rgba(142, 232, 220, 0.045), transparent 30%),
+    rgba(12, 12, 10, 0.88);
   box-shadow:
     var(--shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.055);
@@ -1793,15 +1877,15 @@ main {
   cursor: pointer;
   border: 1px solid var(--line);
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   font-weight: 800;
 }
 
 .skills-explorer__toolbar button.is-active {
-  border-color: rgba(158, 240, 26, 0.45);
-  background: rgba(158, 240, 26, 0.12);
-  color: var(--lime);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .skills-explorer__toolbar p {
@@ -1828,7 +1912,7 @@ main {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(0, 0, 0, 0.24);
 }
 
 .skill-group__heading h3 {
@@ -1856,9 +1940,9 @@ main {
   min-height: 34px;
   padding: 0.34rem 0.42rem 0.34rem 0.62rem;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.105);
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.035);
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 760;
@@ -1875,7 +1959,7 @@ main {
   height: 22px;
   place-items: center;
   border-radius: var(--radius-button);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text);
   font-size: 0.68rem;
 }
@@ -1884,13 +1968,14 @@ main {
 .skill-chip:focus-visible,
 .skill-chip.is-active {
   transform: translateY(-2px);
-  border-color: rgba(158, 240, 26, 0.48);
-  background: rgba(158, 240, 26, 0.1);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
   color: var(--text);
 }
 
 .skill-chip.is-related:not(.is-active) {
-  border-color: rgba(114, 242, 201, 0.36);
+  border-color: rgba(142, 232, 220, 0.24);
+  background: rgba(142, 232, 220, 0.055);
   color: var(--text);
 }
 
@@ -1905,8 +1990,8 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(140deg, rgba(114, 242, 201, 0.08), transparent 42%),
-    rgba(0, 0, 0, 0.34);
+    linear-gradient(140deg, rgba(142, 232, 220, 0.045), transparent 42%),
+    rgba(0, 0, 0, 0.32);
 }
 
 .skills-explorer__sticky h3 {
@@ -1939,7 +2024,7 @@ main {
   cursor: pointer;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.034);
   color: var(--muted);
   text-align: left;
   transition:
@@ -1953,8 +2038,8 @@ main {
 .project-signal-list button:focus-visible,
 .project-signal-list button.is-active {
   transform: translateX(4px);
-  border-color: rgba(114, 242, 201, 0.45);
-  background: rgba(114, 242, 201, 0.08);
+  border-color: rgba(142, 232, 220, 0.28);
+  background: rgba(142, 232, 220, 0.055);
   color: var(--text);
 }
 
@@ -1990,7 +2075,7 @@ main {
   left: 148px;
   width: 1px;
   content: "";
-  background: linear-gradient(180deg, var(--lime), var(--cyan), var(--rose));
+  background: linear-gradient(180deg, var(--accent), rgba(142, 232, 220, 0.72), rgba(255, 255, 255, 0.08));
 }
 
 .timeline-item {
@@ -2025,7 +2110,7 @@ main {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.032);
 }
 
 .timeline-item__body::before {
@@ -2037,18 +2122,18 @@ main {
   content: "";
   border: 2px solid var(--bg);
   border-radius: 4px;
-  background: var(--lime);
-  box-shadow: 0 0 0 1px rgba(158, 240, 26, 0.54);
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-line);
 }
 
 .timeline-item:nth-child(2n) .timeline-item__body::before {
   background: var(--cyan);
-  box-shadow: 0 0 0 1px rgba(114, 242, 201, 0.54);
+  box-shadow: 0 0 0 1px rgba(142, 232, 220, 0.32);
 }
 
 .timeline-item:nth-child(3n) .timeline-item__body::before {
-  background: var(--rose);
-  box-shadow: 0 0 0 1px rgba(255, 122, 162, 0.54);
+  background: var(--amber);
+  box-shadow: 0 0 0 1px rgba(216, 184, 106, 0.26);
 }
 
 .timeline-item__body h3 {
@@ -2075,8 +2160,8 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-    rgba(255, 255, 255, 0.035);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.048), rgba(255, 255, 255, 0.018)),
+    rgba(255, 255, 255, 0.028);
 }
 
 .about-card h3 {
@@ -2100,9 +2185,9 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background:
-    radial-gradient(circle at 50% 0%, rgba(158, 240, 26, 0.14), transparent 34%),
-    linear-gradient(120deg, rgba(158, 240, 26, 0.09), transparent 45%),
-    rgba(8, 9, 11, 0.86);
+    radial-gradient(circle at 50% 0%, rgba(215, 255, 100, 0.08), transparent 34%),
+    linear-gradient(120deg, rgba(142, 232, 220, 0.045), transparent 45%),
+    rgba(12, 12, 10, 0.88);
   box-shadow:
     var(--shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -2116,9 +2201,9 @@ main {
   gap: 0.75rem;
   min-height: 72px;
   padding: 1rem;
-  border: 1px solid rgba(158, 240, 26, 0.36);
+  border: 1px solid var(--accent-line);
   border-radius: var(--radius-card);
-  background: rgba(158, 240, 26, 0.12);
+  background: var(--accent-soft);
   color: var(--text);
   font-size: 1rem;
   font-weight: 850;
@@ -2143,7 +2228,7 @@ main {
   min-height: 48px;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.036);
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 800;
@@ -2156,8 +2241,8 @@ main {
 
 .contact-secondary a:hover {
   transform: translateY(-2px);
-  border-color: rgba(114, 242, 201, 0.45);
-  background: rgba(114, 242, 201, 0.08);
+  border-color: rgba(142, 232, 220, 0.28);
+  background: rgba(142, 232, 220, 0.055);
   color: var(--text);
 }
 
@@ -2188,16 +2273,13 @@ main {
     font-size: 4rem;
   }
 
-  .journey-panel--passage,
-  .journey-panel--arrival {
-    right: 1rem;
+  .selected-works-intro {
+    grid-template-columns: 1fr;
   }
 
-  .hero-canvas-shell,
-  .hero-fallback-scene {
-    right: -11rem;
-    width: 620px;
-    opacity: 0.58;
+  .selected-gallery-panel--entry,
+  .selected-gallery-panel--landing {
+    right: 1rem;
   }
 
   .projects-grid {
@@ -2277,51 +2359,78 @@ main {
     margin-top: 2rem;
   }
 
-  .journey-section {
-    min-height: 1500px;
+  .selected-works-intro {
+    width: min(100% - 24px, 1180px);
+    padding-top: 4.6rem;
   }
 
-  .journey-section.is-static {
+  .selected-works-intro h2 {
+    font-size: clamp(3.4rem, 18vw, 6.4rem);
+  }
+
+  .selected-gallery-track {
+    height: auto;
     min-height: 760px;
   }
 
-  .journey-overlay {
+  .selected-gallery-sticky {
+    position: relative;
+    min-height: 760px;
+  }
+
+  .selected-gallery-overlay {
     width: min(100% - 24px, 1180px);
   }
 
-  .journey-panel {
+  .selected-gallery-panel {
     max-width: 92%;
   }
 
-  .journey-panel--intro {
-    top: 18%;
+  .selected-gallery-panel--intro {
+    top: 12%;
   }
 
-  .journey-panel--approach,
-  .journey-panel--passage {
-    top: 28%;
+  .selected-gallery-panel--entry {
+    top: 24%;
     right: auto;
     left: 0;
     text-align: left;
   }
 
-  .journey-panel--arrival {
+  .selected-gallery-panel--focus {
+    bottom: 24%;
+    left: 0;
+  }
+
+  .selected-gallery-panel--landing {
     right: auto;
-    bottom: 18%;
+    bottom: 10%;
     left: 0;
     text-align: left;
   }
 
-  .journey-next {
+  .selected-gallery-next {
     justify-self: start;
   }
 
-  .hero-canvas-shell,
-  .hero-fallback-scene {
-    inset: auto -16rem -1rem auto;
-    width: 520px;
-    height: 420px;
-    opacity: 0.34;
+  .selected-works-fallback__screen {
+    width: min(360px, 72vw);
+    min-height: 190px;
+  }
+
+  .selected-works-fallback__panels span {
+    width: 112px;
+    height: 72px;
+  }
+
+  .selected-works-fallback__panels span:nth-child(1),
+  .selected-works-fallback__panels span:nth-child(3) {
+    left: 4%;
+  }
+
+  .selected-works-fallback__panels span:nth-child(2),
+  .selected-works-fallback__panels span:nth-child(4) {
+    right: 4%;
   }
 
   .projects-grid,
@@ -2440,48 +2549,50 @@ main {
   }
 
   .project-card,
-  .hero-canvas-shell,
-  .hero-fallback-scene {
+  .selected-works-canvas-shell,
+  .selected-works-fallback {
     transform: none !important;
   }
 
   .hero-copy,
   .hero-status,
-  .journey-panel {
+  .selected-gallery-panel {
     opacity: 1 !important;
     filter: none !important;
     transform: none !important;
   }
 
-  .journey-section {
+  .selected-gallery-track {
     height: auto !important;
-    min-height: 760px !important;
+    min-height: 820px !important;
   }
 
-  .journey-sticky {
+  .selected-gallery-sticky {
     position: relative !important;
   }
 
-  .journey-overlay {
+  .selected-gallery-overlay {
     position: relative !important;
     display: grid !important;
     align-content: center !important;
     gap: 1rem !important;
+    min-height: 820px !important;
+    padding: 5rem 0 !important;
   }
 
-  .journey-panel {
+  .selected-gallery-panel {
     position: relative !important;
     inset: auto !important;
     max-width: 640px !important;
     text-align: left !important;
   }
 
-  .journey-panel--approach,
-  .journey-panel--passage {
+  .selected-gallery-panel--entry,
+  .selected-gallery-panel--focus {
     display: none !important;
   }
 
-  .journey-next {
+  .selected-gallery-next {
     justify-self: start !important;
   }
 }

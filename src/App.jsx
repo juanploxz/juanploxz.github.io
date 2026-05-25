@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import SiteHeader from "./components/layout/SiteHeader";
 import HeroSection from "./sections/HeroSection";
-import ImmersiveJourneySection from "./sections/ImmersiveJourneySection";
+import SelectedWorksGallerySection from "./sections/SelectedWorksGallerySection";
 import ProjectsSection from "./sections/ProjectsSection";
 import SkillsSection from "./sections/SkillsSection";
 import TimelineSection from "./sections/TimelineSection";
@@ -90,7 +90,7 @@ function App() {
 
       <main id="content">
         <HeroSection />
-        <ImmersiveJourneySection />
+        <SelectedWorksGallerySection />
         <ProjectsSection
           projects={projects}
           selectedProject={selectedProject}

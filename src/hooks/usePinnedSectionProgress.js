@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const phaseRanges = {
-  outside: [0, 0.2],
-  approach: [0.2, 0.45],
-  passage: [0.45, 0.75],
-  arrival: [0.75, 1],
+  title: [0, 0.18],
+  approach: [0.18, 0.38],
+  entry: [0.38, 0.65],
+  focus: [0.65, 0.85],
+  landing: [0.85, 1],
 };
 
 function clamp(value, min = 0, max = 1) {
@@ -20,7 +21,7 @@ function normalizePhase(progress, [start, end]) {
   return smooth((progress - start) / (end - start));
 }
 
-export function useScrollJourneyProgress(sectionRef) {
+export function usePinnedSectionProgress(sectionRef) {
   const [progress, setProgress] = useState(0);
   const progressRef = useRef(0);
 
@@ -44,19 +45,19 @@ export function useScrollJourneyProgress(sectionRef) {
       }
     };
 
-    const handleScroll = () => {
+    const requestUpdate = () => {
       window.cancelAnimationFrame(animationFrame);
       animationFrame = window.requestAnimationFrame(updateProgress);
     };
 
     updateProgress();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
     };
   }, [sectionRef]);
 

@@ -28,7 +28,7 @@ function HeroSection() {
           clarity, usability, and product logic.
         </Motion.p>
         <Motion.div className="hero-actions" variants={revealItem}>
-          <a className="button button--primary" href="#journey" data-magnetic>
+          <a className="button button--primary" href="#selected-work" data-magnetic>
             <span>Enter product space</span>
             <ArrowDownRight aria-hidden="true" />
           </a>

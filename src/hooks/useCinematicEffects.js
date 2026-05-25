@@ -39,7 +39,7 @@ export function useCinematicEffects() {
       context = gsap.context(() => {
         gsap.utils.toArray("[data-cinematic]").forEach((section) => {
           const revealTargets = section.querySelectorAll(
-            ".section-header, .project-filter-note"
+            ".section-header, .selected-works-intro, .project-filter-note"
           );
 
           if (!revealTargets.length) {

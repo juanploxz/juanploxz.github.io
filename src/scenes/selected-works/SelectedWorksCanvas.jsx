@@ -1,41 +1,31 @@
 import { Canvas } from "@react-three/fiber";
 import { AdaptiveDpr } from "@react-three/drei/core/AdaptiveDpr";
 import { useMemo } from "react";
-import HeroFallbackScene from "./HeroFallbackScene";
-import HeroScene from "./HeroScene";
-import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
 import { shouldUseCompactVisuals, supportsWebGL } from "../../lib/browserCapabilities";
+import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
+import SelectedWorksFallback from "./SelectedWorksFallback";
+import SelectedWorksScene from "./SelectedWorksScene";
 
-const defaultJourney = {
-  progress: 0,
-  phases: {
-    outside: 0,
-    approach: 0,
-    passage: 0,
-    arrival: 0,
-  },
-};
-
-function HeroCanvas({ journey = defaultJourney }) {
+function SelectedWorksCanvas({ journey, activeProject }) {
   const reducedMotion = useReducedMotionSafe();
   const webGLAvailable = useMemo(() => supportsWebGL(), []);
   const compact = useMemo(() => shouldUseCompactVisuals(), []);
 
   if (reducedMotion || !webGLAvailable) {
-    return <HeroFallbackScene />;
+    return <SelectedWorksFallback activeProject={activeProject} />;
   }
 
   return (
-    <div className="hero-canvas-shell">
+    <div className="selected-works-canvas-shell">
       <Canvas
-        className="hero-canvas"
+        className="selected-works-canvas"
         camera={{
-          position: [0, 0.58, 5.24],
-          fov: compact ? 43 : 38,
+          position: [0, 1.4, 8.5],
+          fov: compact ? 44 : 42,
           near: 0.1,
-          far: 40,
+          far: 32,
         }}
-        dpr={compact ? [1, 1.15] : [1, 1.65]}
+        dpr={compact ? [1, 1.15] : [1, 1.6]}
         gl={{
           alpha: true,
           antialias: !compact,
@@ -49,10 +39,14 @@ function HeroCanvas({ journey = defaultJourney }) {
         }}
       >
         <AdaptiveDpr pixelated />
-        <HeroScene journey={journey} compact={compact} />
+        <SelectedWorksScene
+          journey={journey}
+          activeProject={activeProject}
+          compact={compact}
+        />
       </Canvas>
     </div>
   );
 }
 
-export default HeroCanvas;
+export default SelectedWorksCanvas;
