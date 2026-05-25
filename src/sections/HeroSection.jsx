@@ -17,19 +17,24 @@ function HeroSection() {
         animate="visible"
       >
         <Motion.p className="hero-kicker" variants={revealItem}>
-          Developer portfolio / Product-minded software builder
+          Juan Parra / Software systems portfolio
         </Motion.p>
-        <Motion.h1 id="hero-title" variants={revealItem}>
-          I turn technical projects into polished software product stories.
+        <Motion.h1 id="hero-title" className="hero-name" variants={revealItem}>
+          Juan Parra
         </Motion.h1>
+        <Motion.p className="hero-role" variants={revealItem}>
+          Software Developer & Systems Engineering Student
+        </Motion.p>
+        <Motion.p className="hero-statement" variants={revealItem}>
+          I build software systems into polished product experiences.
+        </Motion.p>
         <Motion.p className="hero-lede" variants={revealItem}>
-          I am Juan Parra, a systems engineering student building web apps,
-          mobile concepts, AI workflows, and data dashboards with a focus on
-          clarity, usability, and product logic.
+          Web apps, mobile concepts, AI workflows, and data dashboards shaped
+          with product logic, clear interfaces, and technical intent.
         </Motion.p>
         <Motion.div className="hero-actions" variants={revealItem}>
           <a className="button button--primary" href="#selected-work" data-magnetic>
-            <span>Enter product space</span>
+            <span>Enter the gallery</span>
             <ArrowDownRight aria-hidden="true" />
           </a>
           <a className="button button--ghost" href={profile.github} target="_blank" rel="noreferrer" data-magnetic>
@@ -44,8 +49,8 @@ function HeroSection() {
       </Motion.div>
 
       <Motion.div className="hero-status" variants={revealItem} initial="hidden" animate="visible">
-        <span>Current focus</span>
-        <strong>Backend logic, AI product workflows, mobile UX, BI dashboards</strong>
+        <span>Selected focus</span>
+        <strong>Backend logic / Mobile UX / AI product workflows / BI systems</strong>
       </Motion.div>
     </section>
   );

@@ -12,7 +12,7 @@ function SelectedWorksCanvas({ journey, activeProject }) {
   const compact = useMemo(() => shouldUseCompactVisuals(), []);
 
   if (reducedMotion || !webGLAvailable) {
-    return <SelectedWorksFallback activeProject={activeProject} />;
+    return <SelectedWorksFallback />;
   }
 
   return (

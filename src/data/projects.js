@@ -182,7 +182,7 @@ export const projects = [
   },
   {
     id: "movie-reviews",
-    title: "Movie Reviews / Proyecto Integrador",
+    title: "Movie Reviews Platform",
     category: "Django Web App",
     year: "2025",
     status: "Integrated project",

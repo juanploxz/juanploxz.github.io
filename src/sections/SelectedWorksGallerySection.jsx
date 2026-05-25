@@ -24,6 +24,7 @@ function overlayStyle(visibility, depth = 18) {
 
   return {
     opacity: visible,
+    pointerEvents: visible > 0.08 ? "auto" : "none",
     transform: `translate3d(0, ${(1 - visible) * depth}px, 0) scale(${
       0.98 + visible * 0.02
     })`,
@@ -37,24 +38,57 @@ function visibleBetween(progress, start, end) {
 }
 
 function getActiveProject(progress) {
-  if (progress < 0.32) {
+  if (progress < 0.24) {
     return projects[0];
   }
 
-  if (progress < 0.5) {
-    return projects[2];
-  }
-
-  if (progress < 0.68) {
+  if (progress < 0.42) {
     return projects[1];
   }
 
-  if (progress < 0.84) {
+  if (progress < 0.58) {
+    return projects[2];
+  }
+
+  if (progress < 0.74) {
     return projects[3];
   }
 
   return projects[4];
 }
+
+const galleryAccentByProject = {
+  flowgate: "#4ecdc4",
+  "workout-tracker": "#d8b86a",
+  thefinder: "#caff3d",
+  "movie-reviews": "#d98aa8",
+  "powerbi-crisis": "#87bdcc",
+};
+
+function getGalleryAccent(project) {
+  return galleryAccentByProject[project.id] ?? project.accent;
+}
+
+const termScenes = [
+  {
+    className: "selected-gallery-panel--term-one",
+    label: "Capabilities",
+    title: "Web · Mobile · AI · Data",
+    range: [0.3, 0.46],
+  },
+  {
+    className: "selected-gallery-panel--term-two",
+    label: "Systems",
+    title: "Product Thinking",
+    range: [0.46, 0.6],
+  },
+  {
+    className: "selected-gallery-panel--term-three",
+    label: "Experience",
+    title: "Interfaces · Automation",
+    range: [0.6, 0.76],
+  },
+];
 
 function SelectedWorksGallerySection() {
   const trackRef = useRef(null);
@@ -95,6 +129,8 @@ function SelectedWorksGallerySection() {
   }, [canUse3D]);
 
   const { progress, phases } = journey;
+  const galleryAccent =
+    progress >= 0.82 ? getGalleryAccent(activeProject) : "var(--accent)";
   const galleryStyle = {
     "--gallery-progress": progress,
     "--gallery-title": phases.title,
@@ -102,13 +138,17 @@ function SelectedWorksGallerySection() {
     "--gallery-entry": phases.entry,
     "--gallery-focus": phases.focus,
     "--gallery-landing": phases.landing,
-    "--active-accent": activeProject.accent,
+    "--active-accent": galleryAccent,
   };
 
-  const introVisibility = isStatic ? 1 : visibleBetween(progress, 0, 0.2);
-  const entryVisibility = isStatic ? 1 : visibleBetween(progress, 0.2, 0.48);
-  const focusVisibility = isStatic ? 1 : visibleBetween(progress, 0.46, 0.78);
-  const landingVisibility = isStatic ? 1 : phases.landing;
+  const introVisibility = isStatic ? 1 : visibleBetween(progress, 0, 0.22);
+  const entryVisibility = isStatic ? 0 : visibleBetween(progress, 0.18, 0.32);
+  const termVisibilities = termScenes.map((scene, index) =>
+    isStatic
+      ? Number(index === 0 && !canUse3D)
+      : visibleBetween(progress, ...scene.range)
+  );
+  const landingVisibility = isStatic ? 0 : visibleBetween(progress, 0.84, 1);
 
   return (
     <section
@@ -145,10 +185,7 @@ function SelectedWorksGallerySection() {
             {canUse3D && isNearViewport ? (
               <Suspense
                 fallback={
-                  <SelectedWorksFallback
-                    loading
-                    activeProject={activeProject}
-                  />
+                  <SelectedWorksFallback loading />
                 }
               >
                 <SelectedWorksCanvas
@@ -157,7 +194,7 @@ function SelectedWorksGallerySection() {
                 />
               </Suspense>
             ) : (
-              <SelectedWorksFallback activeProject={activeProject} />
+              <SelectedWorksFallback />
             )}
           </div>
 
@@ -169,34 +206,41 @@ function SelectedWorksGallerySection() {
               style={overlayStyle(introVisibility)}
             >
               <span>Selected Work</span>
-              <h3>Entering the work room.</h3>
+              <h3>Enter the work room</h3>
             </div>
 
             <div
               className="selected-gallery-panel selected-gallery-panel--entry"
               style={overlayStyle(entryVisibility)}
             >
-              <span>Product systems</span>
-              <h3>Web / Mobile / AI / Data</h3>
+              <span>Work room</span>
+              <h3>Let the room move first</h3>
             </div>
 
-            <div
-              className="selected-gallery-panel selected-gallery-panel--focus"
-              style={overlayStyle(focusVisibility)}
-            >
-              <span>Now viewing</span>
-              <h3>{activeProject.title}</h3>
-              <p>{activeProject.orbit}</p>
-            </div>
+            {termScenes.map((scene, index) => (
+              <div
+                key={scene.title}
+                className={[
+                  "selected-gallery-panel",
+                  "selected-gallery-panel--term",
+                  scene.className,
+                ].join(" ")}
+                style={overlayStyle(termVisibilities[index])}
+              >
+                <span>{scene.label}</span>
+                <h3>{scene.title}</h3>
+              </div>
+            ))}
 
             <div
               className="selected-gallery-panel selected-gallery-panel--landing"
               style={overlayStyle(landingVisibility)}
             >
-              <span>Case studies</span>
-              <h3>Explore the full project stories below.</h3>
+              <span>Next</span>
+              <h3>Case studies below</h3>
+              <p>Project work starts here</p>
               <a className="selected-gallery-next" href="#projects">
-                <span>Go to projects</span>
+                <span>Continue</span>
                 <ArrowDownRight aria-hidden="true" />
               </a>
             </div>

@@ -15,8 +15,8 @@ function ContactSection() {
     <section className="section section--contact" id="contact" data-cinematic>
       <SectionHeader
         kicker="Contact"
-        title="Have a project, internship, or product idea worth shaping?"
-        text="I am open to collaborations, junior developer opportunities, and projects where clean product thinking matters as much as the code."
+        title="Let’s shape the next system."
+        text="Open to internships, junior developer roles, and collaborations where software needs to feel clear, useful, and polished."
         align="center"
       />
 

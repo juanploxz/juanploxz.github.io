@@ -6,7 +6,7 @@ import { softScale, viewportOnce } from "../../lib/animations";
 import { useReducedMotionSafe } from "../../hooks/useReducedMotionSafe";
 import ProjectVisual from "./ProjectVisual";
 
-function ProjectCard({ project, isActive, isDimmed, activeSkill, onSelect }) {
+function ProjectCard({ project, index = 0, isActive, isDimmed, activeSkill, onSelect }) {
   const reducedMotion = useReducedMotionSafe();
   const [tilt, setTilt] = useState({ x: "0deg", y: "0deg" });
   const matchedSkill = activeSkill !== "all" && project.skills.includes(activeSkill);
@@ -71,6 +71,10 @@ function ProjectCard({ project, isActive, isDimmed, activeSkill, onSelect }) {
       whileInView="visible"
       viewport={viewportOnce}
     >
+      <div className="project-card__index" aria-hidden="true">
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
       <Motion.div
         className="project-card__visual"
         aria-hidden="true"

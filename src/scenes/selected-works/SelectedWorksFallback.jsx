@@ -1,6 +1,6 @@
-import { projects } from "../../data/projects";
+const fallbackPanels = ["Web", "Mobile", "AI", "Data", "Systems"];
 
-function SelectedWorksFallback({ loading = false, activeProject = projects[0] }) {
+function SelectedWorksFallback({ loading = false }) {
   return (
     <div
       className={[
@@ -9,7 +9,7 @@ function SelectedWorksFallback({ loading = false, activeProject = projects[0] })
       ]
         .filter(Boolean)
         .join(" ")}
-      style={{ "--active-accent": activeProject.accent }}
+      style={{ "--active-accent": "var(--accent)" }}
     >
       <div className="selected-works-fallback__room" aria-hidden="true">
         <span />
@@ -18,21 +18,20 @@ function SelectedWorksFallback({ loading = false, activeProject = projects[0] })
       </div>
       <div className="selected-works-fallback__screen" aria-hidden="true">
         <div>
-          <span>{activeProject.orbit}</span>
-          <strong>{activeProject.title}</strong>
+          <span>Work room</span>
+          <strong>Web · Mobile · AI · Data</strong>
         </div>
         <i />
         <i />
         <i />
       </div>
       <div className="selected-works-fallback__panels" aria-hidden="true">
-        {projects.map((project, index) => (
+        {fallbackPanels.map((panel, index) => (
           <span
-            key={project.id}
-            className={project.id === activeProject.id ? "is-active" : ""}
+            key={panel}
             style={{
               "--panel-index": index,
-              "--project-accent": project.accent,
+              "--project-accent": "var(--accent)",
             }}
           />
         ))}

@@ -4,8 +4,8 @@ const phaseRanges = {
   title: [0, 0.18],
   approach: [0.18, 0.38],
   entry: [0.38, 0.65],
-  focus: [0.65, 0.85],
-  landing: [0.85, 1],
+  focus: [0.6, 1],
+  landing: [0.72, 1],
 };
 
 function clamp(value, min = 0, max = 1) {
