@@ -177,7 +177,7 @@ function resetStream(stream, streams, width, height, compact, initial = false) {
   stream.lineStarted.fill(0);
 
   for (let index = 0; index < MAX_STREAM_LINES; index += 1) {
-    stream.lineTypingSpeeds[index] = randomBetween(compact ? 3.2 : 3.8, compact ? 5 : 6.2);
+    stream.lineTypingSpeeds[index] = randomBetween(compact ? 2.1 : 2.4, compact ? 3.3 : 4);
   }
 
   stream.textAlign = stream.x > width * 0.68 ? "right" : "left";
