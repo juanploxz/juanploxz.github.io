@@ -28,7 +28,8 @@
 
 @media (max-width: 820px) {
   .code-rain-background {
-    opacity: 0.66;
+    z-index: 3;
+    opacity: 0.58;
   }
 }
 

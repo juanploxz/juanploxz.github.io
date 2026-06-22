@@ -319,6 +319,38 @@ test("code rain animates safely and becomes static with reduced motion", async (
   expect(staticEnd.hash).toBe(staticStart.hash);
 });
 
+test("mobile top composition stays compact and readable", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const layout = await page.evaluate(() => {
+    const header = document.querySelector(".site-header").getBoundingClientRect();
+    const selectedTitle = document
+      .querySelector(".selected-works-intro h2")
+      .getBoundingClientRect();
+    const canvasStyle = getComputedStyle(document.querySelector(".code-rain-background"));
+
+    return {
+      headerHeight: header.height,
+      heroActionsDisplay: getComputedStyle(document.querySelector(".hero-actions")).display,
+      githubDisplay: getComputedStyle(document.querySelector('.social-links a[href*="github.com"]'))
+        .display,
+      selectedTitleWidth: selectedTitle.width,
+      rainOpacity: Number.parseFloat(canvasStyle.opacity),
+      rainZIndex: Number.parseInt(canvasStyle.zIndex, 10),
+      horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
+    };
+  });
+
+  expect(layout.headerHeight).toBeLessThanOrEqual(68);
+  expect(layout.heroActionsDisplay).toBe("none");
+  expect(layout.githubDisplay).toBe("none");
+  expect(layout.selectedTitleWidth).toBeLessThanOrEqual(362);
+  expect(layout.rainOpacity).toBeGreaterThanOrEqual(0.55);
+  expect(layout.rainZIndex).toBe(3);
+  expect(layout.horizontalOverflow).toBe(false);
+});
+
 test("renders on mobile with reduced motion and no critical errors", async ({ page }) => {
   const criticalErrors = [];
   page.on("console", (message) => {

@@ -159,7 +159,7 @@ function resetStream(stream, streams, width, height, compact, initial = false) {
     ? (stream.index * 173 + height * 0.17) % Math.max(1, height)
     : randomBetween(compact ? -90 : -120, -24);
   stream.speed = randomBetween(compact ? 20 : 22, compact ? 34 : 44);
-  stream.fontSize = randomBetween(compact ? 9 : 10, compact ? 10.5 : 12.5);
+  stream.fontSize = randomBetween(compact ? 9.5 : 10, compact ? 11.5 : 12.5);
   stream.gap = randomBetween(compact ? 24 : 25, compact ? 29 : 32);
   stream.previousSequenceIndex = stream.sequenceIndex;
   stream.sequenceIndex = pickSequenceIndex(stream, streams);
@@ -167,7 +167,7 @@ function resetStream(stream, streams, width, height, compact, initial = false) {
     CODE_SEQUENCES[stream.sequenceIndex].length,
     Math.floor(randomBetween(compact ? 3 : 3, compact ? 4.8 : 5.6))
   );
-  stream.opacity = randomBetween(compact ? 0.14 : 0.17, compact ? 0.21 : 0.27);
+  stream.opacity = randomBetween(compact ? 0.2 : 0.17, compact ? 0.3 : 0.27);
 
   if (!compact && stream.x > width * 0.14 && stream.x < width * 0.58) {
     stream.opacity *= 0.78;
@@ -396,8 +396,8 @@ function CodeRainBackground({ reducedMotion = false }) {
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
       const streamCount = Math.min(
-        compact ? 5 : 12,
-        Math.max(compact ? 4 : 8, Math.floor(width / (compact ? 94 : 120)))
+        compact ? 7 : 12,
+        Math.max(compact ? 5 : 8, Math.floor(width / (compact ? 88 : 120)))
       );
       const particleCount = compact ? 12 : 28;
       streams = Array.from({ length: streamCount }, (_, index) => createStream(index));

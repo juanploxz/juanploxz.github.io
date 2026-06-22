@@ -130,6 +130,9 @@
 @media (max-width: 460px) {
   .site-header {
     gap: 0.4rem;
+    min-height: 64px;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
   }
 
   .brand-mark {
@@ -154,6 +157,10 @@
   .command-trigger {
     width: 36px;
     height: 36px;
+  }
+
+  .social-links a[href*="github.com"] {
+    display: none;
   }
 }
 
