@@ -1,34 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-
-const phaseRanges = {
-  title: [0, 0.18],
-  approach: [0.18, 0.38],
-  entry: [0.38, 0.65],
-  focus: [0.6, 1],
-  landing: [0.72, 1],
-};
+import { useEffect, useRef, useState } from "react";
+import { NAVIGATION_END_EVENT, NAVIGATION_START_EVENT } from "../lib/scrollNavigation";
 
 function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
-function smooth(value) {
-  const t = clamp(value);
-  return t * t * (3 - 2 * t);
-}
-
-function normalizePhase(progress, [start, end]) {
-  return smooth((progress - start) / (end - start));
-}
-
-export function usePinnedSectionProgress(sectionRef) {
+export function usePinnedSectionProgress(sectionRef, enabled = true) {
   const [progress, setProgress] = useState(0);
   const progressRef = useRef(0);
 
   useEffect(() => {
+    if (!enabled) {
+      return undefined;
+    }
+
     let animationFrame = 0;
+    let suspendUpdates = false;
 
     const updateProgress = () => {
+      if (suspendUpdates) {
+        return;
+      }
+
       const section = sectionRef.current;
 
       if (!section) {
@@ -39,44 +32,48 @@ export function usePinnedSectionProgress(sectionRef) {
       const scrollableDistance = Math.max(1, rect.height - window.innerHeight);
       const next = clamp(-rect.top / scrollableDistance);
 
-      if (Math.abs(next - progressRef.current) > 0.002) {
+      if (Math.abs(next - progressRef.current) > 0.003) {
         progressRef.current = next;
         setProgress(next);
       }
     };
 
     const requestUpdate = () => {
+      if (suspendUpdates) {
+        return;
+      }
+
       window.cancelAnimationFrame(animationFrame);
       animationFrame = window.requestAnimationFrame(updateProgress);
+    };
+
+    const handleNavigationStart = (event) => {
+      suspendUpdates = Boolean(event.detail?.longDistance);
+
+      if (suspendUpdates) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+
+    const handleNavigationEnd = () => {
+      suspendUpdates = false;
+      requestUpdate();
     };
 
     updateProgress();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
+    window.addEventListener(NAVIGATION_START_EVENT, handleNavigationStart);
+    window.addEventListener(NAVIGATION_END_EVENT, handleNavigationEnd);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener(NAVIGATION_START_EVENT, handleNavigationStart);
+      window.removeEventListener(NAVIGATION_END_EVENT, handleNavigationEnd);
     };
-  }, [sectionRef]);
+  }, [enabled, sectionRef]);
 
-  const phases = useMemo(
-    () =>
-      Object.fromEntries(
-        Object.entries(phaseRanges).map(([phase, range]) => [
-          phase,
-          normalizePhase(progress, range),
-        ])
-      ),
-    [progress]
-  );
-
-  return useMemo(
-    () => ({
-      progress,
-      phases,
-    }),
-    [progress, phases]
-  );
+  return progress;
 }

@@ -1,0 +1,28 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1rem;
+}
+
+.about-card {
+  min-height: 210px;
+  padding: 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(180deg, rgba(210, 230, 255, 0.044), rgba(210, 230, 255, 0.016)),
+    rgba(210, 230, 255, 0.026);
+}
+
+.about-card h3 {
+  margin: 0;
+  font-size: 1.22rem;
+}
+
+.about-card p {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+

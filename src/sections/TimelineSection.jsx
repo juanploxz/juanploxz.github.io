@@ -1,14 +1,19 @@
 import { motion as Motion } from "framer-motion";
 import SectionHeader from "../components/ui/SectionHeader";
 import { revealContainer, revealItem, viewportOnce } from "../lib/animations";
+import { useLanguage } from "../hooks/useLanguage";
 
 function TimelineSection({ timeline }) {
+  const { t } = useLanguage();
+  const translatedItems = t("timeline.items");
+
   return (
-    <section className="section section--timeline" id="timeline" data-cinematic>
+    <section className="section section--timeline" id="timeline" aria-labelledby="timeline-title">
       <SectionHeader
-        kicker="Technical timeline"
-        title="A learning path moving from syntax to systems to product thinking."
-        text="The timeline connects foundations, implementation, product decisions, and the current portfolio direction."
+        titleId="timeline-title"
+        kicker={t("timeline.kicker")}
+        title={t("timeline.title")}
+        text={t("timeline.intro")}
       />
 
       <Motion.ol
@@ -18,15 +23,19 @@ function TimelineSection({ timeline }) {
         whileInView="visible"
         viewport={viewportOnce}
       >
-        {timeline.map((item) => (
-          <Motion.li className="timeline-item" key={item.period} variants={revealItem}>
+        {timeline.map((item, index) => (
+          <Motion.li
+            className="timeline-item"
+            key={`${item.period}-${item.title}`}
+            variants={revealItem}
+          >
             <div className="timeline-item__period">
               <span>{item.period}</span>
-              <small>{item.signal}</small>
+              <small>{translatedItems[index]?.signal ?? item.signal}</small>
             </div>
             <div className="timeline-item__body">
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <h3>{translatedItems[index]?.title ?? item.title}</h3>
+              <p>{translatedItems[index]?.text ?? item.text}</p>
             </div>
           </Motion.li>
         ))}

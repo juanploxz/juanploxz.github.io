@@ -1,95 +1,114 @@
-# Juan Parra Developer Portfolio
+# Juan Parra Portfolio
 
-Premium interactive portfolio for Juan Pablo Parra El-Masri. The site presents projects as product case studies, connecting technical skills with concrete software decisions across web apps, mobile UX, AI workflows, Django systems, and business intelligence dashboards.
+Personal portfolio for Juan Pablo Parra El-Masri, built to present software
+projects as product-minded case studies across web, mobile, backend logic, AI
+workflows, data dashboards, and interactive experiences.
 
-## Stack
+Live site: https://juanploxz.github.io
+
+## Tech Stack
 
 - React
 - Vite
 - Tailwind CSS
-- Framer Motion
-- GSAP + ScrollTrigger
-- React Three Fiber
-- Three.js
-- drei, used for adaptive DPR inside the WebGL canvas
+- Framer Motion / Motion
 - Lucide React
-- GitHub Pages via `gh-pages`
+- Radix UI Dialog, used only for accessible command-palette focus management
+- GitHub Pages
 
-## Experience
+## Main Sections
 
-- Premium 2D hero followed by a dedicated pinned immersive journey section.
-- WebGL scene is lazy-loaded only inside the immersive section on capable desktop browsers.
-- Mobile, WebGL-unavailable, and reduced-motion users receive a lightweight DOM fallback.
-- Data-driven project model in `src/data/projects.js`.
-- Interactive project cards with project-specific visual previews, tilt, pointer glow, skill previews, tap-friendly mobile states, and shared-layout case-study transitions.
-- Case studies follow `Problem -> System -> Technical decisions -> Skills used -> Outcome`.
-- Skills Explorer maps skills directly to the projects where they appear.
-- GSAP-powered section reveals and magnetic CTA interactions.
-- Technical timeline, about section, contact CTA, robots.txt, sitemap, and SEO metadata.
+- Hero: concise introduction, role, focus areas, and primary calls to action.
+- Selected Work: responsive transition gallery that presents capabilities through
+  cinematic 2D/2.5D project slides.
+- Projects: project cards and case-study details connected to technical skills.
+- Skills: capability and technology mapping across portfolio projects.
+- Timeline: learning and project growth path.
+- About: personal working principles and professional focus.
+- Contact: email and social links.
 
-## Architecture Summary
+## Design Direction
 
-The application keeps critical content in semantic React components and uses WebGL only as an atmospheric enhancement. `src/App.jsx` owns the selected project and selected skill state, then passes that state into data-driven sections.
+The portfolio aims for a polished, modern, high-end editorial feel. The page uses
+premium 2D UI, restrained motion, strong typography, clear hierarchy, and a dark /
+cream visual identity with lime and cyan accents.
 
-Project and skill content live in `src/data/`, which keeps the UI scalable and avoids hardcoded case-study copy inside components. The project feature layer in `src/features/projects/` renders cards, shared transitions, case-study details, stages, decisions, and skill links. The skills feature layer in `src/features/skills/` renders the project-skill explorer and handles the selection affordances.
+## Transition Gallery
 
-The immersive layer is isolated in `src/sections/ImmersiveJourneySection.jsx`, `src/scenes/hero/`, and `src/hooks/useScrollJourneyProgress.js`. The page flow is intentionally structured as 2D hero -> pinned 3D transition -> 2D editorial projects, instead of using WebGL as a permanent background. `HeroCanvas` stays lazy-loaded, while `HeroFallbackScene` keeps mobile, reduced-motion, and WebGL-unavailable paths readable and performant. The R3F scene uses a local scroll progress value and keyframed camera path to move through a corridor/portal environment toward project panels.
+Selected Work uses progress-driven CSS transforms and React state to move between
+capability slides on desktop. Compact devices use a lightweight horizontal
+scroll-snap gallery, while reduced-motion behavior avoids cinematic transitions.
+No WebGL runtime is required.
 
-GSAP is dynamically imported inside the cinematic effects hook so ScrollTrigger and magnetic interactions do not inflate the initial bundle.
+## Accessibility And Performance
 
-Reduced motion is handled globally through Framer Motion's `MotionConfig`, and additional effects are skipped in hooks/components when `prefers-reduced-motion` is active.
+- Semantic sections and headings are used throughout the page.
+- A skip link is available for keyboard users.
+- Motion is routed through Framer Motion and CSS with reduced-motion safeguards.
+- Decorative project visuals are hidden from assistive technology when appropriate.
+- Compact devices and reduced-motion users receive intentional, lightweight layouts.
+- Project visuals are generated with CSS/React rather than heavy image assets.
 
-## Project Structure
+## Development
 
-```txt
-src/
-  components/
-    layout/
-    ui/
-  data/
-  features/
-    projects/
-    skills/
-  hooks/
-  lib/
-  scenes/
-    hero/
-  sections/
-```
-
-## Audit Snapshot
-
-Production preview audited at `http://127.0.0.1:4173/`.
-
-- Lighthouse Performance: 91
-- Lighthouse Accessibility: 100
-- Lighthouse Best Practices: 100
-- Lighthouse SEO: 100
-- `npm audit --audit-level=moderate`: 0 vulnerabilities
-- `npm exec eslint .`: passing
-- `npm run build`: passing
-- Internal hash links checked: `#content`, `#top`, `#journey`, `#projects`, `#skills`, `#contact`
-- Visual smoke tests confirm desktop WebGL canvas and mobile fallback render nonblank
-
-The 3D journey remains a separate lazy chunk. Vite still reports that chunk as large because it contains Three/R3F, but it is not part of the mobile or initial semantic content path.
-
-## Run Locally
+Install dependencies:
 
 ```bash
 npm install
+```
+
+Start local development:
+
+```bash
 npm run dev
 ```
 
-## Build
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-## Deploy
+Run code-quality checks:
 
-The repository is configured for `juanploxz.github.io`, so Vite keeps `base: "/"` in `vite.config.js`.
+```bash
+npm run lint
+npm run format:check
+npm run test:e2e
+```
+
+Playwright tests run against a local Vite preview. Install its Chromium binary once
+with `npx playwright install chromium` when preparing a new development machine.
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## Deployment
+
+The repository is configured for the root GitHub Pages domain:
+
+```txt
+https://juanploxz.github.io
+```
+
+Because this is a user GitHub Pages site, Vite uses `base: "/"` in
+`vite.config.js`.
+
+Deploy with:
 
 ```bash
 npm run deploy
 ```
+
+The deploy script builds the site and publishes `dist/` through `gh-pages`.
+
+## Future Roadmap
+
+- Add Lighthouse and accessibility checks to CI when a deployment workflow is
+  introduced.
+- Add verified repository or live-project links as they become available.
+- Remove legacy theme blocks from `utilities.css` incrementally after visual
+  regression coverage is expanded.

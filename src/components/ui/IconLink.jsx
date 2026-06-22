@@ -1,9 +1,9 @@
-function IconLink({ href, label, icon }) {
+function IconLink({ href, label, icon, className }) {
   const IconComponent = icon;
 
   return (
     <a
-      className="icon-link"
+      className={["icon-link", className].filter(Boolean).join(" ")}
       href={href}
       target={href.startsWith("mailto:") ? undefined : "_blank"}
       rel={href.startsWith("mailto:") ? undefined : "noreferrer"}

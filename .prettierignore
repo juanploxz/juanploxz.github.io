@@ -1,0 +1,13 @@
+node_modules
+dist
+playwright-report
+test-results
+package-lock.json
+public/*.svg
+src/**/*.css
+*.md
+
+# Keep large data and 3D modules out of the initial formatting migration.
+src/data/
+src/scenes/
+src/hooks/useCinematicEffects.js

@@ -1,37 +1,44 @@
 export const timeline = [
   {
     period: "2024",
-    title: "Programming foundations",
+    title: "Systems engineering foundation",
     text:
-      "Focused on systems engineering fundamentals, problem solving, Java, Kotlin, databases, and clear technical communication.",
+      "Built fundamentals in programming, problem solving, databases, Java, Kotlin, and the engineering habits needed to explain technical work clearly.",
     signal: "Foundation",
   },
   {
     period: "2024-2",
-    title: "Backend and mobile exploration",
+    title: "Web, backend, and mobile practice",
     text:
-      "Expanded from programming exercises into backend flows, Android interfaces, persistence, and project-based learning.",
+      "Moved from isolated exercises into Django flows, Android interfaces, CRUD behavior, persistence, and project-based implementation.",
     signal: "Build",
   },
   {
     period: "2025",
-    title: "Product-shaped university projects",
+    title: "Projects shaped as product systems",
     text:
-      "Started treating class projects as product systems: requirements, UML, data models, interfaces, and user decisions working together.",
+      "Started connecting requirements, UML, data models, backend behavior, and UI states so university projects could be read as coherent systems.",
     signal: "Product",
   },
   {
     period: "2025-2",
-    title: "Data and AI direction",
+    title: "Data dashboards and AI workflows",
     text:
-      "Connected dashboards, AI workflows, semantic search, and automation ideas with practical software architecture.",
+      "Explored Power BI dashboards, KPI design, LLM workflows, semantic search, embeddings, and recommendation logic as practical product tools.",
     signal: "Expand",
   },
   {
     period: "2026",
+    title: "Interactive systems and 3D experimentation",
+    text:
+      "Started treating motion, WebGL, React Three Fiber, and O3DE experimentation as ways to explain systems without replacing useful 2D interfaces.",
+    signal: "Explore",
+  },
+  {
+    period: "2026-2",
     title: "Portfolio as a product surface",
     text:
-      "Turning the portfolio into an interactive case-study experience that shows not just tools, but how those tools become software products.",
+      "Turning the portfolio into a case-study experience that shows project reasoning, capability mapping, and interactive presentation together.",
     signal: "Present",
   },
 ];

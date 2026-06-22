@@ -1,32 +1,19 @@
 import { motion as Motion } from "framer-motion";
 import SectionHeader from "../components/ui/SectionHeader";
 import { revealContainer, revealItem, viewportOnce } from "../lib/animations";
-
-const principles = [
-  {
-    title: "Product first",
-    text:
-      "I try to understand the decision a user needs to make before choosing the interface or the technology.",
-  },
-  {
-    title: "Systems thinking",
-    text:
-      "I connect requirements, data models, backend behavior, and UI states so projects feel coherent.",
-  },
-  {
-    title: "Clear communication",
-    text:
-      "I like explaining code, documenting tradeoffs, and making technical work understandable to other people.",
-  },
-];
+import { useLanguage } from "../hooks/useLanguage";
 
 function AboutSection() {
+  const { t } = useLanguage();
+  const principles = t("about.principles");
+
   return (
-    <section className="section section--about" id="about" data-cinematic>
+    <section className="section section--about" id="about" aria-labelledby="about-title">
       <SectionHeader
-        kicker="About"
-        title="A calm builder with a bias for learning, clarity, and useful software."
-        text="I am developing my craft through university projects, product experiments, and practical systems that combine backend logic, mobile interfaces, data, and AI."
+        titleId="about-title"
+        kicker={t("about.kicker")}
+        title={t("about.title")}
+        text={t("about.intro")}
       />
 
       <Motion.div

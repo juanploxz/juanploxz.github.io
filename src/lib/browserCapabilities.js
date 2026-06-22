@@ -1,23 +1,9 @@
-export function supportsWebGL() {
-  if (typeof window === "undefined" || typeof document === "undefined") {
-    return false;
-  }
-
-  try {
-    const canvas = document.createElement("canvas");
-    return Boolean(
-      window.WebGLRenderingContext &&
-        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-    );
-  } catch {
-    return false;
-  }
-}
+export const COMPACT_VISUALS_QUERY = "(max-width: 820px), (pointer: coarse)";
 
 export function shouldUseCompactVisuals() {
   if (typeof window === "undefined") {
     return true;
   }
 
-  return window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
+  return window.matchMedia(COMPACT_VISUALS_QUERY).matches;
 }

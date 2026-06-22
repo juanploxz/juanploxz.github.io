@@ -1,18 +1,58 @@
 import { motion as Motion } from "framer-motion";
-import { ArrowUpRight, CheckCircle2, Layers3 } from "lucide-react";
+import { ArrowUpRight, Layers3 } from "lucide-react";
 import { skillLookup } from "../../data/skills";
+import { motionTransitions } from "../../lib/animations";
+import ProjectCaseStudy from "./ProjectCaseStudy";
 import ProjectStage from "./ProjectStage";
 import ProjectVisual from "./ProjectVisual";
+import { useLanguage } from "../../hooks/useLanguage";
+import { useCompactVisuals } from "../../hooks/useCompactVisuals";
+import { getSkillLabel } from "../../lib/skillLabels";
+
+function ProjectDeepDive({ project, skillLabels, onSkillSelect }) {
+  const { t } = useLanguage();
+
+  return (
+    <div className="project-details__deep-dive">
+      <div className="project-details__proof">
+        {project.highlights.map((highlight) => (
+          <span key={highlight}>{highlight}</span>
+        ))}
+      </div>
+
+      <ProjectCaseStudy project={project} />
+
+      <ol className="project-stages">
+        {project.stages.map((stage, index) => (
+          <ProjectStage key={stage.label} stage={stage} index={index} />
+        ))}
+      </ol>
+
+      <div className="project-details__skills">
+        <span className="project-details__skills-title">{t("projectSection.skillsUsed")}</span>
+        {skillLabels.map((skill) => (
+          <button type="button" key={skill.id} onClick={() => onSkillSelect(skill.id)}>
+            {skill.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ProjectDetails({ project, onSkillSelect }) {
+  const { t } = useLanguage();
+  const compactVisuals = useCompactVisuals();
   const skillLabels = project.skills
     .map((skillId) => skillLookup[skillId])
-    .filter(Boolean);
+    .filter((skill) => skill?.primary)
+    .map((skill) => ({ ...skill, label: getSkillLabel(t, skill) }));
 
   return (
     <Motion.article
       id="project-details"
       className="project-details"
+      aria-labelledby={`project-details-title-${project.id}`}
       aria-live="polite"
       style={{ "--project-accent": project.accent }}
       layout
@@ -31,88 +71,50 @@ function ProjectDetails({ project, onSkillSelect }) {
         y: -12,
         scale: 0.99,
       }}
-      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+      transition={motionTransitions.detail}
     >
-      <Motion.div
-        className="project-details__visual"
-        aria-hidden="true"
-      >
+      <Motion.div className="project-details__visual" aria-hidden="true">
         <ProjectVisual project={project} size="detail" />
       </Motion.div>
 
       <div className="project-details__heading">
         <div>
-          <p className="section-kicker">Selected case study</p>
-          <Motion.h3 layoutId={`project-title-${project.id}`}>
+          <p className="section-kicker">{t("projectSection.selectedCaseStudy")}</p>
+          <Motion.h3
+            id={`project-details-title-${project.id}`}
+            layoutId={`project-title-${project.id}`}
+          >
             {project.title}
           </Motion.h3>
           <span>{project.role}</span>
         </div>
-        <a className="button button--compact" href="#skills" data-magnetic>
+        <a className="button button--compact" href="#skills">
           <Layers3 aria-hidden="true" />
-          <span>View skill map</span>
+          <span>{t("projectSection.viewSkillMap")}</span>
         </a>
       </div>
 
       <p className="project-details__summary">{project.summary}</p>
 
-      <div className="project-details__proof">
-        {project.highlights.map((highlight) => (
-          <span key={highlight}>{highlight}</span>
-        ))}
-      </div>
+      {compactVisuals ? (
+        <details className="project-details__disclosure">
+          <summary>{t("projectSection.exploreCaseStudy")}</summary>
+          <ProjectDeepDive
+            project={project}
+            skillLabels={skillLabels}
+            onSkillSelect={onSkillSelect}
+          />
+        </details>
+      ) : (
+        <ProjectDeepDive
+          project={project}
+          skillLabels={skillLabels}
+          onSkillSelect={onSkillSelect}
+        />
+      )}
 
-      <div className="project-details__grid">
-        <div className="project-details__story">
-          <div>
-            <span>Problem</span>
-            <p>{project.problem}</p>
-          </div>
-          <div>
-            <span>System</span>
-            <p>{project.approach}</p>
-          </div>
-        </div>
-
-        <div className="project-details__decisions">
-          <h4>Technical decisions</h4>
-          <ul>
-            {project.decisions.map((decision) => (
-              <li key={decision}>
-                <CheckCircle2 aria-hidden="true" />
-                <span>{decision}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <ol className="project-stages">
-        {project.stages.map((stage, index) => (
-          <ProjectStage key={stage.label} stage={stage} index={index} />
-        ))}
-      </ol>
-
-      <div className="project-details__skills">
-        <span className="project-details__skills-title">Skills used</span>
-        {skillLabels.map((skill) => (
-          <button
-            type="button"
-            key={skill.id}
-            onClick={() => onSkillSelect(skill.id)}
-          >
-            {skill.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="project-details__outcome">
-        <span>Outcome</span>
-        <p>{project.outcome}</p>
-      </div>
-
-      <a className="project-details__jump" href="#contact" data-magnetic>
-        Talk about this kind of project
+      <a className="project-details__jump" href="#contact">
+        {t("projectSection.talkAbout")}
         <ArrowUpRight aria-hidden="true" />
       </a>
     </Motion.article>

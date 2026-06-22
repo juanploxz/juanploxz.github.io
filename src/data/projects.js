@@ -3,7 +3,8 @@ export const projects = [
     id: "flowgate",
     title: "FlowGate",
     category: "Web App / Product Design / University System",
-    year: "2025",
+    type: "University product system",
+    year: "2026",
     status: "Product prototype",
     orbit: "Availability engine",
     summary:
@@ -12,9 +13,12 @@ export const projects = [
       "Students and staff often arrive without knowing if the lot is full, where congestion is forming, or how long the queue may take.",
     approach:
       "Modeled the parking operation as a product flow: availability states, vehicle records, entrance pressure, admin views, and driver-facing feedback.",
+    solution:
+      "A Django-based parking flow where users, vehicles, entries, availability states, and admin decisions are connected through one operational model.",
     outcome:
       "A clearer system narrative where backend rules, database structure, and UI states support the same operational goal.",
     role: "Product logic, backend modeling, UI flow, documentation",
+    stack: ["Django", "Python", "SQLite", "HTML templates", "Figma", "UML"],
     accent: "#72f2c9",
     skills: [
       "django",
@@ -39,6 +43,24 @@ export const projects = [
       "Kept the UI focused on availability, congestion, and wait time instead of dashboard noise.",
       "Documented flows with UML so the system could be explained beyond the code.",
     ],
+    technicalDecisions: [
+      "Modeled availability as a stateful operational concern rather than a static count.",
+      "Kept the first database layer lightweight with SQLite for fast validation.",
+      "Used UML and requirements documentation to keep backend behavior explainable.",
+    ],
+    architecture: [
+      "User and vehicle records feed parking availability and entry events.",
+      "Admin views manage operational state while driver-facing screens communicate decisions.",
+      "The interface prioritizes arrival guidance over generic CRUD screens.",
+    ],
+    challenges: [
+      "Translating a physical parking process into clear software states.",
+      "Balancing administrator detail with driver-facing simplicity.",
+    ],
+    repositoryUrl: null,
+    demoUrl: null,
+    caseStudyAvailable: true,
+    evidenceNote: "Case study only. The repository and live demo are not public yet.",
     stages: [
       {
         label: "Discover",
@@ -64,7 +86,8 @@ export const projects = [
     id: "workout-tracker",
     title: "Workout Tracker App",
     category: "Mobile App / Fitness Product",
-    year: "2025",
+    type: "Mobile product concept",
+    year: "2026",
     status: "Mobile concept",
     orbit: "Routine intelligence",
     summary:
@@ -73,9 +96,12 @@ export const projects = [
       "Fitness tracking can become fragmented when routines, goal progress, calories, and profile data live in different mental spaces.",
     approach:
       "Designed around fast mobile actions: update a routine, check weekly set progress, edit body/profile data, and revisit previous training days.",
+    solution:
+      "A mobile-first tracking loop for routine updates, weekly set progress, calories, profile data, and previous training days.",
     outcome:
       "A fitness product concept with practical CRUD behavior, persistence needs, and interface patterns shaped for repeat daily use.",
     role: "Mobile product thinking, UX structure, Android implementation plan",
+    stack: ["Kotlin", "Android", "Mobile UI", "Local persistence planning", "Figma"],
     accent: "#ffcc66",
     skills: [
       "kotlin",
@@ -99,6 +125,24 @@ export const projects = [
       "Separated routine data from profile data so future persistence can scale cleanly.",
       "Designed progress states around weekly sets because they map to real training behavior.",
     ],
+    technicalDecisions: [
+      "Separated routine, profile, calorie, and history data into distinct product areas.",
+      "Planned CRUD flows around repeated mobile use instead of one-time form entry.",
+      "Used weekly set volume as a practical progress signal for strength training.",
+    ],
+    architecture: [
+      "Routine and profile data provide the base for daily tracking screens.",
+      "History views make previous training days available without interrupting logging.",
+      "Progress summaries connect weekly targets, calories, and profile context.",
+    ],
+    challenges: [
+      "Keeping logging fast enough for use during workouts.",
+      "Avoiding a cluttered mobile interface while still showing meaningful progress.",
+    ],
+    repositoryUrl: null,
+    demoUrl: null,
+    caseStudyAvailable: true,
+    evidenceNote: "Case study only. The repository and live demo are not public yet.",
     stages: [
       {
         label: "Loop",
@@ -124,7 +168,8 @@ export const projects = [
     id: "thefinder",
     title: "TheFinder",
     category: "AI Tool / Job Automation MVP",
-    year: "2025",
+    type: "AI workflow MVP",
+    year: "2026",
     status: "MVP architecture",
     orbit: "Semantic matching",
     summary:
@@ -133,9 +178,12 @@ export const projects = [
       "Job search is noisy: candidates repeat manual filtering while job descriptions hide skill signals behind inconsistent language.",
     approach:
       "Designed an AI-assisted pipeline that extracts candidate and job signals, embeds them semantically, and scores compatibility with explainable recommendations.",
+    solution:
+      "An MVP architecture for parsing CVs, extracting job/candidate signals, comparing embeddings, and returning ranked recommendations with reasons.",
     outcome:
       "A product architecture that joins LLM workflows, vector similarity, graph relationships, and backend decision logic.",
     role: "AI workflow design, backend architecture, product scoring model",
+    stack: ["LLMs", "Embeddings", "Sentence Transformers", "Neo4j", "Python", "Semantic search"],
     accent: "#9ef01a",
     skills: [
       "ai-integration",
@@ -159,6 +207,24 @@ export const projects = [
       "Used semantic embeddings to reduce brittle keyword-only matching.",
       "Kept scoring explainable so users can understand why a role is recommended.",
     ],
+    technicalDecisions: [
+      "Used semantic matching to compare meaning instead of exact keyword overlap.",
+      "Explored graph relationships for skills, roles, and recommendation context.",
+      "Kept recommendation explanations as a first-class output of the scoring model.",
+    ],
+    architecture: [
+      "CV parsing creates a structured candidate profile.",
+      "LLM extraction and embeddings normalize candidate and job signals.",
+      "A scoring layer ranks opportunities and explains compatibility.",
+    ],
+    challenges: [
+      "Making AI recommendations explainable enough to trust.",
+      "Avoiding over-automation before the matching quality is reliable.",
+    ],
+    repositoryUrl: null,
+    demoUrl: null,
+    caseStudyAvailable: true,
+    evidenceNote: "Case study only. The repository and live demo are not public yet.",
     stages: [
       {
         label: "Extract",
@@ -184,7 +250,8 @@ export const projects = [
     id: "movie-reviews",
     title: "Movie Reviews Platform",
     category: "Django Web App",
-    year: "2025",
+    type: "Full-stack web app",
+    year: "2026",
     status: "Integrated project",
     orbit: "Content system",
     summary:
@@ -193,9 +260,12 @@ export const projects = [
       "A review platform needs content structure, persistence, media handling, and readable views before it can feel like a complete web product.",
     approach:
       "Built the project around Django models, views, templates, static/media organization, CRUD flows, and charts for review data.",
+    solution:
+      "A Django review platform with models, views, templates, media/static handling, CRUD flows, and chart-based reporting.",
     outcome:
       "A full-stack learning project that demonstrates Django fundamentals while treating presentation and data visualization as part of the product.",
     role: "Django implementation, templates, data modeling, visual reporting",
+    stack: ["Django", "Python", "Templates", "Bootstrap", "Tailwind CSS", "Matplotlib"],
     accent: "#ff7aa2",
     skills: [
       "django",
@@ -219,6 +289,24 @@ export const projects = [
       "Combined Bootstrap/Tailwind patterns where they helped ship practical UI faster.",
       "Added charts because a review system becomes stronger when data can be interpreted.",
     ],
+    technicalDecisions: [
+      "Kept rendering in Django templates to strengthen framework fundamentals.",
+      "Organized static and media concerns as part of the application structure.",
+      "Used Matplotlib charts to add reporting value to stored review data.",
+    ],
+    architecture: [
+      "Django models structure review content and related data.",
+      "Views and templates render CRUD flows and content pages.",
+      "Static/media organization and chart output support presentation and analysis.",
+    ],
+    challenges: [
+      "Keeping framework fundamentals clear while adding presentation polish.",
+      "Connecting stored review content with useful visual reporting.",
+    ],
+    repositoryUrl: null,
+    demoUrl: null,
+    caseStudyAvailable: true,
+    evidenceNote: "Case study only. The repository and live demo are not public yet.",
     stages: [
       {
         label: "Structure",
@@ -244,18 +332,22 @@ export const projects = [
     id: "powerbi-crisis",
     title: "Power BI Crisis Dashboard",
     category: "Business Intelligence / Data Dashboard",
-    year: "2025",
+    type: "BI dashboard",
+    year: "2026",
     status: "Executive dashboard",
-    orbit: "Decision room",
+    orbit: "Decision intelligence",
     summary:
       "An executive sales dashboard for a crisis committee focused on KPIs, transactions, average ticket, sales variation, top products, top clients, and category analysis.",
     problem:
       "Executive crisis decisions need fast visibility into what changed, where revenue is moving, and which products or clients are driving the situation.",
     approach:
       "Designed a dashboard around KPI hierarchy, DAX measures, category analysis, and visual prioritization for a decision-room context.",
+    solution:
+      "An executive Power BI dashboard organized around KPI scanning, sales variation, product/client contribution, and category analysis.",
     outcome:
       "A business intelligence experience focused on executive scanning, variation analysis, and rapid prioritization.",
     role: "Dashboard design, KPI modeling, data analysis, executive storytelling",
+    stack: ["Power BI", "DAX", "Excel", "Data analysis", "KPI design"],
     accent: "#7bdff2",
     skills: [
       "power-bi",
@@ -277,6 +369,24 @@ export const projects = [
       "Used variation measures to show movement, not just static totals.",
       "Grouped supporting visuals by decision value instead of chart variety.",
     ],
+    technicalDecisions: [
+      "Prioritized KPI hierarchy before secondary chart variety.",
+      "Used DAX measures to make variation and contribution easier to compare.",
+      "Grouped visuals around executive decision value.",
+    ],
+    architecture: [
+      "Excel-backed data supports Power BI measures and dashboard visuals.",
+      "Top-level KPIs summarize sales, transactions, ticket size, and variation.",
+      "Supporting views break down products, clients, and categories.",
+    ],
+    challenges: [
+      "Reducing dashboard noise for a crisis committee context.",
+      "Making sales movement visible without requiring deep exploration.",
+    ],
+    repositoryUrl: null,
+    demoUrl: null,
+    caseStudyAvailable: true,
+    evidenceNote: "Case study only. The repository and live demo are not public yet.",
     stages: [
       {
         label: "Measure",

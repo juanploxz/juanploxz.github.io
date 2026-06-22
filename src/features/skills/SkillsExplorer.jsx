@@ -1,26 +1,51 @@
+import { useMemo } from "react";
 import { motion as Motion } from "framer-motion";
 import { ArrowRight, Network } from "lucide-react";
 import SkillChip from "./SkillChip";
 import { revealContainer, revealItem, viewportOnce } from "../../lib/animations";
+import { useLanguage } from "../../hooks/useLanguage";
+import { getSkillLabel } from "../../lib/skillLabels";
 
 function SkillsExplorer({
   projects,
   skillGroups,
+  exploringSkills,
   activeSkill,
   selectedProjectId,
   onSkillSelect,
   onProjectSelect,
 }) {
-  const selectedProject =
-    projects.find((project) => project.id === selectedProjectId) ?? projects[0];
-  const selectedProjectSkillIds = new Set(selectedProject.skills);
-  const projectsForActiveSkill =
-    activeSkill === "all"
-      ? projects
-      : projects.filter((project) => project.skills.includes(activeSkill));
+  const { t } = useLanguage();
+  const selectedProject = useMemo(
+    () => projects.find((project) => project.id === selectedProjectId) ?? projects[0],
+    [projects, selectedProjectId]
+  );
+  const selectedProjectSkillIds = useMemo(
+    () => new Set(selectedProject.skills),
+    [selectedProject.skills]
+  );
+  const projectsForActiveSkill = useMemo(
+    () =>
+      activeSkill === "all"
+        ? projects
+        : projects.filter((project) => project.skills.includes(activeSkill)),
+    [activeSkill, projects]
+  );
+  const projectCountBySkill = useMemo(() => {
+    const counts = new Map();
 
-  const countProjectsForSkill = (skillId) =>
-    projects.filter((project) => project.skills.includes(skillId)).length;
+    projects.forEach((project) => {
+      project.skills.forEach((skillId) => {
+        counts.set(skillId, (counts.get(skillId) ?? 0) + 1);
+      });
+    });
+
+    return counts;
+  }, [projects]);
+  const projectMatchText =
+    projectsForActiveSkill.length === 1
+      ? t("skills.oneMatch")
+      : t("skills.manyMatches", { count: projectsForActiveSkill.length });
 
   return (
     <Motion.div
@@ -38,12 +63,12 @@ function SkillsExplorer({
           aria-pressed={activeSkill === "all"}
         >
           <Network aria-hidden="true" />
-          <span>All skills</span>
+          <span>{t("skills.allSkills")}</span>
         </button>
         <p>
           {activeSkill === "all"
-            ? `${selectedProject.title} is defining the current skill glow.`
-            : `${projectsForActiveSkill.length} project match selected.`}
+            ? t("skills.projectGlow", { project: selectedProject.title })
+            : projectMatchText}
         </p>
       </Motion.div>
 
@@ -57,52 +82,60 @@ function SkillsExplorer({
               aria-labelledby={`${group.id}-skills-title`}
             >
               <div className="skill-group__heading">
-                <h3 id={`${group.id}-skills-title`}>{group.title}</h3>
-                <p>{group.summary}</p>
+                <h3 id={`${group.id}-skills-title`}>{t(`skillGroups.${group.id}.title`)}</h3>
+                <p>{t(`skillGroups.${group.id}.summary`)}</p>
               </div>
               <div className="skill-group__chips">
                 {group.skills.map((skill) => (
                   <SkillChip
                     key={skill.id}
-                    skill={skill}
+                    skill={{ ...skill, label: getSkillLabel(t, skill) }}
                     active={activeSkill === skill.id}
                     related={selectedProjectSkillIds.has(skill.id)}
-                    count={countProjectsForSkill(skill.id)}
+                    count={projectCountBySkill.get(skill.id) ?? 0}
                     onClick={onSkillSelect}
                   />
                 ))}
               </div>
             </Motion.section>
           ))}
+
+          <Motion.aside className="skills-explorer__exploring" variants={revealItem}>
+            <div>
+              <h3>{t("skills.exploringTitle")}</h3>
+              <p>{t("skills.exploringText")}</p>
+            </div>
+            <ul>
+              {exploringSkills.map((skill) => (
+                <li key={skill.id}>{skill.label}</li>
+              ))}
+            </ul>
+          </Motion.aside>
         </div>
 
         <Motion.aside className="skills-explorer__projects" variants={revealItem}>
           <div className="skills-explorer__sticky">
-            <p className="section-kicker">Project signal</p>
+            <p className="section-kicker">{t("skills.projectSignal")}</p>
             <h3>{selectedProject.title}</h3>
             <span>{selectedProject.category}</span>
 
             <div className="project-signal-list">
               {projects.map((project) => {
                 const isActive = project.id === selectedProjectId;
-                const isMatched =
-                  activeSkill === "all" || project.skills.includes(activeSkill);
+                const isMatched = activeSkill === "all" || project.skills.includes(activeSkill);
 
                 return (
                   <button
                     type="button"
                     key={project.id}
-                    className={[
-                      isActive ? "is-active" : "",
-                      isMatched ? "is-matched" : "",
-                    ]
+                    className={[isActive ? "is-active" : "", isMatched ? "is-matched" : ""]
                       .filter(Boolean)
                       .join(" ")}
                     onClick={() => onProjectSelect(project.id)}
                     aria-pressed={isActive}
                   >
                     <span>{project.title}</span>
-                    <small>{project.skills.length} skills</small>
+                    <small>{t("skills.skillCount", { count: project.skills.length })}</small>
                     <ArrowRight aria-hidden="true" />
                   </button>
                 );
