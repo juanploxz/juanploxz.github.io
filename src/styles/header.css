@@ -32,6 +32,10 @@
   white-space: nowrap;
 }
 
+.mobile-header-action {
+  display: none;
+}
+
 .header-actions,
 .social-links {
   min-width: 0;
@@ -129,23 +133,46 @@
 
 @media (max-width: 460px) {
   .site-header {
-    gap: 0.4rem;
-    min-height: 64px;
-    padding-top: 0.65rem;
-    padding-bottom: 0.65rem;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.45rem;
+    min-height: 62px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
   }
 
   .brand-mark {
-    gap: 0.5rem;
+    justify-self: start;
+    gap: 0;
   }
 
   .brand-mark strong {
-    font-size: 0.82rem;
+    display: none;
+  }
+
+  .mobile-header-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    min-height: 36px;
+    min-width: 88px;
+    padding: 0 0.82rem;
+    border: 1px solid rgba(215, 255, 100, 0.22);
+    border-radius: var(--radius-button);
+    background:
+      linear-gradient(180deg, rgba(215, 255, 100, 0.11), rgba(246, 240, 227, 0.035)),
+      rgba(31, 30, 25, 0.68);
+    color: var(--text);
+    font-size: 0.72rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   .header-actions,
   .social-links {
-    gap: 0.24rem;
+    justify-self: end;
+    gap: 0.22rem;
   }
 
   .language-toggle {
@@ -159,13 +186,20 @@
     height: 36px;
   }
 
+  .command-trigger,
   .social-links a[href*="github.com"] {
     display: none;
   }
 }
 
 @media (max-width: 350px) {
-  .social-link--essential {
-    display: none;
+  .site-header {
+    gap: 0.32rem;
+  }
+
+  .mobile-header-action {
+    min-width: 76px;
+    padding-inline: 0.62rem;
+    font-size: 0.66rem;
   }
 }

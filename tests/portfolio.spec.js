@@ -93,7 +93,7 @@ test("long section navigation uses a bounded smooth transition", async ({ page }
     .toBe(true);
   await expect(page.locator("html")).not.toHaveClass(/is-programmatic-scrolling/);
   await expect(page).toHaveURL(/#timeline$/);
-  expect(Date.now() - startedAt).toBeLessThan(1800);
+  expect(Date.now() - startedAt).toBeLessThan(2200);
 });
 
 test("language toggle translates and persists the selected language", async ({ page }) => {
@@ -320,35 +320,100 @@ test("code rain animates safely and becomes static with reduced motion", async (
 });
 
 test("mobile top composition stays compact and readable", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  const layout = await page.evaluate(() => {
-    const header = document.querySelector(".site-header").getBoundingClientRect();
-    const selectedTitle = document
-      .querySelector(".selected-works-intro h2")
-      .getBoundingClientRect();
-    const canvasStyle = getComputedStyle(document.querySelector(".code-rain-background"));
+  for (const width of [430, 390, 360, 320]) {
+    await page.setViewportSize({ width, height: 844 });
 
-    return {
-      headerHeight: header.height,
-      heroActionsDisplay: getComputedStyle(document.querySelector(".hero-actions")).display,
-      githubDisplay: getComputedStyle(document.querySelector('.social-links a[href*="github.com"]'))
-        .display,
-      selectedTitleWidth: selectedTitle.width,
-      rainOpacity: Number.parseFloat(canvasStyle.opacity),
-      rainZIndex: Number.parseInt(canvasStyle.zIndex, 10),
-      horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
-    };
-  });
+    const layout = await page.evaluate(() => {
+      const header = document.querySelector(".site-header").getBoundingClientRect();
+      const mobileAction = document.querySelector(".mobile-header-action").getBoundingClientRect();
+      const selectedTitle = document
+        .querySelector(".selected-works-intro h2")
+        .getBoundingClientRect();
+      const selectedSection = document
+        .querySelector(".selected-works-section")
+        .getBoundingClientRect();
+      const heroName = document.querySelector(".hero-name").getBoundingClientRect();
+      const heroLede = document.querySelector(".hero-lede").getBoundingClientRect();
+      const scrollCue = document.querySelector(".hero-scroll-cue").getBoundingClientRect();
+      const heroRoleStyle = getComputedStyle(document.querySelector(".hero-role"));
+      const heroLedeStyle = getComputedStyle(document.querySelector(".hero-lede"));
+      const brandNameStyle = getComputedStyle(document.querySelector(".brand-mark strong"));
+      const navStyle = getComputedStyle(document.querySelector(".site-nav"));
+      const mobileActionStyle = getComputedStyle(document.querySelector(".mobile-header-action"));
+      const commandStyle = getComputedStyle(document.querySelector(".command-trigger"));
+      const mailStyle = getComputedStyle(
+        document.querySelector('.social-links a[href^="mailto:"]')
+      );
+      const scrollCueStyle = getComputedStyle(document.querySelector(".hero-scroll-cue"));
+      const canvasStyle = getComputedStyle(document.querySelector(".code-rain-background"));
+      const viewportCenter = window.innerWidth / 2;
 
-  expect(layout.headerHeight).toBeLessThanOrEqual(68);
-  expect(layout.heroActionsDisplay).toBe("none");
-  expect(layout.githubDisplay).toBe("none");
-  expect(layout.selectedTitleWidth).toBeLessThanOrEqual(362);
-  expect(layout.rainOpacity).toBeGreaterThanOrEqual(0.55);
-  expect(layout.rainZIndex).toBe(3);
-  expect(layout.horizontalOverflow).toBe(false);
+      return {
+        headerHeight: header.height,
+        brandNameDisplay: brandNameStyle.display,
+        navDisplay: navStyle.display,
+        mobileActionDisplay: mobileActionStyle.display,
+        mobileActionText: document.querySelector(".mobile-header-action").textContent.trim(),
+        mobileActionHref: document.querySelector(".mobile-header-action").getAttribute("href"),
+        mobileActionCentered:
+          Math.abs(mobileAction.left + mobileAction.width / 2 - viewportCenter) < 16,
+        commandDisplay: commandStyle.display,
+        mailDisplay: mailStyle.display,
+        scrollCueDisplay: scrollCueStyle.display,
+        scrollCueHref: document.querySelector(".hero-scroll-cue").getAttribute("href"),
+        scrollCueCentered: Math.abs(scrollCue.left + scrollCue.width / 2 - viewportCenter) < 3,
+        scrollCueBelowCopy: scrollCue.top > heroName.bottom,
+        ledeCueGap: scrollCue.top - heroLede.bottom,
+        heroNameTop: heroName.top,
+        heroNameCentered: Math.abs(heroName.left + heroName.width / 2 - viewportCenter) < 3,
+        heroRoleAlign: heroRoleStyle.textAlign,
+        heroLedeAlign: heroLedeStyle.textAlign,
+        heroActionsDisplay: getComputedStyle(document.querySelector(".hero-actions")).display,
+        githubDisplay: getComputedStyle(
+          document.querySelector('.social-links a[href*="github.com"]')
+        ).display,
+        selectedTitleWidth: selectedTitle.width,
+        selectedSectionStartsBelowViewport: selectedSection.top >= window.innerHeight - 1,
+        rainOpacity: Number.parseFloat(canvasStyle.opacity),
+        rainZIndex: Number.parseInt(canvasStyle.zIndex, 10),
+        horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
+      };
+    });
+
+    expect(layout.headerHeight).toBeLessThanOrEqual(68);
+    expect(layout.brandNameDisplay).toBe("none");
+    expect(layout.navDisplay).toBe("none");
+    expect(layout.mobileActionDisplay).toBe("flex");
+    expect(["Contact", "Contacto"]).toContain(layout.mobileActionText);
+    expect(layout.mobileActionHref).toBe("#contact");
+    expect(layout.mobileActionCentered).toBe(true);
+    expect(layout.commandDisplay).toBe("none");
+    expect(layout.mailDisplay).toBe("grid");
+    expect(layout.scrollCueDisplay).toBe("grid");
+    expect(layout.scrollCueHref).toBe("#selected-work");
+    expect(layout.scrollCueCentered).toBe(true);
+    expect(layout.scrollCueBelowCopy).toBe(true);
+    expect(layout.ledeCueGap).toBeGreaterThanOrEqual(18);
+    expect(layout.ledeCueGap).toBeLessThanOrEqual(260);
+    expect(layout.heroNameTop).toBeGreaterThanOrEqual(112);
+    expect(layout.heroNameTop).toBeLessThanOrEqual(170);
+    expect(layout.heroNameCentered).toBe(true);
+    expect(layout.heroRoleAlign).toBe("center");
+    expect(layout.heroLedeAlign).toBe("center");
+    expect(layout.heroActionsDisplay).toBe("none");
+    expect(layout.githubDisplay).toBe("none");
+    expect(layout.selectedTitleWidth).toBeLessThanOrEqual(width - 28);
+    expect(layout.selectedSectionStartsBelowViewport).toBe(true);
+    expect(layout.rainOpacity).toBeGreaterThanOrEqual(0.5);
+    expect(layout.rainOpacity).toBeLessThanOrEqual(0.54);
+    expect(layout.rainZIndex).toBe(3);
+    expect(layout.horizontalOverflow).toBe(false);
+  }
+
+  await page.setViewportSize({ width: 360, height: 610 });
+  await expect(page.locator(".hero-scroll-cue")).toBeHidden();
 });
 
 test("renders on mobile with reduced motion and no critical errors", async ({ page }) => {

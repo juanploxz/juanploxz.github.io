@@ -90,6 +90,10 @@ function SiteHeader() {
         <strong>{profile.shortName}</strong>
       </a>
 
+      <a className="mobile-header-action" href="#contact">
+        {t("header.mobileContact")}
+      </a>
+
       <nav className="site-nav" aria-label={t("header.primaryNavigation")}>
         {navLinks.map((link) => (
           <a

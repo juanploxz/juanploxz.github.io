@@ -24,6 +24,7 @@ const translations = {
       backToTop: "Back to top",
       primaryNavigation: "Primary navigation",
       socialLinks: "Social links",
+      mobileContact: "Contact",
     },
     hero: {
       kicker: "Juan Parra / Product-minded software developer",
@@ -31,6 +32,7 @@ const translations = {
       statement: "I build polished software experiences from product logic to interface.",
       lede: "I connect backend behavior, mobile UX, AI workflows, data dashboards, and frontend craft into clear, useful systems.",
       galleryCta: "Enter the gallery",
+      scrollCue: "Scroll to selected work",
       focusLabel: "Selected focus",
       focus: "Backend logic / Product UI / Mobile UX / AI workflows / BI systems",
     },
@@ -328,6 +330,7 @@ const translations = {
       backToTop: "Volver al inicio",
       primaryNavigation: "Navegación principal",
       socialLinks: "Enlaces sociales",
+      mobileContact: "Contacto",
     },
     hero: {
       kicker: "Juan Parra / Desarrollador de software con enfoque de producto",
@@ -336,6 +339,7 @@ const translations = {
         "Creo experiencias de software pulidas, desde la lógica de producto hasta la interfaz.",
       lede: "Conecto comportamiento backend, UX móvil, flujos de IA, dashboards de datos y frontend en sistemas claros y útiles.",
       galleryCta: "Explorar capacidades",
+      scrollCue: "Ir al trabajo seleccionado",
       focusLabel: "Enfoque principal",
       focus: "Lógica backend / UI de producto / UX móvil / flujos de IA / sistemas BI",
     },

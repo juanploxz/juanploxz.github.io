@@ -29,7 +29,14 @@
 @media (max-width: 820px) {
   .code-rain-background {
     z-index: 3;
-    opacity: 0.58;
+    opacity: 0.52;
+    mask-image: radial-gradient(
+      ellipse at 50% 40%,
+      rgba(0, 0, 0, 0.24) 0%,
+      rgba(0, 0, 0, 0.34) 38%,
+      rgba(0, 0, 0, 0.82) 72%,
+      #000 100%
+    );
   }
 }
 

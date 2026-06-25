@@ -15,7 +15,12 @@ function HeroSection() {
         initial="hidden"
         animate="visible"
       >
-        <Motion.h1 id="hero-title" className="hero-name" variants={revealItem}>
+        <Motion.h1
+          id="hero-title"
+          className="hero-name"
+          data-text="Juan Parra"
+          variants={revealItem}
+        >
           Juan Parra
         </Motion.h1>
         <Motion.p className="hero-role" variants={revealItem}>
@@ -52,6 +57,12 @@ function HeroSection() {
         <span>{t("hero.focusLabel")}</span>
         <strong>{t("hero.focus")}</strong>
       </Motion.div>
+
+      <a className="hero-scroll-cue" href="#selected-work" aria-label={t("hero.scrollCue")}>
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+      </a>
     </section>
   );
 }

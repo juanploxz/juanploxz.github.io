@@ -169,7 +169,15 @@ function resetStream(stream, streams, width, height, compact, initial = false) {
   );
   stream.opacity = randomBetween(compact ? 0.2 : 0.17, compact ? 0.3 : 0.27);
 
-  if (!compact && stream.x > width * 0.14 && stream.x < width * 0.58) {
+  if (compact) {
+    const normalizedX = stream.x / Math.max(1, width);
+
+    if (normalizedX > 0.24 && normalizedX < 0.76) {
+      stream.opacity *= 0.72;
+    } else {
+      stream.opacity = Math.min(stream.opacity * 1.08, 0.32);
+    }
+  } else if (stream.x > width * 0.14 && stream.x < width * 0.58) {
     stream.opacity *= 0.78;
   }
 
