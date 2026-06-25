@@ -571,7 +571,7 @@
   }
 }
 
-@media (max-width: 360px) and (max-height: 680px) {
+@media (max-width: 360px) and (max-height: 560px) {
   .hero-section {
     grid-template-rows: clamp(24px, 4svh, 36px) auto minmax(18px, 1fr) auto minmax(
         18px,
