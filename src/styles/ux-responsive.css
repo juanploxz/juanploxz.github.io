@@ -388,6 +388,12 @@
       linear-gradient(180deg, #151b16 0%, #0e1514 58%, #11170f 100%);
   }
 
+  @supports (height: 100dvh) {
+    .hero-section {
+      min-height: calc(100dvh - 62px);
+    }
+  }
+
   .hero-section::before {
     inset: -7% 0 auto;
     width: auto;
@@ -557,11 +563,17 @@
     min-height: calc(100svh - 62px);
     padding-top: 0;
   }
+
+  @supports (height: 100dvh) {
+    .hero-section {
+      min-height: calc(100dvh - 62px);
+    }
+  }
 }
 
 @media (max-width: 360px) and (max-height: 680px) {
   .hero-section {
-    grid-template-rows: clamp(34px, 5svh, 42px) auto minmax(24px, 1fr) auto minmax(
+    grid-template-rows: clamp(24px, 4svh, 36px) auto minmax(18px, 1fr) auto minmax(
         18px,
         0.15fr
       );
@@ -602,7 +614,13 @@
   }
 
   .hero-scroll-cue {
-    display: none;
+    width: 38px;
+    min-height: 44px;
+  }
+
+  .hero-scroll-cue span {
+    width: 14px;
+    height: 14px;
   }
 
   .hero-actions {
@@ -615,6 +633,26 @@
 }
 
 @media (max-width: 760px) and (max-height: 620px) {
+  .hero-section {
+    grid-template-rows: clamp(22px, 4svh, 34px) auto minmax(16px, 1fr) auto minmax(
+        10px,
+        0.12fr
+      );
+    padding-bottom: 0.65rem;
+  }
+
+  .hero-scroll-cue {
+    width: 38px;
+    min-height: 44px;
+  }
+
+  .hero-scroll-cue span {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 760px) and (max-height: 560px) {
   .hero-scroll-cue {
     display: none;
   }

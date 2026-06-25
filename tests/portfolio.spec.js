@@ -413,6 +413,27 @@ test("mobile top composition stays compact and readable", async ({ page }) => {
   }
 
   await page.setViewportSize({ width: 360, height: 610 });
+  await expect(page.locator(".hero-scroll-cue")).toBeVisible();
+
+  const shortMobileLayout = await page.evaluate(() => {
+    const selectedSection = document
+      .querySelector(".selected-works-section")
+      .getBoundingClientRect();
+    const heroLede = document.querySelector(".hero-lede").getBoundingClientRect();
+    const scrollCue = document.querySelector(".hero-scroll-cue").getBoundingClientRect();
+
+    return {
+      scrollCueBelowCopy: scrollCue.top > heroLede.bottom,
+      ledeCueGap: scrollCue.top - heroLede.bottom,
+      selectedSectionStartsBelowViewport: selectedSection.top >= window.innerHeight - 1,
+    };
+  });
+
+  expect(shortMobileLayout.scrollCueBelowCopy).toBe(true);
+  expect(shortMobileLayout.ledeCueGap).toBeGreaterThanOrEqual(12);
+  expect(shortMobileLayout.selectedSectionStartsBelowViewport).toBe(true);
+
+  await page.setViewportSize({ width: 360, height: 540 });
   await expect(page.locator(".hero-scroll-cue")).toBeHidden();
 });
 
